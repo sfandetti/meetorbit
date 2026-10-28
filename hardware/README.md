@@ -41,3 +41,7 @@ Do not mix a historical wiring diagram, enclosure or BOM with a different board 
 ## License
 
 Original Capsule hardware and build documentation: [CERN-OHL-P-2.0](LICENSE). See [NOTICE.md](NOTICE.md).
+
+## Rendering references
+
+CAD generation uses CadQuery/OpenCascade. Blender rendering helpers also expect generated meshes and layout JSON under `CAD/_render_meshes/`; generate those from the Capsule scripts before rendering. The supplied params and screen textures are render references, not prebuilt firmware. The render/build toolchain has not been clean-install validated in this publication step.
