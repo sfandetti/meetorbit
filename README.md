@@ -4,6 +4,8 @@
 
 A tabletop ESP32 device and Windows companion for working with multiple AIs, monitoring a PC and handling approval requests away from the keyboard.
 
+**Website: [MeetOrbit.io](https://meetorbit.io)** · [Device screens](https://meetorbit.io/screens.html)
+
 Created by **Seth Fandetti**. This is the working **Capsule v1 prototype**. It is fun to use; the next goal is to make it smaller, develop a dedicated circuit board and eventually offer an assembled version for sale. That smaller board and production product are still in development.
 
 ![Orbit prototype CAD rendering](website/assets/orbit-two-views-clean.png)

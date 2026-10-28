@@ -1,3 +1,5 @@
+Live at https://meetorbit.io. Deployment details: ../docs/HOSTING.md
+
 # MeetOrbit static site
 
 Serve this folder as static HTML. No build step or Node web service is needed. `index.html` is the entry point, `screens.html` is the device gallery, and all assets are local. No API credentials are needed to view the site.
