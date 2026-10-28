@@ -1,0 +1,94 @@
+/* Original user-provided renders, unmodified. Working UI overlays the aperture. */
+.workspace{display:flex;flex-direction:column;gap:30px}
+.preview{width:100%;padding-top:0;background:radial-gradient(ellipse at 50% 50%,#e0e6e1 0,transparent 72%)}
+.device,.device.landscape{width:100%;max-width:1100px;aspect-ratio:2400/1500;border:0;border-radius:0;background:transparent;box-shadow:none;transition:width .35s ease;isolation:isolate}
+.device.portrait{width:min(100%,620px);aspect-ratio:1500/2400;border:0;border-radius:0;box-shadow:none}
+.device-render{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;z-index:0}
+.device.landscape .screen{inset:auto;left:30.833333%;top:30.2%;width:32.75%;height:39.6%;border-radius:0;container-type:inline-size;z-index:1}
+.device.portrait .screen{inset:auto;left:30.266667%;top:36.416667%;width:39.6%;height:32.833333%;border-radius:0;container-type:inline-size;z-index:1}
+.device.has-request,.device.sleeping.has-request{box-shadow:none}
+.device.has-request .screen{outline:2px solid #e1b363;outline-offset:-2px}
+.hardware-rings{position:absolute;inset:0;display:block;pointer-events:none;z-index:2}
+.hardware-rings i{position:absolute;left:11.16%;top:12.6%;width:1.15%;height:74.8%;border:0;border-radius:0;background:linear-gradient(90deg,#1370c9,#79c9ff,#1f7adc);box-shadow:0 0 9px #268bff99;mix-blend-mode:screen;opacity:var(--led-level)}
+.hardware-rings i:nth-child(2){left:87.65%}
+.portrait .hardware-rings i{left:12.6%;top:11.16%;width:74.8%;height:1.1%;background:linear-gradient(0deg,#1370c9,#79c9ff,#1f7adc)}
+.portrait .hardware-rings i:nth-child(2){left:12.6%;top:87.65%}
+.mode-bar{margin-top:10px}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px;width:100%;max-width:none;padding-top:12px}
+.controls>.panel-heading,.controls>h2,.controls>.button-pair,.controls>.lab-note{grid-column:1/-1}
+.controls>h2{margin:0}.controls fieldset{margin:0;padding-top:12px}.controls .theme-chooser .hint{min-height:0}
+.screen .talk-button{min-height:0;height:auto;padding:1.8cqw 2cqw;font-size:2.8cqw}
+.screen .request-actions button,.screen .lock-view button,.screen .focus-view button{min-height:0;padding:2cqw 3cqw;font-size:2.9cqw}
+.screen .text-button{min-height:0;padding:1.5cqw 2cqw;font-size:2.6cqw}
+.screen .legacy-view button{min-height:0;font-size:2.6cqw;padding:1.5cqw 2cqw}
+.screen .legacy-view .meter-visual{width:8cqw;height:8cqw}
+.screen .legacy-view .meter-needle{height:3cqw}
+.screen .gauges>div{gap:1cqw}
+body:not([data-theme=corporate]) .screen .gauges>div{grid-template-columns:8cqw 1fr;padding:1.2cqw .7cqw}
+body[data-theme=paper] .screen .gauges>div{display:flex}
+body:not([data-theme=corporate]) .screen .request-view{padding:2cqw 3cqw}
+body:not([data-theme=corporate]) .screen .request-view button{min-height:0;padding:1.5cqw 2cqw}
+body:not([data-theme=corporate]) .screen .talk-button{min-height:0;padding:1.5cqw 2cqw}
+.screen .request-actions{gap:2cqw}.screen .legacy-view h2{margin:1cqw 0 2cqw}.screen .legacy-view p{margin:1.5cqw 0}
+.screen .gauges{gap:1.5cqw 2cqw}.screen .gauges progress{height:1cqw}
+.screen .binary-grid{gap:2cqw;margin:3cqw 0}.screen .binary-grid>div{gap:2cqw}.screen .binary-grid span{width:3cqw}
+.screen .launcher-grid button{margin:1cqw}
+.caption{margin-top:12px}
+.zoom-toggle{margin-top:10px;padding:6px 12px;min-height:32px;font-size:12px;background:transparent}
+.preview.screen-closeup .device{width:min(100%,466px);aspect-ratio:4/3;background:#080f13}
+.preview.screen-closeup .device.portrait{width:min(100%,350px);aspect-ratio:3/4}
+.preview.screen-closeup .device-render,.preview.screen-closeup .hardware-rings{display:none}
+.preview.screen-closeup .device .screen{left:0;top:0;width:100%;height:100%}
+@media(max-width:780px){.controls{grid-template-columns:1fr;max-width:620px}.controls>*{grid-column:1}.device,.device.landscape{max-width:none}.device.portrait{width:min(100%,510px)}}
+/* Compact simulator workstation: persistent preview above a tabbed control dock. */
+html,body{height:100%;overflow:hidden}
+body{height:100dvh;display:flex;flex-direction:column}
+header{height:48px;min-height:48px;width:100%;max-width:1240px;padding:8px 20px}
+.brand{font-size:23px;gap:8px}.tag{font-size:9px;letter-spacing:1.4px}
+main{width:100%;max-width:1240px;flex:1;min-height:0;padding:0 20px 8px;display:flex;flex-direction:column}
+.workspace{flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 238px;gap:8px}
+.preview{min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 40px;align-items:stretch;padding:0}
+.device-stage{min-height:0;min-width:0;width:100%;height:100%;display:grid;place-items:center;container-type:size}
+.device,.device.landscape{width:min(100cqw,160cqh);height:auto;max-width:none;aspect-ratio:8/5}
+.device.portrait{width:min(100cqw,62.5cqh);height:auto;aspect-ratio:5/8}
+.preview.screen-closeup .device{width:min(100cqw,133.333cqh,466px);aspect-ratio:4/3}
+.preview.screen-closeup .device.portrait{width:min(100cqw,75cqh,350px);aspect-ratio:3/4}
+.preview-toolbar{display:flex;justify-content:center;align-items:center;gap:12px;min-width:0}
+.preview-toolbar .mode-bar{margin:0;padding:3px;gap:2px;border-radius:12px}
+.preview-toolbar .mode-bar button{padding:5px 11px;min-height:30px;font-size:12px;border-radius:9px}
+.preview-toolbar .zoom-toggle{margin:0;min-height:30px;padding:5px 10px;font-size:11px}
+.preview-toolbar .caption{margin:0;font-size:11px}
+.controls{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:36px minmax(0,1fr) 20px;gap:7px;width:100%;max-width:none;min-height:0;padding:8px 0 0;border-top:1px solid var(--line)}
+.controls>*{grid-column:1!important}
+.control-tabs{display:flex;gap:5px;align-items:stretch}
+.control-tabs button{flex:1;padding:7px 12px;min-height:34px;border-radius:10px;font-size:12px;background:transparent}
+.control-tabs button[aria-selected=true]{background:#203d34;color:#fff;border-color:#203d34}
+.control-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 32px;overflow:auto;min-height:0;padding:3px 2px 3px 0;align-items:start;scrollbar-width:thin}
+.control-panel[hidden]{display:none}
+.controls fieldset{border:0;margin:0;padding:0;min-width:0}
+.controls legend{font-size:12px;margin-bottom:5px;font-weight:650}
+.controls select,.controls input:not([type=checkbox]):not([type=range]){min-height:34px;padding:7px 10px;font-size:12px;border-radius:9px}
+.controls button{min-height:34px;padding:7px 12px;font-size:12px}
+.controls .hint{font-size:11px;line-height:1.35;margin:5px 0}
+.controls .check{font-size:12px;min-height:24px;margin:6px 0 0;gap:8px}
+.controls .check input{width:15px;height:15px}
+.controls .fields{margin:0;gap:12px}.controls .fields input,.controls .fields select{margin-top:5px}
+.controls .theme-chooser{margin:0}.controls .theme-chooser .hint{min-height:0;max-width:600px}
+.controls .segmented button{min-height:34px;padding:7px 6px}
+.controls .lab-note{font-size:10px;margin:0;padding:0;border:0;line-height:18px;color:var(--muted);white-space:normal}
+#panel-leds{grid-template-columns:1fr}
+#panel-leds fieldset{display:grid;grid-template-columns:1fr 1fr;gap:4px 25px}
+#panel-leds legend,#panel-leds fieldset>.hint:last-child{grid-column:1/-1}
+#panel-leds .check{grid-row:2/4;align-self:center}
+#panel-leds #ledBrightness{margin:0;grid-column:2}
+.event-log{flex:none;margin:2px 0 0;padding:0;border:0;font-size:11px;color:var(--muted)}
+.event-log summary{cursor:pointer;padding:3px 0;list-style-position:inside}
+.event-log ol{max-height:80px;overflow:auto;margin:3px 0;line-height:1.5;font-size:10px}
+@media(max-width:780px){header{padding:8px 12px}main{padding:0 12px 6px}.workspace{grid-template-rows:minmax(0,1fr) 238px}.controls{max-width:none}.control-panel{gap:10px 16px}.preview-toolbar{gap:7px}.preview-toolbar .caption{font-size:10px}.preview-toolbar .mode-bar button{padding:5px 8px}.tag{font-size:8px;letter-spacing:.8px}}
+@media(max-width:480px){.preview{grid-template-rows:minmax(0,1fr) 64px}.preview-toolbar{flex-wrap:wrap;gap:3px 8px;align-content:center}.preview-toolbar .caption{flex-basis:100%}.control-tabs{gap:3px}.control-tabs button{padding:6px 3px;font-size:11px}.control-panel{grid-template-columns:1fr;gap:10px}.workspace{grid-template-rows:minmax(0,1fr) 238px}.controls .lab-note{font-size:9px}#panel-leds fieldset{display:block}#panel-leds #ledBrightness{margin-top:8px}.controls .fields{grid-template-columns:1fr 1fr}}
+@media(max-height:560px){.workspace{grid-template-rows:minmax(0,1fr) 190px}header{height:38px;min-height:38px}.controls .hint{font-size:10px}}
+@media(pointer:coarse){.controls button,.control-tabs button,.controls select,.controls input:not([type=checkbox]):not([type=range]){min-height:44px}.control-tabs{min-height:44px}.controls{grid-template-rows:44px minmax(0,1fr) 20px}}
+.workspace{align-items:stretch}
+.preview,.controls{height:100%;align-self:stretch}
+.workspace{grid-template-columns:minmax(0,1fr)}
+.device-stage{align-items:start}

@@ -1,0 +1,19 @@
+/* Additions for the merged console (new tabs). Uses the theme variables from style.css. */
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0 0 16px}
+.facts dt{color:var(--muted);font-size:.85em;text-transform:uppercase;letter-spacing:.06em}
+.facts dd{margin:0;overflow-wrap:anywhere}
+.pair-code{font-size:1.15em;font-weight:700;color:var(--accent);margin:10px 0}
+details{margin-top:14px}
+details summary{cursor:pointer;color:var(--muted)}
+.browser-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 12px}
+.codex-log{border:1px solid var(--line);border-radius:12px;padding:10px;height:340px;overflow-y:auto;background:var(--card);font-family:Consolas,ui-monospace,monospace;font-size:.88em}
+.codex-line{display:grid;grid-template-columns:5.5em 1fr;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.codex-line span{color:var(--muted)}
+.codex-line p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.codex-user span{color:var(--accent)}
+.codex-review{border:1px solid var(--accent);border-radius:12px;padding:12px;margin:12px 0}
+.codex-review pre,.shortcut-card pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto}
+input[type=color]{height:42px;padding:4px}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
+dialog::backdrop{background:#0008}
+@media(max-width:720px){.browser-grid{grid-template-columns:1fr 1fr}.codex-log{height:260px}}

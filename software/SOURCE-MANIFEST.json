@@ -1,0 +1,618 @@
+[
+  {
+    "path": "ai-desk.mjs",
+    "sha256": "edf11a5b2d146cceb227c491374f67ee496beff01c2e27a6944572bf1a8a4939"
+  },
+  {
+    "path": "app.mjs",
+    "sha256": "b9abb72752d0e99e5c1a3b0c9c437328d0d3357209c2aa91059f14375cd61629"
+  },
+  {
+    "path": "assets/orbit-enclosure-landscape.png",
+    "sha256": "558a0cdf4911df62a2977bab1dc704d3efab580d8dce4c0e35ac1acd240fd50a"
+  },
+  {
+    "path": "assets/orbit-enclosure-portrait.png",
+    "sha256": "628182761afe8750a183c95dced658bec7be4fab42b324cd68b8a9baa39b4445"
+  },
+  {
+    "path": "bridge.mjs",
+    "sha256": "556506a6d7bc0536561547dae36aea04b32df0150a6b1bade9119a402fd9d664"
+  },
+  {
+    "path": "bridge.test.mjs",
+    "sha256": "c3905c7c3969c8c51e49a310762ce7a9e20ce870a4af439ef3067a1dacd3ac85"
+  },
+  {
+    "path": "catalog.mjs",
+    "sha256": "c7d8a40da4d586b23961d02fcbcbb24dc8a392571c0814edc07d81e73814c6df"
+  },
+  {
+    "path": "character.css",
+    "sha256": "0b0fef5b160320f10e1ae4f47b9ebe500050d81ecbabc13b6a6c57489236e932"
+  },
+  {
+    "path": "codex-link.mjs",
+    "sha256": "68ea0ff1aba8dcc8a0e06cf800d056b501269b84426b2a4a574603f3f43dc073"
+  },
+  {
+    "path": "codex-link.test.mjs",
+    "sha256": "c0e13d748647ca602b76647cbda219fa6a7e147443397e19fee9d061b28f8c5d"
+  },
+  {
+    "path": "console/app.js",
+    "sha256": "a84b5d41a5eced9fe4ff70fc7e24fbd485c218011942daaceed6d21421668b5d"
+  },
+  {
+    "path": "console/codex.js",
+    "sha256": "82a12ceffaa8a2066dc11040f358347a844e5d83420ce4bda4249caf168c0d12"
+  },
+  {
+    "path": "console/console.css",
+    "sha256": "62ab12eba0ec86fe581071e9256c5c86869ab94361cf487f006bc237c528f00c"
+  },
+  {
+    "path": "console/fonts/Bubble-OFL.txt",
+    "sha256": "5c9e7eee5c6b25f4b05b8d53b2e470ea4962f9ced742d044a98f7d95d1375bab"
+  },
+  {
+    "path": "console/fonts/Bubble.ttf",
+    "sha256": "2ba02e68b152868aef9ba28e24b3648c7d457fe6f25c761f2c2c53fb61a73fc8"
+  },
+  {
+    "path": "console/fonts/Cyber-OFL.txt",
+    "sha256": "f62ef357d3a1c3d27edd35a6e1ba350e8a8d13499797964eeadefbf0b3b15d1f"
+  },
+  {
+    "path": "console/fonts/Cyber.ttf",
+    "sha256": "94bbd25a18ca665999feb05a537de9fd2b860dcfb78bbe9ca00270825bf235da"
+  },
+  {
+    "path": "console/fonts/Office-OFL.txt",
+    "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f"
+  },
+  {
+    "path": "console/fonts/Office.ttf",
+    "sha256": "bd299f4bc5b44d30be8d42e9bad3a5df7d66af1cd55d0ed72a8b8916360a1424"
+  },
+  {
+    "path": "console/fonts/Retro-OFL.txt",
+    "sha256": "705960c3281a5765ecc0b59bd4ed7ca59eed165748076bc2fc3e8fdbfeb944b0"
+  },
+  {
+    "path": "console/fonts/Retro.ttf",
+    "sha256": "034c77f1f05ec89421e4a63f0e3a4ca1ecf852cc6d2bf611f126f275728e017d"
+  },
+  {
+    "path": "console/hue.js",
+    "sha256": "8ee5bb05d56054c2512e86683d54fba0659f702a5551a25dc187cdffe67dd0e5"
+  },
+  {
+    "path": "console/index.html",
+    "sha256": "b8c0eb52fcf55b538310b602b5567c58f3848ffbedfe191ce4808d247e064b9e"
+  },
+  {
+    "path": "console/sentry.js",
+    "sha256": "d0b1d6eb54322f563f56408500d8f4a1ff22f4272e46bd2f8f7478a302e513ae"
+  },
+  {
+    "path": "console/style.css",
+    "sha256": "f1895936a0612305d1193f64795d021bb6dc88eda14a2319b4827e7c74b95538"
+  },
+  {
+    "path": "core.mjs",
+    "sha256": "6906c4f200efb1513dc5fc2dc6c03344650ee4501710bdc77a27d141bc37e2d5"
+  },
+  {
+    "path": "core.test.mjs",
+    "sha256": "af2ed12b371b904d3e792f4ea7d047aa5a2cb9f9ccb6b99b1f1422646d0ba981"
+  },
+  {
+    "path": "corporate-baseline/app.mjs",
+    "sha256": "b30e25646b7cf9581bc28dbce50b35e098776306ed74fc09ca67b3f7a38b580f"
+  },
+  {
+    "path": "corporate-baseline/index.html",
+    "sha256": "e8c2fea76e38c407002e4488772f3553abfdbf5a975b80844a69ef7d37b76994"
+  },
+  {
+    "path": "corporate-baseline/style.css",
+    "sha256": "1b2a14785c7c97a90b7e472b51e93b106657ca517d81ecaa46c8c590516fd98f"
+  },
+  {
+    "path": "desktop-link.mjs",
+    "sha256": "947f780ce64941f3a8ed001cefc3c462cfefe7fd8b1e32aef73aae996bb74ba4"
+  },
+  {
+    "path": "desktop-link.test.mjs",
+    "sha256": "ece0d2e60773f94a99f09d46433263a9cb49c74a35fca70df09227063c9f1ede"
+  },
+  {
+    "path": "device-feed.mjs",
+    "sha256": "cf9912f209ab493c1274b52d3ad741d5cebce47ee457ceb77462767fe6a6fdbf"
+  },
+  {
+    "path": "device-feed.test.mjs",
+    "sha256": "e00ef9f6258fb84b736db873366c949a9f65e8a93e91c2074f2ecac3a85116b3"
+  },
+  {
+    "path": "device-link.mjs",
+    "sha256": "dc0fe082e82103f1d265f38891b3d5d34422a79b4df0d38d72c3183895849964"
+  },
+  {
+    "path": "device-link.test.mjs",
+    "sha256": "2479b330823227fa77a9e82d73ca3e01f1767ef98af8f8b84550eb8d81a86424"
+  },
+  {
+    "path": "dpapi.mjs",
+    "sha256": "48d19c143541c86c3a23f9834624ec24448b18e25b96875df653fa5dd5da927d"
+  },
+  {
+    "path": "enclosure.css",
+    "sha256": "73d95a7ce16994035d6d1e4d1fcdef8c8b394139a95afc7603da58a7a9e32db7"
+  },
+  {
+    "path": "engines.mjs",
+    "sha256": "809ad541d2387e2294d076495e849fa2d2e6f02a39d493d2d2049be3697e0e98"
+  },
+  {
+    "path": "engines.test.mjs",
+    "sha256": "41cae5fcb75aa258a8314904acba307f6d21fd800b2b4508b4ff2331f503be2d"
+  },
+  {
+    "path": "firmware/OrbitDevice/audio_diag.h",
+    "sha256": "1b45c67e44de8f2856132394bb4afee4526ff526ae625593fca15a325d808be7"
+  },
+  {
+    "path": "firmware/OrbitDevice/companion.h",
+    "sha256": "76ad03173a5312d3034bdfe3556d149bc385e630c3b9e698a90bcad162819942"
+  },
+  {
+    "path": "firmware/OrbitDevice/device_views.h",
+    "sha256": "25c18749a39cc06f91d6e29be490c09a65d1c13faa8c910de5cd45ecc1d9a29b"
+  },
+  {
+    "path": "firmware/OrbitDevice/hue.h",
+    "sha256": "cccc175224c6e3482e5fbc58260995179689e945b3370401abb565cb169dd089"
+  },
+  {
+    "path": "firmware/OrbitDevice/led_ring.h",
+    "sha256": "8c0e11dd9abe3a582db44626bdfa00fa70e264ec94a2c52e7305a77b4d251be0"
+  },
+  {
+    "path": "firmware/OrbitDevice/OrbitDevice.ino",
+    "sha256": "9e96de1462c46711edd543419887d1fa5310586f84c65e40ead41d5b08707fe4"
+  },
+  {
+    "path": "firmware/OrbitDevice/orientation_filter.h",
+    "sha256": "17b352b4bd36e5ef8dfdce0649290a7159dba56201ae5a49f42c9bbb9fd7a508"
+  },
+  {
+    "path": "firmware/OrbitDevice/ota_update.h",
+    "sha256": "2e371d6f061ddbd5232c4ade592c201b64f95f1e9eebf39e40e53f1e75436dbd"
+  },
+  {
+    "path": "firmware/OrbitDevice/pair_link.h",
+    "sha256": "b604d7ba130073efc32da9a81cb9faf24f437fbf16ee819367acd5c4b12fc36e"
+  },
+  {
+    "path": "firmware/OrbitDevice/pc_cluster.h",
+    "sha256": "cbf68fe596f5edaa5ee2f9bdd054b607c69f870bd79d69ae0565364fee42c89e"
+  },
+  {
+    "path": "firmware/OrbitDevice/remote.h",
+    "sha256": "4c52c4667380f143b811ef47361d463bbb4acfca81d7403f0ee796bc47dfd3cd"
+  },
+  {
+    "path": "firmware/OrbitDevice/security.h",
+    "sha256": "0da1103e1bc7107530fbaae39afb865c8318a448c933723ad0017a4f21f42749"
+  },
+  {
+    "path": "firmware/OrbitDevice/showcase.h",
+    "sha256": "f798e9910b701c237ea2c51718760c475a42a11b9e2a4a0ff5a30f54d7236b04"
+  },
+  {
+    "path": "firmware/OrbitDevice/sound_waves.h",
+    "sha256": "5560eef7caad6aa8b5d4b6101dd55dffd8e4921275831e35c11e9c1639236986"
+  },
+  {
+    "path": "firmware/OrbitDevice/theme_fonts.h",
+    "sha256": "f5c59b2921ef02c9dc8a7877514a6a904937a2c7821d675d85e9ccd17d636c79"
+  },
+  {
+    "path": "firmware/OrbitDevice/themes.h",
+    "sha256": "98280a5b8b3ef9870bce5f5111c0f063a7ae5e7ab7083f8def1a7110199c9271"
+  },
+  {
+    "path": "firmware/OrbitDevice/touch_gesture.h",
+    "sha256": "b9236cfdc85533e51b4953d5d750d6560679697cd7bb2a71d6fe2c213a5c7f1a"
+  },
+  {
+    "path": "firmware/OrbitDevice/voice_link.h",
+    "sha256": "43028db7818b71a0e44c90839c4e93afc96237a445b314f3d19aa28d02f9496c"
+  },
+  {
+    "path": "firmware/OrbitSpeaker/OrbitSpeaker.ino",
+    "sha256": "ff5126ee50828f7b1e362f4db517d1b6e7b4121dbc4892aa8a98015028d8fffe"
+  },
+  {
+    "path": "firmware-update.mjs",
+    "sha256": "83fc95a4829cf4a8b1ccea06d67f6b8b4d8e97e0094b75dc1cabd2039d990054"
+  },
+  {
+    "path": "firmware-update.test.mjs",
+    "sha256": "df8805de2d529896a1366a73ab1f37d484ebc588ea2a1fb632f2a60daf750e05"
+  },
+  {
+    "path": "gateway.mjs",
+    "sha256": "173cbd938409220d8fe4a220dc21145afdc0837f40b855d33cb4cb80bc9e8785"
+  },
+  {
+    "path": "hue-modes.mjs",
+    "sha256": "421ee627434a3e6823512293488c87a4e3a6da28929f62be9839f0f8e60aaa7b"
+  },
+  {
+    "path": "hue.mjs",
+    "sha256": "d60a5c0023b0c5127f899dfe216c2b37cefff0286ac856a5b068c8745ec749b8"
+  },
+  {
+    "path": "hue.test.mjs",
+    "sha256": "9b076d369f2bb1a50b45cbda9fd627d81a7de89509b819f35ddcada7791b9b5d"
+  },
+  {
+    "path": "index.html",
+    "sha256": "d97c7bcbcd30a4081a07377a615be27b65e804215d18b02edfb8e77d1e275d94"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/ai_providers.py",
+    "sha256": "448962116c46384d35d95361e2a19825ad1b207c8b28d567a8ca8896c83b5685"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/alarm_audio.py",
+    "sha256": "bddb4fbd9bc2654795c99d4efca7e84f1dce9d6cc967f95ef4ae6fcb95067608"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/app.py",
+    "sha256": "fc48f07ce8163a4fa4e284a1b9fa71a7ce8da1d02b9c323813befdf72a5a3416"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/Build.ps1",
+    "sha256": "7752215a9f27cb7012098692fc359716404a95ddbcf667013e2c6ef332c8a54d"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/camera_manager.py",
+    "sha256": "8ffec35c81762b60c8c1fe6054669833a0117055c385967712cd51286b0fdb7d"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/camera_worker.py",
+    "sha256": "97206eb5b5eec1d7f920bcdc373a68dd513045fbaddffc330b9481e4586ffe14"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/check-local.py",
+    "sha256": "f4ecff77b33b4bbe068861320ad87d6fb10548c051c9295cbb918980a8de82fa"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/health.ps1",
+    "sha256": "4ba0518d2bff8d13366a9899af1d9ff3b84ac2995d1c6a4b956dd1f307bc2198"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/Install.ps1",
+    "sha256": "b5f2ffa9ab65f88f63a1510941ab0c69d577c6ec3918171daf1ff985d59eff6b"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/media_status.py",
+    "sha256": "dbf26c62cfec796877bc4ea8beaaf06fe7f8b7642c19c5b09f6080fd75e4d169"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/Package.py",
+    "sha256": "69a5502b3795b4f42ba481893636a89d18e2012ab7c58e58e10a45706d0f0c1c"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/privacy_cleanup.py",
+    "sha256": "927382fc354fad1d1ceaacf5f0f6316c314224da355438964551a9e4a37306c8"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/recordings_store.py",
+    "sha256": "cf788dc570068cb9a496fb96e7f10a395a7c59dce618634f3e08c9b6db41fa7b"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/shortcuts.py",
+    "sha256": "78f14c049710baebdf820f36c0ab7883dda5ae58f1ad775aa993a10259aea360"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/test_camera.py",
+    "sha256": "6e9d33e09a7235591854919c9a7cd69a9dd0a0e1d7ad161e01efb143e1b40eee"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/test_companion.py",
+    "sha256": "d292ef54749d2d956cf1869f98ded3078aa2daf679464a4fc76700696184175d"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/test_integrations.py",
+    "sha256": "44bf22616299417f4b4897a1e92b7ab9a57e6f01970c87190faccfe42427cb6e"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/test_quick_recordings.py",
+    "sha256": "e0e189f2ee81c39dbd904a9e6493dae855336786935580a020ae6697adbb159a"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/web/app.js",
+    "sha256": "a0dac0198790f40efb3e2e8a135d65b52e1d5e4b00d744b48a7968c036dbddd1"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/web/features.js",
+    "sha256": "14f0b7af85b7c8fbd894ed95ca39cc42b528791f96291ba16cf4190456104293"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/web/index.html",
+    "sha256": "f3b7efc2e97b0c81f37b5c07540ba3e548367694305c4747705b7144dffe67e4"
+  },
+  {
+    "path": "legacy-source/OrbitCompanion/web/style.css",
+    "sha256": "ea52d6d4751e1d5a4849aefff5b104799732114405cc9237d78af880092d7197"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/companion.h",
+    "sha256": "cb52990acd1b8954e5e5922a6c14f44e7a240a953625bb1b99f81c195fbd2a64"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/OrbitRemote.ino",
+    "sha256": "33fb31867f9e6199ba659a023e14daba73a297e17520fd528f1cba944af2b590"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/pc_cluster.h",
+    "sha256": "7f3c5e2db8ea1d68a7f738a1fe159b8fecf79cf55d2dc53a27de08362d4673f7"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/remote.h",
+    "sha256": "c9d1cc2df11dcc5339974a24e9237c3fc77838dd999d6198a2c49c0618f98a6d"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/security.h",
+    "sha256": "8cc198db08d58532cfcc882d441576ab6fd14c4308e50d90fca59bd2e2b96548"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/showcase.h",
+    "sha256": "b61a1347e4a28dad7f2ab6df5d624090dc89579b7f12346ba86826bde0cf8c77"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/theme_fonts.h",
+    "sha256": "f5c59b2921ef02c9dc8a7877514a6a904937a2c7821d675d85e9ccd17d636c79"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/themes.h",
+    "sha256": "8b7770918a28770f6fa95ba09cd5c69938bef43fed64f872035127422689d512"
+  },
+  {
+    "path": "legacy-source/OrbitRemote/touch_gesture.h",
+    "sha256": "9789134b4fe43e61c3aa7de08ef92510496eb7389f4052888d88fd06224a2d61"
+  },
+  {
+    "path": "main.mjs",
+    "sha256": "bc4c72d6fd9162f2e357d5e3fba2946bc9f7c5e970c17295e4b10105383a64cf"
+  },
+  {
+    "path": "mood.mjs",
+    "sha256": "46d617972da05fcf4817b6e7650a6e7225d53b063a4fd06a613f37a8d9a026a7"
+  },
+  {
+    "path": "mood.test.mjs",
+    "sha256": "85e9dbb65b4c931ddbf0de1939af5711d9477abf7d6f1fae2c7cfbc74c386785"
+  },
+  {
+    "path": "Open-Orbit-Simulator.ps1",
+    "sha256": "5ceb7abe117e53e1a54579788d813cdb332b42734c9ca25ab58e063f0c39a0d2"
+  },
+  {
+    "path": "Orbit-Control.ps1",
+    "sha256": "10d5b175c4df7ca7040120badaccdef3b4e61cd2dae7e98706bfbc1d14c594e8"
+  },
+  {
+    "path": "package-lock.json",
+    "sha256": "1020fd09be684121d57da454ebf623ad8189b346babff01f0741e9773f9faa9f"
+  },
+  {
+    "path": "package.json",
+    "sha256": "f73f4b2c1cfdf26bc4e767ad103ba10b271e47df54425138d5530ce7af9cbd10"
+  },
+  {
+    "path": "pc-stats.mjs",
+    "sha256": "1a491a4b0ee6cf4dd58b5a4f68aef8bf49a79a0b33ec92ee4bcc24fdb787e780"
+  },
+  {
+    "path": "pcm-worklet.js",
+    "sha256": "8d2d2c5506683dcd3e8bb1992cc7606649a8d7d045cece8a6e17faaf0e7bb07c"
+  },
+  {
+    "path": "privacy-ui.mjs",
+    "sha256": "82d3f74c658f9c0275d4325aeded2eeaaa43083115249cd9859436dc073c6b03"
+  },
+  {
+    "path": "privacy.mjs",
+    "sha256": "ba1afec5e41d4cdb24d7ff6c00071acb2da530b480883cb1248510669fc0c0b9"
+  },
+  {
+    "path": "privacy.test.mjs",
+    "sha256": "2b75cf755eed11fc4b25a470024d9c153f670c17a0bcd5b14b04a9683d5e2390"
+  },
+  {
+    "path": "profile.mjs",
+    "sha256": "3f5c7acb52dcdfa6a91263448a18a1d494a34607fc74a77c29d0ab98375224b7"
+  },
+  {
+    "path": "riley-client.mjs",
+    "sha256": "1e27aae737a850c4f713e9d438e2c7fbad9f0f9e5d2e5b607dedd042c7b0d732"
+  },
+  {
+    "path": "riley-relay.mjs",
+    "sha256": "c7bda5e39eeeadcdb91084ad79840c99d918b70a110fe7a479083ca9efa09e50"
+  },
+  {
+    "path": "riley-relay.test.mjs",
+    "sha256": "f8d9698ccb9bbcc1ab439748e59c54f9b1c783c4c64655c567409936dd745485"
+  },
+  {
+    "path": "screenshot.mjs",
+    "sha256": "5bf57048b4dc33624c7ea1e5b64e5da60fb6b0df22ff9bc68b3d8c5db0e6ea6a"
+  },
+  {
+    "path": "screenshot.test.mjs",
+    "sha256": "ed6002903b768fe1b65a533a65015711debf7be70ba4659a981696020fdb07d2"
+  },
+  {
+    "path": "sentry.mjs",
+    "sha256": "de34a99bb6ca4245391e10a62d6b3f227ae81f1f0da19e156d4cfbd5e79c5c30"
+  },
+  {
+    "path": "sentry.test.mjs",
+    "sha256": "d3685eb39d5d39777620b7581b773f354ece25dc7ab76ebc96168c54d2499bf8"
+  },
+  {
+    "path": "serial-beep-ui.mjs",
+    "sha256": "7e7c796c0d46cc98dd4551d141ca3f9853bc012154b453515393e910790e1acd"
+  },
+  {
+    "path": "serial-beep.mjs",
+    "sha256": "04a047efdcf98b6744243de6ea25a817c1dea06e02395513cde2dccbb2289b80"
+  },
+  {
+    "path": "serial-beep.ps1",
+    "sha256": "7eba244d7e8c22f87f24ab6a70f0f7dae08f7b779e07d9ab5a2d005f7aca9866"
+  },
+  {
+    "path": "serial-beep.test.mjs",
+    "sha256": "e09fb7df9476e38e295d2663dc04dab845da855dd56d0ede64fdf27379737e07"
+  },
+  {
+    "path": "serve.mjs",
+    "sha256": "35bce529269c3fb7e7a7807eb026a7a96e561fac25e79c516ff4bfca66c06853"
+  },
+  {
+    "path": "settings.mjs",
+    "sha256": "e5be943d5fe0d7e133ac09417be94c7ad19d0bbd94e2322a81b668107ef99530"
+  },
+  {
+    "path": "settings.test.mjs",
+    "sha256": "71a3394d4918118edc51ab4f11e5d4458fb69904c918e11f12c4925feb14dae2"
+  },
+  {
+    "path": "setup.mjs",
+    "sha256": "e452225ef77a19ba6c6c0da066f6799269894149a1596239189167883dcca099"
+  },
+  {
+    "path": "setup.test.mjs",
+    "sha256": "f71233672b4a6685c09d64b76750fb8e948617f8c4b4c539b022b3cfc54bc222"
+  },
+  {
+    "path": "shortcuts.mjs",
+    "sha256": "d49ce2728c49ac262b6b272db182f13f65fd8deecfd43f60850c0e4989b4ae64"
+  },
+  {
+    "path": "speech.mjs",
+    "sha256": "c0b2990d200d91cc03ea6eda220bc8fddb3f52e539b8ac6a14d9fa2241f2b77b"
+  },
+  {
+    "path": "Start-Orbit-Console.ps1",
+    "sha256": "9d9f80801fcaaf2cca00ce11049dca3381cc245a59ea982aa00828c6c37436f7"
+  },
+  {
+    "path": "start-riley.mjs",
+    "sha256": "1de51e1b9f2b54bb5423ae805c9f9d6391dae583d22d8fcb6db6c32a730d1c5c"
+  },
+  {
+    "path": "style.css",
+    "sha256": "f3abe8f05c501bc0377f2720df882cf0acca3f996f41b2d935066ac9a791bf0c"
+  },
+  {
+    "path": "task-context.mjs",
+    "sha256": "7f15914fb059c315328593e0cd5e38535f2eab6afd862d5c6fb0879692a0d637"
+  },
+  {
+    "path": "task-control.mjs",
+    "sha256": "6b1ea47713a555097b711261a717c6234314e6f67bd15a8a1282b0ef67ca5201"
+  },
+  {
+    "path": "task-control.test.mjs",
+    "sha256": "7c6113aff02f162773239b21473914e349df9ff7dce00da52378b5722422b395"
+  },
+  {
+    "path": "task-ui.css",
+    "sha256": "84fa4e23614af8e9fdbe00127e1ea61c0af4ca2c91c112530605263713320b36"
+  },
+  {
+    "path": "task-ui.mjs",
+    "sha256": "b028852170236ccb559ec130356fb984442d63e22d145fd4fa41270c01c913b5"
+  },
+  {
+    "path": "task-voice.test.mjs",
+    "sha256": "a6c1a6b04434938bfe0410e42ef792058251af04a1753957321731348c8c9747"
+  },
+  {
+    "path": "themes.css",
+    "sha256": "b4d017d0e351b5cd08567e12e0ff2bad3e439c6ba742f993358c42f50cd05681"
+  },
+  {
+    "path": "THEMES.md",
+    "sha256": "c01e539fa21457b0ba7f804fef23ad38bb39ac13ce82afc145d6667f3f845367"
+  },
+  {
+    "path": "themes.mjs",
+    "sha256": "965b04acce0af6700ec2ffa66558f9c780b1c98ae142d79513075dcdde8502fa"
+  },
+  {
+    "path": "tools/build-firmware.mjs",
+    "sha256": "fe9c36de39705cb59a159d623b01fa27e8823e785c2cdee3b57305742e6e113e"
+  },
+  {
+    "path": "tools/orbit-screen.mjs",
+    "sha256": "c7f04dc83a2620a329f28bc17c04448ed719c9741541cdaccdd0e225283af3d3"
+  },
+  {
+    "path": "voice-proxy.mjs",
+    "sha256": "0f7cd91c5ee08da64ac72bcc059287bfb14fa0440c6d3af56b8090444d935770"
+  },
+  {
+    "path": "voice-relay.mjs",
+    "sha256": "6f4705f426dfd578de9e42d517e1c56b2594d79ad84c5a5dfba3a1fd7df893e3"
+  },
+  {
+    "path": "voice-screen.test.mjs",
+    "sha256": "2f830b1f2e496242d3dc39812b7c27fb276f1ba7c707a7eaf9fbb448bb42bce9"
+  },
+  {
+    "path": "voice.css",
+    "sha256": "4c76a7e2188b853ffe2eca9124e4bf1a4816ca643dc31e5626bf95d92a952ed9"
+  },
+  {
+    "path": "voice.mjs",
+    "sha256": "9d88ae902bd49436cdd68ab20ba70ca1a7e6eec31fd0b3896084ce776d54dfd7"
+  },
+  {
+    "path": "voice.test.mjs",
+    "sha256": "aa3b7139b3bf77325a69483e35d5afaaa8c1b9a497a6b70a342b4f96cd7cbf9e"
+  },
+  {
+    "path": "wake.mjs",
+    "sha256": "25a2016084f8163022df3ec79e3528f718ed88a9cfbcea60578febf5232f2d93"
+  },
+  {
+    "path": "wake.test.mjs",
+    "sha256": "1fc637bf8f0654b0c24f337144f52b256673c1b24dc9093471bf035bfe6d48f9"
+  },
+  {
+    "path": "wifi-networks.mjs",
+    "sha256": "6072e05c66424b22bdf11bb859db827ab6322bf624241a45d5e84f627a46cda6"
+  },
+  {
+    "path": "wifi-networks.test.mjs",
+    "sha256": "ba42e36d171f613737a4fe7ab144300c32a356d10d93212de433fe2f35538122"
+  },
+  {
+    "path": "windows.mjs",
+    "sha256": "f027962304f03b64e270d70ab43566cb27ce316bbd31232d2fe93da51b8e99d9"
+  },
+  {
+    "path": "workbench.css",
+    "sha256": "beed8953753f3442f22e1b4b8ba19dfec7dcf53e25ab7f86a0773f39401a77e8"
+  }
+]

@@ -1,0 +1,16 @@
+node_modules/
+.orbit-runtime/
+.env
+.env.*
+!.env.example
+*.log
+__pycache__/
+*.pyc
+firmware-build/
+firmware-images/
+recordings/
+profiles/
+vendor/
+.DS_Store
+Thumbs.db
+test-results.txt

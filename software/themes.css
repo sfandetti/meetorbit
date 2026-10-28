@@ -1,0 +1,146 @@
+/* The white enclosure and blue hardware LEDs belong to the product, not a skin. */
+.device{border-color:#f6f7f4;box-shadow:inset 0 0 0 2px #bdc5c1,0 18px 45px #18352a26,0 0 0 1px #d5dcd6}
+.notch{background:#b8c2bd}
+.hardware-rings{position:absolute;bottom:-11px;left:calc(50% - 20px);display:flex;gap:17px;pointer-events:none;--led-level:.65}
+.hardware-rings i{width:9px;height:9px;border:2px solid #298bff;border-radius:50%;background:#cbe7ff;box-shadow:0 0 6px #268bff,0 0 12px #268bff80;opacity:var(--led-level)}
+.hardware-rings[data-state=listening] i{animation:led-breathe 1.8s ease-in-out infinite}
+.hardware-rings[data-state=thinking] i{animation:led-breathe 1.2s ease-in-out infinite}
+.hardware-rings[data-state=thinking] i:nth-child(2){animation-delay:.6s}
+.hardware-rings[data-state=attention] i{animation:led-breathe 1s ease-in-out infinite}
+.hardware-rings[data-state=speaking] i{animation:led-breathe .9s ease-in-out infinite}
+#themeCanvas{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none}
+#themeCanvas[hidden]{display:none}
+.custom-companion .face{display:none}
+.custom-clock #clockView{opacity:0;pointer-events:none}
+.theme-chooser{margin:0 0 20px;padding-top:12px}
+.theme-chooser .hint{min-height:54px}
+#ledBrightness{width:100%;accent-color:#298bff;display:block;margin-top:12px}
+#ledValue{float:right}
+.meter-visual{display:none}
+.motion-off .eyes i,.motion-off .mouth,.motion-off .hardware-rings i,.motion-off .meter-needle,.motion-off .screen::after{animation:none!important}
+@keyframes led-breathe{0%,100%{opacity:calc(var(--led-level)*.45)}50%{opacity:var(--led-level)}}
+@keyframes needle-settle{0%{transform:rotate(-120deg)}70%{transform:rotate(calc(var(--angle) + 8deg))}100%{transform:rotate(var(--angle))}}
+
+/* ARCADE — pixel bot, game HUD, concentric meters and hard-edged controls. */
+body[data-theme=arcade] .screen{background:#151341;color:#fff3ca;font-family:Consolas,'Courier New',monospace;border-radius:3px}
+body[data-theme=arcade] .topline{color:#b6b0ec;letter-spacing:1px}
+body[data-theme=arcade] .screen::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#0000000c 3px,#0000000c 4px);pointer-events:none}
+body[data-theme=arcade] .home-copy{top:65%;left:7%;right:7%;text-align:center}
+body[data-theme=arcade] #stateLabel{color:#f5d25a;letter-spacing:2px;font-size:2.5cqw}
+body[data-theme=arcade] .home-copy p{color:#fff4d4;font-size:3.8cqw;margin:6px 0}
+body[data-theme=arcade] .screen button{border-radius:2px;border:2px solid #7ceae8;background:#312862;color:#b9fff9;box-shadow:3px 3px 0 #070c2b;font-weight:700;letter-spacing:.5px}
+body[data-theme=arcade] .talk-button{left:26%;width:48%;bottom:4%;padding:5px 4px;min-height:32px;font-size:2.8cqw}
+body[data-theme=arcade] .request-view{top:19%;left:7%;right:7%;padding:10px;border:2px solid #ff79bd;background:#201849;box-shadow:5px 5px 0 #080827}
+body[data-theme=arcade] .request-view .eyebrow{color:#ffb4db}
+body[data-theme=arcade] .request-actions .positive{background:#e9cb55;color:#1e1746;border-color:#fff09a}
+body[data-theme=arcade] .request-view p{color:#c9c6e8}
+body[data-theme=arcade] .text-button{box-shadow:none!important;border:0!important;background:none!important}
+body[data-theme=arcade] .legacy-view{top:19%;left:6%;right:6%}
+body[data-theme=arcade] .legacy-badge{color:#ff97cb;letter-spacing:2px}
+body[data-theme=arcade] .legacy-view h2{font-weight:800;text-transform:uppercase;color:#f8d95b}
+body[data-theme=arcade] .legacy-view p{color:#b9b2dc}
+body[data-theme=arcade] .gauges{gap:8px}
+body[data-theme=arcade] .gauges>div{display:grid;grid-template-columns:35px 1fr;gap:2px 5px;text-align:left;padding:6px 4px;background:#241e50;border-bottom:2px solid #4a3878}
+body[data-theme=arcade] .gauges small{font-size:2cqw;color:#e6bcf4}
+body[data-theme=arcade] .gauges strong{font-size:3.4cqw;color:#fff3a6}
+body[data-theme=arcade] .gauges progress{display:none}
+body[data-theme=arcade] .meter-visual{display:block;grid-row:1/3;position:relative;width:34px;height:34px;border-radius:50%;background:conic-gradient(from 225deg,#64ede6 0 var(--reading),#4b3867 var(--reading) 75%,transparent 75%);border:1px solid #e4c2ff}
+body[data-theme=arcade] .meter-visual::after{content:'';position:absolute;inset:6px;border-radius:50%;background:#211b47}
+body[data-theme=arcade] .meter-needle{position:absolute;width:2px;height:13px;background:#f8d95b;bottom:50%;left:calc(50% - 1px);transform-origin:50% 100%;transform:rotate(var(--angle));animation:needle-settle .9s ease-out;z-index:1}
+body[data-theme=arcade] #focusTime{font-family:Consolas,monospace;font-weight:800;color:#f8d95b;background:#29214d;border:2px solid #655480;padding:8px;margin-top:10px}
+
+/* FLIGHT DECK — radar aperture, instrument grids, needle readouts, mission cards. */
+body[data-theme=flight] .screen{background:#101b20;color:#f0d39a;font-family:Consolas,monospace;border-radius:4px}
+body[data-theme=flight] .topline{color:#99aaa4;border-bottom:1px solid #3f514e;padding-bottom:5px;letter-spacing:.5px}
+body[data-theme=flight] .home-copy{top:66%;left:8%;right:8%;text-align:left;padding-left:9px;border-left:2px solid #c3a76c}
+body[data-theme=flight] #stateLabel{color:#98aea4;font-size:2cqw;letter-spacing:2px}
+body[data-theme=flight] .home-copy p{font-size:3.5cqw;line-height:1.15;margin:5px 0;color:#f0d39a}
+body[data-theme=flight] .screen button{border:1px solid #6f735c;border-radius:2px;background:#273632;color:#f0d39a;text-transform:uppercase;letter-spacing:.6px;font-size:2.5cqw;box-shadow:inset 0 0 0 2px #172622}
+body[data-theme=flight] .talk-button{bottom:4%;left:8%;width:84%;min-height:30px;padding:6px}
+body[data-theme=flight] .request-view{top:21%;left:7%;right:7%;text-align:left;padding:10px 12px;background:#22302e;border-left:4px solid #dabb7b}
+body[data-theme=flight] .request-view h2{text-transform:uppercase;font-size:4cqw}
+body[data-theme=flight] .request-view p{color:#b2bdb1}
+body[data-theme=flight] .request-view .eyebrow{color:#dabb7b}
+body[data-theme=flight] .request-actions{justify-content:flex-start}
+body[data-theme=flight] .request-actions .positive{background:#d6bf8b;color:#17211c}
+body[data-theme=flight] .legacy-view h2{text-transform:uppercase;letter-spacing:1.5px;text-align:left;font-size:3.8cqw;border-bottom:1px solid #50645b;padding-bottom:5px}
+body[data-theme=flight] .legacy-badge{display:block;text-align:left;color:#99aaa4}
+body[data-theme=flight] .gauges>div{display:grid;grid-template-columns:38px 1fr;gap:2px 5px;padding:5px 2px;border-top:1px solid #415049}
+body[data-theme=flight] .gauges small{font-size:2cqw;color:#99aaa4}
+body[data-theme=flight] .gauges strong{font-size:3.5cqw;color:#f0d39a}
+body[data-theme=flight] .gauges progress{display:none}
+body[data-theme=flight] .meter-visual{display:block;position:relative;grid-row:1/3;width:36px;height:36px;border:2px solid #728075;border-radius:50%;background:repeating-conic-gradient(from 0deg,#67736b 0deg 2deg,#192823 2deg 30deg)}
+body[data-theme=flight] .meter-visual::after{content:'';position:absolute;inset:5px;border-radius:50%;background:#192823}
+body[data-theme=flight] .meter-needle{position:absolute;width:2px;height:12px;background:#f1ce82;bottom:50%;left:calc(50% - 1px);transform-origin:50% 100%;transform:rotate(var(--angle));animation:needle-settle 1.2s ease-out;z-index:1}
+body[data-theme=flight] #focusTime{font-family:Consolas,monospace;font-size:13cqw;color:#f0d39a;border-top:1px solid #6a7563;border-bottom:1px solid #6a7563;margin:10px 0}
+body[data-theme=flight] .legacy-view p{color:#a1b5a7}
+
+/* POCKET PAL — full character stage, soft stickers, fluid bubble instruments. */
+body[data-theme=pocket] .screen{background:#f5e4ee;color:#58425c;font-family:'Trebuchet MS',sans-serif;border-radius:10px}
+body[data-theme=pocket] .topline{color:#896381}
+body[data-theme=pocket] .home-copy{top:66%;left:8%;right:8%;text-align:center}
+body[data-theme=pocket] #stateLabel{color:#94728d;font-size:2.2cqw;letter-spacing:1px}
+body[data-theme=pocket] .home-copy p{font-size:4.2cqw;color:#58425c;margin:5px 0;font-weight:700}
+body[data-theme=pocket] .screen button{border:2px solid #8c6c92;border-radius:22px;background:#fff3d9;color:#654e6c;box-shadow:0 3px 0 #c6a5c7;font-weight:700}
+body[data-theme=pocket] .talk-button{bottom:4%;left:29%;width:42%;min-height:32px;font-size:3cqw;padding:5px}
+body[data-theme=pocket] .request-view{background:#fff8ed;border:2px solid #c1a0c4;border-radius:22px;top:19%;left:7%;right:7%;padding:10px;box-shadow:4px 5px 0 #d6b4d6}
+body[data-theme=pocket] .request-view h2{color:#67456c;font-weight:800;font-size:4.2cqw}
+body[data-theme=pocket] .request-view p{color:#8b6b83}
+body[data-theme=pocket] .request-view .eyebrow{color:#a2638b}
+body[data-theme=pocket] .request-actions .positive{background:#cce6bb;color:#4a6546;border-color:#829f6f}
+body[data-theme=pocket] .text-button{background:transparent!important;box-shadow:none!important;border:0!important}
+body[data-theme=pocket] .legacy-badge{color:#94728d;letter-spacing:.7px}
+body[data-theme=pocket] .legacy-view h2{color:#67456c;font-size:4.6cqw;font-weight:800}
+body[data-theme=pocket] .legacy-view p{color:#896381}
+body[data-theme=pocket] .gauges>div{position:relative;display:grid;grid-template-columns:28px 1fr;gap:2px 5px;padding:6px;background:#fff3df;border:1px solid #d1b6c8;border-radius:12px;box-shadow:2px 2px 0 #dfc5df}
+body[data-theme=pocket] .gauges small{font-size:2cqw;color:#9a748a}
+body[data-theme=pocket] .gauges strong{font-size:3.5cqw;color:#67456c}
+body[data-theme=pocket] .gauges progress{display:none}
+body[data-theme=pocket] .meter-visual{display:block;grid-row:1/3;align-self:center;position:relative;width:25px;height:34px;border:2px solid #829f6f;border-radius:12px;background:linear-gradient(to top,#b5d7a0 var(--reading),#f9f1d7 var(--reading));overflow:hidden}
+body[data-theme=pocket] .meter-visual::before,body[data-theme=pocket] .meter-visual::after{content:'';position:absolute;border:1px solid #82ad72;border-radius:50%;width:5px;height:5px;left:4px;bottom:5px}
+body[data-theme=pocket] #focusTime{font-family:'Trebuchet MS',sans-serif;color:#67456c;font-weight:750;font-size:13cqw;background:#fff4de;border:2px solid #b69bbf;border-radius:40px;margin:10px auto;width:90%;padding:8px}
+body[data-theme=pocket] .focus-view span{color:#94728d}
+body[data-theme=pocket] .lock-view h2{color:#67456c}
+body[data-theme=pocket] .lock-view p{color:#896381}
+body[data-theme=pocket] .lock-symbol{color:#b88d63}
+
+/* FIELD NOTES — editorial hierarchy, line work, ruled data, paper interaction. */
+body[data-theme=paper] .screen{background:repeating-linear-gradient(0deg,#f4efdf,#f4efdf 17px,#e0dac6 17px,#e0dac6 18px);color:#3f473e;font-family:Georgia,serif;border-radius:3px}
+body[data-theme=paper] .topline{color:#68715c;font-family:Consolas,monospace;border-bottom:1px solid #b6bda6;padding-bottom:5px}
+body[data-theme=paper] .home-copy{top:65%;left:8%;right:8%;text-align:left}
+body[data-theme=paper] #stateLabel{color:#7c826b;font-family:Consolas,monospace;font-size:2cqw;letter-spacing:2px}
+body[data-theme=paper] .home-copy p{color:#3f473e;font:italic 4.3cqw Georgia,serif;margin:5px 0}
+body[data-theme=paper] .screen button{border:0;border-bottom:1px solid #798168;border-radius:0;background:#f4efdf;color:#3f473e;box-shadow:none;font-family:Georgia,serif;font-size:3.2cqw}
+body[data-theme=paper] .talk-button{bottom:4%;left:8%;width:84%;min-height:30px;padding:4px;text-align:left}
+body[data-theme=paper] .request-view{top:20%;left:8%;right:8%;padding:8px 12px;background:#faf6e9;border:1px solid #acb198;text-align:left;box-shadow:4px 4px 0 #dedbc7}
+body[data-theme=paper] .request-view h2{font:italic 4.7cqw Georgia,serif;color:#3f473e}
+body[data-theme=paper] .request-view .eyebrow{font-family:Consolas,monospace;color:#7c826b}
+body[data-theme=paper] .request-view p{color:#6e745f}
+body[data-theme=paper] .request-actions{justify-content:flex-start}
+body[data-theme=paper] .request-actions .positive{background:#e0e4cf;color:#3f473e;border-color:#798168}
+body[data-theme=paper] .legacy-badge{display:block;text-align:left;font-family:Consolas,monospace;color:#7c826b;letter-spacing:2px}
+body[data-theme=paper] .legacy-view h2{font:italic 5cqw Georgia,serif;text-align:left;border-bottom:1px solid #adb399;padding-bottom:4px}
+body[data-theme=paper] .legacy-view p{color:#6e745f;text-align:left}
+body[data-theme=paper] .gauges{gap:8px 16px}
+body[data-theme=paper] .gauges>div{display:flex;flex-direction:column;gap:2px;border-bottom:1px solid #aab295;padding:5px 0}
+body[data-theme=paper] .gauges small{font:2.1cqw Consolas,monospace;color:#7c826b;letter-spacing:1px}
+body[data-theme=paper] .gauges strong{font:5cqw Georgia,serif;color:#3f473e}
+body[data-theme=paper] .gauges progress{height:3px;accent-color:#798168}
+body[data-theme=paper] .legacy-time{font-family:Georgia,serif;font-style:italic;color:#3f473e}
+body[data-theme=paper] #focusTime{font:italic 15cqw Georgia,serif;color:#3f473e;border-bottom:1px solid #adb399;margin:10px 0}
+body[data-theme=paper] .focus-view span{font-family:Consolas,monospace;color:#7c826b}
+body[data-theme=paper] .lock-view h2{font-family:Georgia,serif;color:#3f473e;font-style:italic}
+body[data-theme=paper] .lock-view p{color:#6e745f}
+body[data-theme=paper] .lock-symbol{color:#798168}
+body[data-theme=paper] .camera-placeholder{background:repeating-linear-gradient(45deg,#e0dac6,#e0dac6 1px,#f4efdf 1px,#f4efdf 6px);border:1px solid #aab295;color:#68715c}
+
+@media(max-width:370px){
+  body:not([data-theme=corporate]) .screen .request-view{padding:6px 8px;top:18%}
+  body:not([data-theme=corporate]) .screen .request-view h2{font-size:4.4cqw}
+  body:not([data-theme=corporate]) .screen .request-view p{font-size:2.8cqw}
+  body:not([data-theme=corporate]) .screen .request-view button{min-height:28px;padding:5px 8px}
+  body:not([data-theme=corporate]) .gauges>div{grid-template-columns:25px 1fr;gap:2px;padding:4px 2px}
+  body:not([data-theme=corporate]) .gauges .meter-visual{width:24px;height:24px}
+  body:not([data-theme=corporate]) .gauges .meter-needle{height:8px}
+}
+@media(prefers-reduced-motion:reduce){.hardware-rings i,.meter-needle{animation:none!important}}

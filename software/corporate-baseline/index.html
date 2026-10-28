@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Orbit · companion simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><a class="brand" href="./">◉ <span>orbit</span></a><span class="tag">COMPANION LAB · v0.1</span></header>
+  <main>
+    <section class="intro"><div class="eyebrow">A LITTLE BODY. A FAMILIAR PRESENCE.</div><h1>Your assistant,<br>along for the ride.</h1><p>Pick it up. Turn it sideways. Give it something to say.</p></section>
+    <div class="workspace">
+      <section class="preview" aria-label="Orbit device preview">
+        <div class="device landscape" id="device">
+          <div class="notch"></div>
+          <div class="screen" id="screen">
+            <div class="topline"><span id="connection">● ONLINE</span><span id="lockBadge"></span><span>▰ 82%</span></div>
+            <div class="face" id="face" aria-label="Orbit character">
+              <div class="brows"><i></i><i></i></div>
+              <div class="eyes"><i></i><i></i></div><div class="mouth"></div>
+              <div class="cheek left"></div><div class="cheek right"></div>
+            </div>
+            <div class="home-copy" id="homeCopy"><div id="stateLabel">RESTING</div><p id="line">Pick me up. Let’s go somewhere.</p></div>
+            <div class="clock-view" id="clockView" hidden><div id="clockTime"></div><p id="clockDate"></p></div>
+            <div class="focus-view" id="focusView" hidden><span>ONE THING AT A TIME</span><div id="focusTime">25:00</div><button id="focusStart">Start focus</button></div>
+            <div class="legacy-view" id="legacyView" hidden><span class="legacy-badge">EXISTING SCREEN · PREVIEW</span><h2 id="legacyTitle"></h2><div id="legacyContent"></div></div>
+            <div class="request-view" id="requestView" hidden><span class="eyebrow">SAMPLE REQUEST</span><h2 id="requestTitle"></h2><p id="requestDetail"></p><div class="request-actions"><button id="approve" class="positive">Approve</button><button id="reject">Reject</button></div><button id="snooze" class="text-button">Remind me in 1 min</button></div>
+            <div class="lock-view" id="lockView" hidden><span class="lock-symbol">⌑</span><h2>Just for you.</h2><p id="lockText">Enter your passcode to continue.</p><button id="unlock">Unlock Orbit</button></div>
+            <button class="talk-button" id="talk">Tap to talk</button>
+          </div>
+        </div>
+        <div class="device-shadow"></div>
+        <div class="mode-bar" role="group" aria-label="Orbit screen"><button data-mode="companion" aria-pressed="true">Companion</button><button data-mode="clock" aria-pressed="false">Clock</button><button data-mode="focus" aria-pressed="false">Focus</button></div>
+        <div class="caption" id="caption" aria-live="polite">Sleeping · portrait · motion is simulated</div>
+      </section>
+      <aside class="controls">
+        <div class="panel-heading"><span class="eyebrow">TRY YOUR ORBIT</span><span class="small-dot"></span></div>
+        <h2>Bring it to life.</h2>
+        <div class="button-pair"><button id="pickup" class="primary">↗ Pick up</button><button id="sleep">Put to sleep</button></div>
+        <fieldset><legend>Turn the device</legend><div class="segmented"><button data-tilt="portrait" aria-pressed="false">Upright</button><button data-tilt="landscape" aria-pressed="true">Sideways</button><button data-tilt="flat" aria-pressed="false">Lay flat</button></div><label class="check"><input id="rotationLock" type="checkbox"> Lock orientation</label></fieldset>
+        <fieldset><legend>Get my attention</legend><button id="sampleAlert" class="wide">＋ Send a sample approval</button><div class="fields"><label>Your name<input id="ownerName" value="Seth" maxlength="24"></label><label>Alert style<select id="alertStyle"><option value="chime">Soft chime</option><option value="telephone">Telephone</option><option value="horn">Little horn</option><option value="voice">Say my name</option></select></label></div><label class="check"><input type="checkbox" id="enableSound"> Enable preview sound</label><label class="check"><input type="checkbox" id="quiet"> Quiet mode</label><label class="check"><input type="checkbox" id="pickupRemarks" checked> Playful pickup remarks</label></fieldset>
+        <fieldset><legend>Privacy & passcode</legend><select id="security" aria-label="Passcode policy"><option value="off">No passcode</option><option value="idle">Lock after 30 seconds</option><option value="approval">Passcode for every decision</option></select><p class="hint">Preview passcode: <strong>2468</strong>. This is a lock demonstration, not real authentication.</p></fieldset>
+        <label class="check"><input type="checkbox" id="offline"> Simulate lost Wi-Fi</label>
+        <fieldset><legend>Review existing screens · all 21 preserved</legend><select id="legacyScreen" aria-label="Existing Orbit screen"></select><p id="legacyDescription" class="hint"></p><label class="hint" for="reviewDecision">Your keep/remove decision</label><select id="reviewDecision"><option value="undecided">Not reviewed yet</option><option value="keep">Keep this screen</option><option value="remove">Candidate to remove</option></select><p class="hint">Nothing is removed. These are new preview layouts; the original code is preserved separately. PC, music and camera actions here are samples.</p></fieldset>
+        <div class="lab-note"><strong>Behavior preview</strong><p>Voice replies, battery level, motion and requests are simulated. No microphone, camera, AI service or real task is connected.</p></div>
+      </aside>
+    </div>
+    <section class="event-log"><h2>What just happened</h2><ol id="events" aria-live="polite"><li>Orbit is resting. Pick it up to wake it.</li></ol></section>
+  </main>
+  <dialog id="pinDialog"><form id="pinForm"><span class="eyebrow">ORBIT LOCK</span><h2>Enter your passcode.</h2><p>Preview code: 2468</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="Four digit passcode"><p id="pinError" role="alert"></p><div class="button-pair"><button type="button" id="pinCancel">Cancel</button><button type="submit" class="primary">Unlock</button></div></form></dialog>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>
