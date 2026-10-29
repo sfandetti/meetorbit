@@ -22,5 +22,5 @@ export async function orbitScreen({deviceIp,httpPort=8080,token,rot,page,view,ta
   const response=await fetcher(`http://${deviceIp}:${httpPort}/screen${q.size?'?'+q:''}`,{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw Error(`Orbit answered ${response.status}: ${(await response.text()).slice(0,80)}`);
   const width=Number(response.headers.get('x-width')),height=Number(response.headers.get('x-height'));
-  return {width,height,png:rgb332ToPng(Buffer.from(await response.arrayBuffer()),width,height)};
+  return {width,height,rot:Number(response.headers.get('x-rot')),png:rgb332ToPng(Buffer.from(await response.arrayBuffer()),width,height)};
 }

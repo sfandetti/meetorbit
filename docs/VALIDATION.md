@@ -1,10 +1,14 @@
-# Source publication validation — 28 October 2026
+# Screenshot and feature refresh — 28 October 2026
 
-- Current companion suite: **136 passed, 0 failed**, including engines, screenshot and Hue tests.
-- Main website pages: **187** local link/asset/anchor references checked; no missing targets.
-- Gallery: 72 original device UI captures (36 landscape and 36 portrait); portrait/category filters and screenshot enlargement verified in the browser.
-- Mobile at 390 px: homepage and gallery content stayed within the viewport.
-- Common credential-pattern scan: no matches in inspected source/documentation text. Pattern scanning is not a complete audit.
-- Font attribution notices are included. Old Halo/reference-design experiments, private runtime state, network/pairing captures and factory schematic images are excluded from the public package.
+- Read saved captures only; no device screen, theme, rotation, capture or firmware commands were sent for this update.
+- 92 supplied images copied byte-for-byte and checked against SHA-256 hashes: 42 landscape, 42 portrait, 8 theme samples.
+- Private network/pairing screens excluded. The landscape file named ai-face shows Home; the public label identifies the actual view.
+- Added home shortcuts, device alarm/snooze, sound machine, theme comparisons and two games. Existing Hue, telemetry, Sentry and display images are refreshed.
+- Current companion test suite: **141 passed, 0 failed**. Tests use mocked integrations; no actual device, camera or AI-provider validation was performed here.
+- **235** website local link, asset and anchor references checked; no missing targets.
+- Current software snapshot contains 161 source files. Common provider-token/private-key patterns had no matches in inspected source text.
+- Public source ZIP rebuilt with current source and font notices; download checksums updated.
 
-No real-device firmware upload, destructive cleanup, camera activation, provider request or clean Windows install was performed during publication preparation. Signed installers, matched prebuilt firmware and the smaller production hardware remain unreleased.
+The physical working Orbit folder was read for source reference only. Firmware was not compiled or uploaded. Production hardware, signed installers and matched prebuilt firmware remain unreleased.
+
+The final source snapshot was refreshed after the pause and its suite rerun: 141 tests pass. The audio-crackle improvement was reported by Seth; this publishing task did not run a listening test or flash firmware. A dated technical handoff is requested before publishing a tested/versioned audio release.

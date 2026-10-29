@@ -132,3 +132,10 @@ test('STOP puts back everything played with: hand changes and modes alike',async
   assert.deepEqual(hue.sent.map(s=>s[0]).sort(),['1','2','3']);assert.equal(modes.changed(),false);
   assert.equal(modes.stop(),'Nothing to put back.');
 });
+
+test('ALL OFF / ALL ON forgets the old lights, so STOP cannot switch them back on',async()=>{
+  const hue=fakeHue(),t=fakeTimers();const modes=createHueModes({hue,...t});
+  await modes.start('party',['10']);modes.stop(false);assert.equal(modes.changed(),true);
+  modes.forget();assert.equal(modes.changed(),false);hue.sent.length=0;
+  assert.equal(modes.stop(),'Nothing to put back.');assert.equal(hue.sent.length,0);
+});

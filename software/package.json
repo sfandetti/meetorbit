@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node main.mjs",
-    "test": "node --test bridge.test.mjs core.test.mjs setup.test.mjs voice.test.mjs voice-screen.test.mjs privacy.test.mjs codex-link.test.mjs desktop-link.test.mjs task-voice.test.mjs task-control.test.mjs wake.test.mjs serial-beep.test.mjs device-link.test.mjs settings.test.mjs device-feed.test.mjs firmware-update.test.mjs mood.test.mjs sentry.test.mjs engines.test.mjs screenshot.test.mjs hue.test.mjs",
+    "test": "node --test orbit-tools.test.mjs bridge.test.mjs core.test.mjs setup.test.mjs voice.test.mjs voice-screen.test.mjs privacy.test.mjs codex-link.test.mjs desktop-link.test.mjs task-voice.test.mjs task-control.test.mjs wake.test.mjs serial-beep.test.mjs device-link.test.mjs settings.test.mjs device-feed.test.mjs firmware-update.test.mjs mood.test.mjs sentry.test.mjs engines.test.mjs screenshot.test.mjs hue.test.mjs",
     "check:codex": "node codex-link.mjs",
     "check:desktop": "node desktop-link.mjs",
     "build:firmware": "node tools/build-firmware.mjs"

@@ -1,0 +1,462 @@
+[
+  {
+    "path": "website/assets/screens/lying/ai-console.png",
+    "sha256": "35dce5f50663c33308c2cf0dcf601a23fed1e411fe753edc2f04df334ae555da",
+    "source_modified": 1793210841.9445324
+  },
+  {
+    "path": "website/assets/screens/lying/ai-engine.png",
+    "sha256": "daea091b260d07d1e55b876fbf69d6e0484ec1e066279703f130942fd8bd64c5",
+    "source_modified": 1793210844.703237
+  },
+  {
+    "path": "website/assets/screens/lying/ai-face.png",
+    "sha256": "906fab9d0fda174821000f74569081685a631bf7afbf83ee4d77d0952f584dd9",
+    "source_modified": 1793210843.407838
+  },
+  {
+    "path": "website/assets/screens/lying/ai-talk.png",
+    "sha256": "073797a21afa2781a20e6413564b648bdf0fbea6221dbfbc71c898db0864102c",
+    "source_modified": 1793210840.6394234
+  },
+  {
+    "path": "website/assets/screens/lying/alarm-clock.png",
+    "sha256": "5cdd80b98a4da463e5f0ccb70c83723d2820e30c4f69003bf5ef2caff6935e31",
+    "source_modified": 1793210826.4110384
+  },
+  {
+    "path": "website/assets/screens/lying/alarm-ringing.png",
+    "sha256": "b4645f78e3d4dc982fe8f73fc64f247a187cd4966ae61ebb82b1bf96e562fcd9",
+    "source_modified": 1793162654.4425092
+  },
+  {
+    "path": "website/assets/screens/lying/app-launcher.png",
+    "sha256": "e09016e95ffee3926c87d8bf49c9d4b7f4f7ee931d577f9c3db6f6ef9aff04a7",
+    "source_modified": 1793210821.9635942
+  },
+  {
+    "path": "website/assets/screens/lying/binary-clock.png",
+    "sha256": "ba75fd6dbca1a0c95f4b4abeb2e26548a1f54b4d8d28bb6d5de53ec838d3453c",
+    "source_modified": 1793210817.5577426
+  },
+  {
+    "path": "website/assets/screens/lying/cpu-pulse.png",
+    "sha256": "c7cdbad3f888d6d47183ba7c8b5f4332c75ee22fea2204b0a93f9bb2d323f8bc",
+    "source_modified": 1793210807.8212118
+  },
+  {
+    "path": "website/assets/screens/lying/focus.png",
+    "sha256": "0a397baf41868a37941ee621c2575fb968bc5149a12cb1553850774f22e53d3a",
+    "source_modified": 1793210818.6911557
+  },
+  {
+    "path": "website/assets/screens/lying/gpu-engine.png",
+    "sha256": "3efd5eb0244761370215c5cd6574ea7b5988919a20c141b1f6ec055c85bbe73e",
+    "source_modified": 1793210808.872827
+  },
+  {
+    "path": "website/assets/screens/lying/home.png",
+    "sha256": "2dd9adbeb83a55a8d22896f2e60a972224e1a369c2f6b99e2d6210f19c99bacb",
+    "source_modified": 1793210803.5458822
+  },
+  {
+    "path": "website/assets/screens/lying/hue-modes.png",
+    "sha256": "00df84ff70259db91ab13bb41982bf03ddbac86597b2d79e03343c4a26b591dd",
+    "source_modified": 1793210846.8186262
+  },
+  {
+    "path": "website/assets/screens/lying/hue-rooms.png",
+    "sha256": "2acde1654378f6baddfe0b71c5f7b81fcb3b4c9414c4da3d18dd4f3a9b8c746f",
+    "source_modified": 1793210845.8520224
+  },
+  {
+    "path": "website/assets/screens/lying/light-show.png",
+    "sha256": "58ca4eeb45ec3ee81e115c8c66e24c2fb89eec79092be92490d7c5a4fa38dcd7",
+    "source_modified": 1793210825.3414035
+  },
+  {
+    "path": "website/assets/screens/lying/memory-blocks.png",
+    "sha256": "58deb5113ab7ea4d63ed4677e83a1207e086e151826f64b75e6df718fff6882a",
+    "source_modified": 1793210812.1238334
+  },
+  {
+    "path": "website/assets/screens/lying/music.png",
+    "sha256": "6f649d8870515a663f71dd317a5739dedc0f3ed2933b31252860054c7eda400c",
+    "source_modified": 1793210820.8625624
+  },
+  {
+    "path": "website/assets/screens/lying/network-stream.png",
+    "sha256": "713a7587d55f9dc8fd221eafaeab8f2b8b133d0f3a19e978c8a2518839b5a81f",
+    "source_modified": 1793210811.0452964
+  },
+  {
+    "path": "website/assets/screens/lying/orbit-run.png",
+    "sha256": "a446a3406b5ddae7e0c5858d634087f391a8d7c51dcc989bc6ee29fcb7dc5ed8",
+    "source_modified": 1793210829.7184694
+  },
+  {
+    "path": "website/assets/screens/lying/orbit-sweep.png",
+    "sha256": "d44343d200ad31ee1f9b4fa02406623052f946e4a7138dc3a25487d16c8257ef",
+    "source_modified": 1793210828.6056502
+  },
+  {
+    "path": "website/assets/screens/lying/pc-matrix.png",
+    "sha256": "753af250e6b22013e45cc36f42c65c401a8d8c261acb2d73c1666744c86b250c",
+    "source_modified": 1793210806.7495875
+  },
+  {
+    "path": "website/assets/screens/lying/power-drive.png",
+    "sha256": "be3fbec1a1b4621b3c955b5efb8b99185c13ae22d25f833d9ff5590b9e810008",
+    "source_modified": 1793210814.314206
+  },
+  {
+    "path": "website/assets/screens/lying/prism-clock.png",
+    "sha256": "4cc7db3a8224ebeff6c51450f7a9ba67d718a0783f39f2e50e6a17eac6b54732",
+    "source_modified": 1793210804.6108994
+  },
+  {
+    "path": "website/assets/screens/lying/privacy-guard.png",
+    "sha256": "3863d3b4c634aa0c4fc862986a9c38561d2109d3287e342d623553c398710cfd",
+    "source_modified": 1793210824.1691058
+  },
+  {
+    "path": "website/assets/screens/lying/sentry.png",
+    "sha256": "8c309e3bbdfdf8ab35650bfcf55e7e3267f4005a4170f482bda3d071e1431ed6",
+    "source_modified": 1793210823.0746608
+  },
+  {
+    "path": "website/assets/screens/lying/setup-ai-inbox.png",
+    "sha256": "ebd18032d223dad4cffbf78584f1a90ca1dcd038c490864e2cc5279b72c72092",
+    "source_modified": 1793210838.2695472
+  },
+  {
+    "path": "website/assets/screens/lying/setup-brightness.png",
+    "sha256": "2d929b3c7577672d4849dbb21f2a4a87128588ecee133ef88bc934ee5c1c4fbe",
+    "source_modified": 1793210831.8544383
+  },
+  {
+    "path": "website/assets/screens/lying/setup-colors.png",
+    "sha256": "3a98a9aeb2ee343a81bd3aa4b9a250927fefa9763925853c87cc6d6076ef07e2",
+    "source_modified": 1793210832.9270558
+  },
+  {
+    "path": "website/assets/screens/lying/setup-device-memory.png",
+    "sha256": "4de64e0fd7fc5c584eb5a82208911065e8fedee5ea2c71eaa6b1ad9d69a9a069",
+    "source_modified": 1793210836.10183
+  },
+  {
+    "path": "website/assets/screens/lying/setup-touch-test.png",
+    "sha256": "b5f0a1f38a48e2e4d54fc7875a41a9e240eccce47b8909f96fc392115cb59fe9",
+    "source_modified": 1793210837.1838505
+  },
+  {
+    "path": "website/assets/screens/lying/setup.png",
+    "sha256": "20b52376740a95ca4da1337b044f82ca27c8d4c32c9f5b032fa0f7d5b0e84056",
+    "source_modified": 1793210830.7763405
+  },
+  {
+    "path": "website/assets/screens/lying/six-channels.png",
+    "sha256": "4ea8de0ff3632430579d4b5776b218eeeb233b2590f413e585efb7c1682944c0",
+    "source_modified": 1793210815.4283082
+  },
+  {
+    "path": "website/assets/screens/lying/sound-machine.png",
+    "sha256": "bb752f44e1cb709c4614cb8aa582f9b59ef2e824c72ecde17653b4c62478076d",
+    "source_modified": 1793210827.49306
+  },
+  {
+    "path": "website/assets/screens/lying/split-clock.png",
+    "sha256": "af12dda304d7157f209bf67c3ed1355cd5a7e7cee506226d57618d5d8dd3f99e",
+    "source_modified": 1793210805.688174
+  },
+  {
+    "path": "website/assets/screens/lying/stopwatch.png",
+    "sha256": "921d853b2337234aa8c1f93ff9405f44e2251d1e082313283b12f415ef002367",
+    "source_modified": 1793210819.765909
+  },
+  {
+    "path": "website/assets/screens/lying/storage-traffic.png",
+    "sha256": "e977b7e7f8c5ed160162db6fb9548e391d60f8378492b7006378d61591de5afd",
+    "source_modified": 1793210813.2050483
+  },
+  {
+    "path": "website/assets/screens/lying/thermal-strip.png",
+    "sha256": "dafd58ad44217c39d3e1e7ec802858fed604b1d2ed4cd9c3d95c1a8c9113c45c",
+    "source_modified": 1793210809.9828606
+  },
+  {
+    "path": "website/assets/screens/lying/type-clock.png",
+    "sha256": "47011f74b6f0509a53939e95a1e54b3a20500f3e489513d1e01690ea308dea52",
+    "source_modified": 1793210816.460388
+  },
+  {
+    "path": "website/assets/screens/lying/visuals-1.png",
+    "sha256": "f05f826ec4df09147a95085cd85f292e7042065ee53f55ea010fb1d0c379d4e6",
+    "source_modified": 1793210848.8816183
+  },
+  {
+    "path": "website/assets/screens/lying/visuals-2.png",
+    "sha256": "26045a3fc8ece2bc514e5defe38f43d08cdaefd1b9aec713cc8fcffa0324319d",
+    "source_modified": 1793210850.9719274
+  },
+  {
+    "path": "website/assets/screens/lying/visuals-3.png",
+    "sha256": "cde749f0e0f88f575d58b8209bf54a9c3377d281816b89dfeab732da4184865b",
+    "source_modified": 1793210853.0948222
+  },
+  {
+    "path": "website/assets/screens/lying/visuals-4.png",
+    "sha256": "9da18a764e9a5cd847ff893784ec8e0f9cfc9eb7ac0376d53887820c01a7ee85",
+    "source_modified": 1793210855.1978314
+  },
+  {
+    "path": "website/assets/screens/standing/ai-console.png",
+    "sha256": "55c7b0abd14edcfe02218fce1a432a0cbc0e91a9dba949b3e79885b4ed3a28ae",
+    "source_modified": 1793210895.3031895
+  },
+  {
+    "path": "website/assets/screens/standing/ai-engine.png",
+    "sha256": "2c8384d8e09b50b37bc82b7e39b3a432e5f4c40b161901a1270bdb12c1f37da1",
+    "source_modified": 1793210897.9117572
+  },
+  {
+    "path": "website/assets/screens/standing/ai-face.png",
+    "sha256": "ca6bd57e149eb3bf36734bae968802f38530e6b7c8579f901af7abdd5222e920",
+    "source_modified": 1793210896.6354842
+  },
+  {
+    "path": "website/assets/screens/standing/ai-talk.png",
+    "sha256": "96e16b4037a969d3847acf087f6490a6c2ffdc61647efe00a89bcec4b6902d69",
+    "source_modified": 1793210894.0056608
+  },
+  {
+    "path": "website/assets/screens/standing/alarm-clock.png",
+    "sha256": "02cfdd899b2c6a4bc6726d0cbaab58534154e5a26a195a790fa1b5565e937536",
+    "source_modified": 1793210879.8461816
+  },
+  {
+    "path": "website/assets/screens/standing/alarm-ringing.png",
+    "sha256": "e440a0db2832da97db5e2eb30d9898505f63ed5bd1890fc879c6b95fd1c4f0f0",
+    "source_modified": 1793162656.2415986
+  },
+  {
+    "path": "website/assets/screens/standing/app-launcher.png",
+    "sha256": "697a91cb5bde1ef8429e74735d119e582b15eade7422db52060ed791eb65a520",
+    "source_modified": 1793210875.5691519
+  },
+  {
+    "path": "website/assets/screens/standing/binary-clock.png",
+    "sha256": "146e57037b7b7f355c3d3832b7d9a52d70385ee761c56160512f4155e0b3f643",
+    "source_modified": 1793210871.236729
+  },
+  {
+    "path": "website/assets/screens/standing/cpu-pulse.png",
+    "sha256": "a63ba660b1a3f2cfed5426c998a013f7a98089f1a583a5420ac87cff00b6a4f3",
+    "source_modified": 1793210861.5225472
+  },
+  {
+    "path": "website/assets/screens/standing/focus.png",
+    "sha256": "7e7916b52da5d0283949497a2ed42e213af1af46e80924bada3b5e293d35961e",
+    "source_modified": 1793210872.323475
+  },
+  {
+    "path": "website/assets/screens/standing/gpu-engine.png",
+    "sha256": "93b35e72caf0f3decd64dd748f616e75b4b66c1eed0b4e9537709647338ab950",
+    "source_modified": 1793210862.6016603
+  },
+  {
+    "path": "website/assets/screens/standing/home.png",
+    "sha256": "81c3b217609fe06648055dc8bdb7ee0ee25b5ad8702191ea48013acb408d6202",
+    "source_modified": 1793210857.203639
+  },
+  {
+    "path": "website/assets/screens/standing/hue-modes.png",
+    "sha256": "b4c2d06344ccfa3213cab75e31cfc9bd173c7afd0a360b5e75750f4890dc89d5",
+    "source_modified": 1793210900.1845832
+  },
+  {
+    "path": "website/assets/screens/standing/hue-rooms.png",
+    "sha256": "7a2326b38f74e1a7aa032f4724fc1bff728ae78281cf17d16eb38312bc38c077",
+    "source_modified": 1793210899.1947896
+  },
+  {
+    "path": "website/assets/screens/standing/light-show.png",
+    "sha256": "84ef27168c4c896c09e4b1bce2f1c0cae2bdbd916eb9ac69bd8cfcaae94c4c1e",
+    "source_modified": 1793210878.792867
+  },
+  {
+    "path": "website/assets/screens/standing/memory-blocks.png",
+    "sha256": "6b68cd2cdf96c2d8035adaef7cf7daa9267fe124a72d8ac61637d4853d668665",
+    "source_modified": 1793210865.8378842
+  },
+  {
+    "path": "website/assets/screens/standing/music.png",
+    "sha256": "83def6c140481020c9b7dfd15334a64245b7c5d26c7c7527edd384dd55dab4ec",
+    "source_modified": 1793210874.4807036
+  },
+  {
+    "path": "website/assets/screens/standing/network-stream.png",
+    "sha256": "a0026037747f545b979eddb596a87bc3d59151e7dff32861688f1bbaa178df4a",
+    "source_modified": 1793210864.7309952
+  },
+  {
+    "path": "website/assets/screens/standing/orbit-run.png",
+    "sha256": "012d048cae9494b7fca66f9f2b7afb4098cf45d9cda988d600495c0425f2b4b8",
+    "source_modified": 1793210883.0621688
+  },
+  {
+    "path": "website/assets/screens/standing/orbit-sweep.png",
+    "sha256": "20e6af277dc19d29fbd93cc8ee4b1e5db0cbac3fdc7d9981e1cb7996b6da78ad",
+    "source_modified": 1793210882.0103922
+  },
+  {
+    "path": "website/assets/screens/standing/pc-matrix.png",
+    "sha256": "b308eddaae57754f0eef65a63af50be24d1041c5b26ffb18917df2ab4d40f0b2",
+    "source_modified": 1793210860.45049
+  },
+  {
+    "path": "website/assets/screens/standing/power-drive.png",
+    "sha256": "fdd348ef61f2a2caa2423849adfb625c7c034702b6e0f1dbec21f42bf3dfece5",
+    "source_modified": 1793210868.0024307
+  },
+  {
+    "path": "website/assets/screens/standing/prism-clock.png",
+    "sha256": "0d13cdda3b4b544df12d12301d118f600b2b73710da8955fa25cbce3f70df8fd",
+    "source_modified": 1793210858.2651627
+  },
+  {
+    "path": "website/assets/screens/standing/privacy-guard.png",
+    "sha256": "d8c7b437e97a112e01369101500916206b2b06ae03454754bbb7549a0a2e0348",
+    "source_modified": 1793210877.709209
+  },
+  {
+    "path": "website/assets/screens/standing/sentry.png",
+    "sha256": "cd72e8e749282cc50d2011475928bebaf4356bb9d11daa632fa3037a4c38a510",
+    "source_modified": 1793210876.650277
+  },
+  {
+    "path": "website/assets/screens/standing/setup-ai-inbox.png",
+    "sha256": "a2819a66460075f8a4ef577936ad69026f949e1ab00dfa469566ab9b750bac97",
+    "source_modified": 1793210891.6952374
+  },
+  {
+    "path": "website/assets/screens/standing/setup-brightness.png",
+    "sha256": "561723f58c73d4beb27c855398b0aeeb013d82c23f67f87f0f54ecd77d5af126",
+    "source_modified": 1793210885.2099462
+  },
+  {
+    "path": "website/assets/screens/standing/setup-colors.png",
+    "sha256": "82afbee6d00a96bbc60ceec9649091ae5f5eb8f358d1cc3f0db2152b8402e2bb",
+    "source_modified": 1793210886.2402072
+  },
+  {
+    "path": "website/assets/screens/standing/setup-device-memory.png",
+    "sha256": "0f42025cf212d9cd52a9db874f7126b3a5015dc5371e6cb3ef10cc26a7fb9226",
+    "source_modified": 1793210889.498054
+  },
+  {
+    "path": "website/assets/screens/standing/setup-touch-test.png",
+    "sha256": "65fd9ae8fcda932ed4acfa0c8e3195e2d86e038cb1b526f404b3b08154a8b46b",
+    "source_modified": 1793210890.595441
+  },
+  {
+    "path": "website/assets/screens/standing/setup.png",
+    "sha256": "870f01db7aa0ab8f821c1aaf6df14ffca2ed21d87cfa71c24e1cb528c742e44c",
+    "source_modified": 1793210884.141756
+  },
+  {
+    "path": "website/assets/screens/standing/six-channels.png",
+    "sha256": "b9948c053652f80a8507c635b8f457b4f6914f2f921c9184f143d4e4ff684952",
+    "source_modified": 1793210869.0866735
+  },
+  {
+    "path": "website/assets/screens/standing/sound-machine.png",
+    "sha256": "d183fc16ddf5971566915334f9620d1bbed392f72eecbc245718a0e5db9c9997",
+    "source_modified": 1793210880.9329617
+  },
+  {
+    "path": "website/assets/screens/standing/split-clock.png",
+    "sha256": "943f9170b66bf8e613e8c678a4ad33f2f035f57ed2ee2d8449f2f0c7df477ab3",
+    "source_modified": 1793210859.3623037
+  },
+  {
+    "path": "website/assets/screens/standing/stopwatch.png",
+    "sha256": "8a334e1f56b18507052a7102e5076c8db662e43846f05309848c0beff64ad48e",
+    "source_modified": 1793210873.398622
+  },
+  {
+    "path": "website/assets/screens/standing/storage-traffic.png",
+    "sha256": "208c109468db2d29852706b0646fd393801a6cf47a26da1be057f8fdbd972dc1",
+    "source_modified": 1793210866.906908
+  },
+  {
+    "path": "website/assets/screens/standing/thermal-strip.png",
+    "sha256": "691f921499c4e2cc255a88ca350c18136841bad552e71c19b38867668c0bc42a",
+    "source_modified": 1793210863.6672952
+  },
+  {
+    "path": "website/assets/screens/standing/type-clock.png",
+    "sha256": "268bc35695c7906f6957c85070a26b71ad7535f40f05258dec3df0df93635444",
+    "source_modified": 1793210870.1788454
+  },
+  {
+    "path": "website/assets/screens/standing/visuals-1.png",
+    "sha256": "33346e48250199c687f6756b37e724bb42ebd06ae591d144221f78ff3c9ee599",
+    "source_modified": 1793210902.263184
+  },
+  {
+    "path": "website/assets/screens/standing/visuals-2.png",
+    "sha256": "77d55ae4d7073dc1f2173efe425371c6b6f93971ae085437903b54f58da19c8d",
+    "source_modified": 1793210904.3818681
+  },
+  {
+    "path": "website/assets/screens/standing/visuals-3.png",
+    "sha256": "6233d52fa514f690a028f461a74e74769a4f42e2583aa0e3544865aba8a60a3b",
+    "source_modified": 1793210906.4867473
+  },
+  {
+    "path": "website/assets/screens/standing/visuals-4.png",
+    "sha256": "e7c62f925a87f302f1ca4df6607136250702cda8b05bc401dc859e194bfe308e",
+    "source_modified": 1793210908.583875
+  },
+  {
+    "path": "website/assets/screens/themes/bubblegum-cpu-pulse.png",
+    "sha256": "e117e39009e0e6e62f10f74849ba768e546e52d5018ef3934b806c449957812b",
+    "source_modified": 1793210720.1248348
+  },
+  {
+    "path": "website/assets/screens/themes/bubblegum-home.png",
+    "sha256": "c5ffcebecabfd4106aefb45f43e7ad1bb4536ef32b2067b3db0f80c003bc82e0",
+    "source_modified": 1793210718.749545
+  },
+  {
+    "path": "website/assets/screens/themes/cyberpunk-cpu-pulse.png",
+    "sha256": "1304be2a2af7f860efc2003604867742d641076d9352d9be47433fd2b788f129",
+    "source_modified": 1793210713.4177299
+  },
+  {
+    "path": "website/assets/screens/themes/cyberpunk-home.png",
+    "sha256": "06a7cf8ae10a8eeaf9b3e4a23f412344c803dabb26ab04f6e5509a6d3e6dcd77",
+    "source_modified": 1793210712.1261604
+  },
+  {
+    "path": "website/assets/screens/themes/office-cpu-pulse.png",
+    "sha256": "23610083bc8201d0c5790f7ad0b4c246778977abaacd6989ae7dcedfdc367b69",
+    "source_modified": 1793210700.1748593
+  },
+  {
+    "path": "website/assets/screens/themes/office-home.png",
+    "sha256": "1a0652122adfdac04c2dbad2424f8d4ea7612671bb2aaa5c9169dfb1a091d32b",
+    "source_modified": 1793210698.8858635
+  },
+  {
+    "path": "website/assets/screens/themes/retro-cpu-pulse.png",
+    "sha256": "bace2c1eaba08972c833945fd62f00c2cf6e7149aeec97c916a61f6ae9c73ed3",
+    "source_modified": 1793210706.8073432
+  },
+  {
+    "path": "website/assets/screens/themes/retro-home.png",
+    "sha256": "03415825cfe2b3a5c24579b0aa16806f6e58779ee38f1fe9e55b75f24754cfc0",
+    "source_modified": 1793210705.490509
+  }
+]

@@ -1,81 +1,89 @@
-# Device screen gallery
+# Device screenshots
 
-Direct UI captures from the current development build, supplied on 28 October 2026. Landscape is 320 x 240; portrait is 240 x 320. Original files are preserved. These are UI captures, not photographs or proof of end-to-end hardware validation. Network and pairing-detail screens are omitted.
+Updated from the saved capture folder on 28 October 2026. No hardware capture or display-control requests were made to prepare this update. Original images are preserved: 42 landscape, 42 portrait and 8 theme samples. Network/pairing details are excluded. One landscape file named ai-face contains an alternate Home view; its gallery label reflects the actual image.
 
-## AI
+## Home and AI
 
-### Engine picker
+### Home shortcuts
 
-![Landscape ai-engine](../website/assets/screens/lying/ai-engine.png) ![Portrait ai-engine](../website/assets/screens/standing/ai-engine.png)
+![Landscape](../website/assets/screens/lying/home.png) ![Portrait](../website/assets/screens/standing/home.png)
+
+### AI engine picker
+
+![Landscape](../website/assets/screens/lying/ai-engine.png) ![Portrait](../website/assets/screens/standing/ai-engine.png)
 
 ### AI console
 
-![Landscape ai-console](../website/assets/screens/lying/ai-console.png) ![Portrait ai-console](../website/assets/screens/standing/ai-console.png)
+![Landscape](../website/assets/screens/lying/ai-console.png) ![Portrait](../website/assets/screens/standing/ai-console.png)
 
-### Voice
+## Alarm and ambient sounds
 
-![Landscape ai-talk](../website/assets/screens/lying/ai-talk.png) ![Portrait ai-talk](../website/assets/screens/standing/ai-talk.png)
+### Alarm clock
 
-### Face
+![Landscape](../website/assets/screens/lying/alarm-clock.png) ![Portrait](../website/assets/screens/standing/alarm-clock.png)
 
-![Landscape ai-face](../website/assets/screens/lying/ai-face.png) ![Portrait ai-face](../website/assets/screens/standing/ai-face.png)
+### Alarm ringing / snooze
 
-## PC telemetry
+![Landscape](../website/assets/screens/lying/alarm-ringing.png) ![Portrait](../website/assets/screens/standing/alarm-ringing.png)
 
-### PC Matrix
+### Ambient sound machine
 
-![Landscape pc-matrix](../website/assets/screens/lying/pc-matrix.png) ![Portrait pc-matrix](../website/assets/screens/standing/pc-matrix.png)
+![Landscape](../website/assets/screens/lying/sound-machine.png) ![Portrait](../website/assets/screens/standing/sound-machine.png)
 
-### Six channels
+## Hue and lighting
 
-![Landscape six-channels](../website/assets/screens/lying/six-channels.png) ![Portrait six-channels](../website/assets/screens/standing/six-channels.png)
+### Hue room controls
 
-### Cpu Pulse
+![Landscape](../website/assets/screens/lying/hue-rooms.png) ![Portrait](../website/assets/screens/standing/hue-rooms.png)
 
-![Landscape cpu-pulse](../website/assets/screens/lying/cpu-pulse.png) ![Portrait cpu-pulse](../website/assets/screens/standing/cpu-pulse.png)
+### Hue modes / Music Link
 
-### Gpu Engine
-
-![Landscape gpu-engine](../website/assets/screens/lying/gpu-engine.png) ![Portrait gpu-engine](../website/assets/screens/standing/gpu-engine.png)
-
-## Controls and privacy
-
-### Privacy guard
-
-![Landscape privacy-guard](../website/assets/screens/lying/privacy-guard.png) ![Portrait privacy-guard](../website/assets/screens/standing/privacy-guard.png)
-
-### Sentry
-
-![Landscape sentry](../website/assets/screens/lying/sentry.png) ![Portrait sentry](../website/assets/screens/standing/sentry.png)
-
-### App Launcher
-
-![Landscape app-launcher](../website/assets/screens/lying/app-launcher.png) ![Portrait app-launcher](../website/assets/screens/standing/app-launcher.png)
-
-### Music
-
-![Landscape music](../website/assets/screens/lying/music.png) ![Portrait music](../website/assets/screens/standing/music.png)
-
-## Hue and party tricks
-
-### Hue rooms
-
-![Landscape hue-rooms](../website/assets/screens/lying/hue-rooms.png) ![Portrait hue-rooms](../website/assets/screens/standing/hue-rooms.png)
-
-### Hue modes
-
-![Landscape hue-modes](../website/assets/screens/lying/hue-modes.png) ![Portrait hue-modes](../website/assets/screens/standing/hue-modes.png)
+![Landscape](../website/assets/screens/lying/hue-modes.png) ![Portrait](../website/assets/screens/standing/hue-modes.png)
 
 ### LED light show
 
-![Landscape light-show](../website/assets/screens/lying/light-show.png) ![Portrait light-show](../website/assets/screens/standing/light-show.png)
+![Landscape](../website/assets/screens/lying/light-show.png) ![Portrait](../website/assets/screens/standing/light-show.png)
 
-### Visuals 2
+## PC and camera
 
-![Landscape visuals-2](../website/assets/screens/lying/visuals-2.png) ![Portrait visuals-2](../website/assets/screens/standing/visuals-2.png)
+### Six-channel dashboard
 
-### Visuals 3
+![Landscape](../website/assets/screens/lying/six-channels.png) ![Portrait](../website/assets/screens/standing/six-channels.png)
 
-![Landscape visuals-3](../website/assets/screens/lying/visuals-3.png) ![Portrait visuals-3](../website/assets/screens/standing/visuals-3.png)
+### PC Matrix
 
-[All landscape captures](../website/assets/screens/lying/) · [All portrait captures](../website/assets/screens/standing/)
+![Landscape](../website/assets/screens/lying/pc-matrix.png) ![Portrait](../website/assets/screens/standing/pc-matrix.png)
+
+### AI Sentry
+
+![Landscape](../website/assets/screens/lying/sentry.png) ![Portrait](../website/assets/screens/standing/sentry.png)
+
+## Games
+
+### Orbit Sweep
+
+![Landscape](../website/assets/screens/lying/orbit-sweep.png) ![Portrait](../website/assets/screens/standing/orbit-sweep.png)
+
+### Orbit Run
+
+![Landscape](../website/assets/screens/lying/orbit-run.png) ![Portrait](../website/assets/screens/standing/orbit-run.png)
+
+## Four themes
+
+### Office
+
+![Home](../website/assets/screens/themes/office-home.png) ![CPU](../website/assets/screens/themes/office-cpu-pulse.png)
+
+### Retro
+
+![Home](../website/assets/screens/themes/retro-home.png) ![CPU](../website/assets/screens/themes/retro-cpu-pulse.png)
+
+### Cyberpunk
+
+![Home](../website/assets/screens/themes/cyberpunk-home.png) ![CPU](../website/assets/screens/themes/cyberpunk-cpu-pulse.png)
+
+### Bubblegum
+
+![Home](../website/assets/screens/themes/bubblegum-home.png) ![CPU](../website/assets/screens/themes/bubblegum-cpu-pulse.png)
+
+[All landscape captures](../website/assets/screens/lying/) · [All portrait captures](../website/assets/screens/standing/) · [Image hashes](SCREENSHOT-MANIFEST.json)

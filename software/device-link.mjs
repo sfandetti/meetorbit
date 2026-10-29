@@ -80,7 +80,7 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
   await mkdir(runtimeDir,{recursive:true});const file=new URL('device-link.json',runtimeDir);
   let saved;try{saved=JSON.parse(await readFile(file,'utf8'));}catch{}
   const token=/^[a-f0-9]{64}$/.test(saved?.token||'')?saved.token:randomBytes(32).toString('hex');
-  let setup=saved?.setup||physicalSetup(),leds=ledSettings(saved?.leds),host='',deviceIp='',lastPc=null,recentFromDevice=[],server=null,peer=null,lastStatus={},error='',connectedAt=0;
+  let setup=saved?.setup||physicalSetup(),leds=ledSettings(saved?.leds),host='',deviceIp='',lastPc=null,recentFromDevice=[],askHook=null,server=null,peer=null,lastStatus={},error='',connectedAt=0;
   async function persist(){await writeFile(file,JSON.stringify({token,setup,leds}),{mode:0o600});}
   await persist();
   const wss=new WebSocketServer({noServer:true,maxPayload:8192});
@@ -112,7 +112,9 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
     // The mood of Orbit's reply, from its words as they arrive: the face and lights follow it.
     let replyText='',mood='neutral';
     function setMood(next){if(next!==mood){mood=next;send({type:'mood',mood});}}
-    function stopVoice(){const old=voice;voice=null;voiceReady=false;queued=[];queuedBytes=0;speaking=false;old?.close();}
+    // A typed question (for testing the voice by ear): Orbit waits for a reply as after a spoken turn.
+    askHook=text=>{log('Typed question to the voice');send({type:'think'});toVoice({type:'text',text});};
+    function stopVoice(){dropAudio();const old=voice;voice=null;voiceReady=false;queued=[];queuedBytes=0;speaking=false;old?.close();}
     const safeError=()=>send({type:'error',text:'Device action failed. Check the Orbit console.'});
     // The console snapshot is re-sent only when it changes (or when Orbit opens its console view). It shows
     // the conversation with whichever engine Orbit talks to: the paired Codex chat, or Orbit's own chat.
@@ -139,7 +141,7 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
         if(!reply){send({type:'error',text:'No answer came back. Try again.'});return;}
         engines.chats.add(id,'assistant',reply);send({type:'reply',text:reply.slice(0,900)});setMood(detectMood(reply));taskStatus().catch(()=>{});
         const audio=await engines.speak(reply);if(!still())return;
-        if(audio.length)pushAudio(audio);speaking=false;send({type:'done'});
+        if(audio.length)pushAudio(audio);finishReply();
       }catch(err){if(still()){log(`${engineName(id)} turn failed: ${err?.message}`);send({type:'error',text:consoleText(err?.message||'That did not work. Try again.',150)});}}
     }
     // A spoken console command: the relay only transcribes it, then it becomes a reviewed draft that
@@ -151,13 +153,32 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
       catch(err){review=null;send({type:'console-note',text:consoleText('Codex is not connected on this PC. '+(err?.message||''),120)});}
     }
     // Reply audio is pushed to the device as binary frames; TCP backpressure paces it to playback.
-    function pushAudio(data){if(ws.bufferedAmount+data.length>3*1024*1024){stopVoice();send({type:'error',text:'Reply audio queue filled. Try a shorter reply.'});return;}if(!speaking){speaking=true;send({type:'speaking'});}for(let i=0;i<data.length;i+=2048)ws.send(data.subarray(i,i+2048));}
+    // Reply audio goes to the device at speaking speed, a little ahead of playback. Sending it all at
+    // once filled the link: a turn spoken over a reply waited (frozen) while Orbit downloaded the old audio.
+    // The rest waits here, and is simply dropped when the user talks over it or cancels.
+    let audioQ=[],audioSent=0,audioT0=0,audioTimer=null,doneWaiting=false,audioBacklog=0,playEnd=0;  // playEnd: when Orbit will have played all it was sent
+    // 24 kHz 16-bit: 48 bytes a millisecond. Keep 0.3 s ahead: Orbit's playback buffer holds 0.5 s, so it
+    // never has to stop reading the link (a stopped reader also drops the PC's acks, and Orbit's own sends
+    // then hang for seconds).
+    const AUDIO_BPS=48,AUDIO_LEAD=14400;
+    function dropAudio(){audioQ=[];doneWaiting=false;clearTimeout(audioTimer);audioTimer=null;}
+    function drainAudio(){clearTimeout(audioTimer);audioTimer=null;if(ws.readyState!==WebSocket.OPEN){dropAudio();return;}
+      // Timed from what was sent, not from the reply's start: a pause in the reply (the voice changing the
+      // lights between two sentences) must not let the rest go all at once.
+      while(audioQ.length&&playEnd-Date.now()<AUDIO_LEAD/AUDIO_BPS){const c=audioQ.shift();ws.send(c);audioSent+=c.length;playEnd=Math.max(playEnd,Date.now())+c.length/AUDIO_BPS;}
+      audioBacklog=Math.max(audioBacklog,ws.bufferedAmount);
+      if(audioQ.length)audioTimer=setTimeout(drainAudio,40);else if(doneWaiting){doneWaiting=false;send({type:'done'});log(`Reply audio: ${Math.round(audioSent/1024)} KB in ${((Date.now()-audioT0)/1000).toFixed(1)} s, most waiting for Orbit ${Math.round(audioBacklog/1024)} KB`);}}
+    function pushAudio(data){if(!speaking){speaking=true;send({type:'speaking'});if(!audioQ.length){audioSent=0;audioT0=Date.now();audioBacklog=0;playEnd=0;}}  // the clock starts with the reply
+      for(let i=0;i<data.length;i+=2048)audioQ.push(data.subarray(i,i+2048));drainAudio();}
+    // The reply is over: Orbit hears "done" only after its last audio has been sent.
+    function finishReply(){speaking=false;if(audioQ.length)doneWaiting=true;else{send({type:'done'});log(`Reply audio: ${Math.round(audioSent/1024)} KB in ${((Date.now()-audioT0)/1000).toFixed(1)} s, most waiting for Orbit ${Math.round(audioBacklog/1024)} KB`);}}
     // The relay session opens lazily on the first turn and reopens after an idle disconnect;
     // device events wait in order until it reports ready.
     function openVoice(){const up=new WebSocket(voiceOrigin.replace('http:','ws:')+'/api/voice/socket',{headers:{Origin:voiceOrigin}});voice=up;voiceReady=false;
       up.on('open',()=>up.send(JSON.stringify({type:'start',mode:voiceMode})));
       up.on('message',raw=>{if(voice!==up)return;let msg;try{msg=JSON.parse(raw);}catch{return;}const e=msg.event;
         if(msg.type==='relay.ready'){voiceReady=true;send({type:'ready'});for(const item of queued)up.send(item);queued=[];queuedBytes=0;}
+        if(msg.type==='relay.error')log(`Voice relay error: ${String(msg.message||'').slice(0,160)}`);
         if(msg.type==='relay.error')send({type:'error',text:String(msg.message||'Voice failed').slice(0,160)});
         if(e?.type==='response.output_audio.delta')pushAudio(Buffer.from(e.delta,'base64'));
         if(consoleCapture&&(e?.type==='conversation.item.input_audio_transcription.completed'||e?.type==='conversation.item.input_audio_transcription.failed')){
@@ -169,10 +190,10 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
         // The reply's words arrive while it plays: the face and lights follow their mood.
         if(e?.type==='response.output_audio_transcript.delta'){replyText=(replyText+String(e.delta||'')).slice(-400);setMood(detectMood(replyText));}
         if(e?.type==='response.output_audio_transcript.done')send({type:'reply',text:String(e.transcript||'').slice(0,900)});
-        if(e?.type==='response.done'||msg.type==='relay.loopback.done'){speaking=false;send({type:'done'});}
+        if(e?.type==='response.done'||msg.type==='relay.loopback.done')finishReply();
       });
       up.on('error',()=>{if(voice===up)send({type:'error',text:'Voice relay unavailable or already in use. Disconnect browser voice and retry.'});});
-      up.on('close',()=>{if(voice===up){voice=null;voiceReady=false;queued=[];queuedBytes=0;if(speaking){speaking=false;send({type:'done'});}}});
+      up.on('close',()=>{if(voice===up){voice=null;voiceReady=false;queued=[];queuedBytes=0;if(speaking)finishReply();}});
     }
     function toVoice(event){const data=JSON.stringify(event);if(!voice)openVoice();if(voiceReady&&voice.readyState===WebSocket.OPEN){voice.send(data);return;}
       if(queuedBytes+data.length>2*1024*1024)throw Error('Voice relay is not ready.');queued.push(data);queuedBytes+=data.length;}
@@ -187,17 +208,21 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
       if(e.type==='status'){lastStatus={firmware:String(e.firmware||'').slice(0,20),audioReady:!!e.audioReady,micPeak:e.micPeak,audioFrames:e.audioFrames,
         resetReason:Number(e.reset)||0,heap:Number(e.heap)||0,minHeap:Number(e.minHeap)||0,otaCrashBytes:Number(e.otaCrashBytes)||0,lastStep:Number(e.lastStep)||0,httpPort:Number(e.httpPort)||80,at:Date.now()};
         log(`Orbit ${lastStatus.firmware}: restart reason ${lastStatus.resetReason}${lastStatus.lastStep?`, was at step ${lastStatus.lastStep} before restarting`:''}, ${Math.round(lastStatus.heap/1024)} KB free`);return;}
+      if(e.type==='voice-health'){if(!(Number(e.held)>300||(Number(e.played)<80000&&!e.done)||!e.task))return;log(`Orbit talking: buffer ${Math.round((Number(e.buf)||0)/1024)} KB, link held ${Number(e.held)||0} ms, player ${e.task?'on':'OFF'}, done ${e.done?'yes':'no'}, slowest speaker write ${Number(e.wmax)||0} ms, played ${Math.round((Number(e.played)||0)/1024)} KB in 2 s, ${Math.round((Number(e.heap)||0)/1024)} KB free`);return;}
+      if(e.type==='slow-begin'){log(`Orbit slow to start listening: speaker stop ${Number(e.stop)||0} ms, cancel ${Number(e.cancel)||0} ms, mic ${Number(e.mic)||0} ms, begin ${Number(e.send)||0} ms`);return;}
+      if(e.type==='stall'){log(`Orbit froze ${Number(e.ms)||0} ms in step ${Number(e.step)||0} (voice state ${Number(e.vs)||0})${e.what?`: ${String(e.what).slice(0,60)}`:''}`);return;}
+      if(e.type==='voice-stats'){log(`Orbit voice: slowest step ${Number(e.step)||0} took ${Number(e.gap)||0} ms, slowest loop ${Number(e.loop)||0} ms, ${Number(e.under)||0} audio gaps, speaker closed in ${Number(e.stopMs)||0} ms, ${Math.round((Number(e.heap)||0)/1024)} KB free`);return;}
       if(e.type==='voice'){const mode=e.mode==='loopback'?'loopback':'openai';if(mode!==voiceMode){voiceMode=mode;stopVoice();}return;}
       // A turn goes to the chosen engine: Codex turns become reviewed commands, ChatGPT is the realtime
       // voice, and the text engines get the whole recording when it ends.
-      if(e.type==='begin'){setMood('neutral');replyText='';speaking=false;engineRun++;
+      if(e.type==='begin'){dropAudio();setMood('neutral');replyText='';speaking=false;engineRun++;
         const engine=engines?.current()||{id:'chatgpt'};capture=null;
         consoleCapture=e.console===true||engine.id==='codex';if(consoleCapture&&review){control?.cancel(taskSession,review.token);review=null;}
         if(!consoleCapture&&engine.id!=='chatgpt'){capture={id:engine.id,chunks:[],bytes:0};return;}
         toVoice(consoleCapture?{type:'begin',transcriptionOnly:true}:{type:'begin'});return;}
       if(e.type==='console'){await taskStatus(true);return;}
       if(e.type==='end'){if(capture){const c=capture;capture=null;engineReply(c.id,Buffer.concat(c.chunks));return;}toVoice({type:'end'});return;}
-      if(e.type==='cancel'){speaking=false;capture=null;engineRun++;if(voice)toVoice({type:'interrupt'});return;}
+      if(e.type==='cancel'){dropAudio();speaking=false;capture=null;engineRun++;if(voice)toVoice({type:'interrupt'});return;}
       if(e.type==='engine'){if(engines){await engines.choose(String(e.id||''));refreshEngines();}return;}  // picked on Orbit
       if(e.type==='media'&&(e.action==='volume'||e.action==='get-volume')){
         const level=e.action==='volume'?Number(e.level):undefined;if(e.action==='volume'&&!Number.isFinite(level))throw Error('Invalid volume');
@@ -265,5 +290,6 @@ export async function createDeviceLink({runtimeDir,voiceOrigin='http://127.0.0.1
     // The engine choice or the list changed on the PC: update Orbit's picker and console.
     refreshEngines:()=>refreshEngines(),
     // Send one message to Orbit; false when it is not connected.
+    ask(text){if(!askHook||peer?.readyState!==WebSocket.OPEN)throw Error('Orbit is not connected.');askHook(String(text).slice(0,500));return {sent:true};},
     send(data){if(peer?.readyState!==WebSocket.OPEN)return false;peer.send(JSON.stringify(data));return true;},async setLeds(value){leds=ledSettings(value);await persist();send({type:'leds',...leds});return {...leds,online:peer?.readyState===WebSocket.OPEN};},async configure(value){setup=physicalSetup(value);await persist();await start();send({type:'setup',...setup});return status();},async usbConfig(){await start();return {host,port,token};},async close(){endPairing();peer?.close();wss.close();await new Promise(resolve=>server?server.close(resolve):resolve());server=null;}};
 }

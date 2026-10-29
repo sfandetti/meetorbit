@@ -42,6 +42,26 @@ function renderChoices(){
   $('page-list').replaceChildren();
   state.selectable.forEach(i=>{const label=element('label'),box=element('input');box.type='checkbox';box.checked=profile.screens.includes(i);box.onchange=()=>{profile.screens=box.checked?[...profile.screens,i]:profile.screens.filter(n=>n!==i);markChanged();};label.append(box,element('span',state.pages[i]));$('page-list').append(label);});
 }
+// Home shortcuts: drag between the home grid and the pool (or click), drag within the grid to reorder.
+function homeEditor(){
+  // AI voice (21) is always top right on Orbit, so it is pinned here and not part of the list.
+  profile.home_keys=profile.home_keys.filter(k=>k!==21);
+  const on=$('home-on'),off=$('home-off'),max=(state.homeMax||8)-1,name=id=>state.homeShortcuts.find(s=>s.id===id)?.name||id;
+  const change=keys=>{profile.home_keys=keys;markChanged();homeEditor();};
+  const chip=(id,inHome)=>{const c=element('button',name(id),'home-chip');c.type='button';c.draggable=true;c.dataset.id=id;
+    c.ondragstart=e=>{e.dataTransfer.setData('text/plain',String(id));e.dataTransfer.effectAllowed='move';};
+    c.onclick=()=>inHome?change(profile.home_keys.filter(k=>k!==id)):profile.home_keys.length<max&&change([...profile.home_keys,id]);
+    if(inHome){c.ondragover=e=>e.preventDefault();c.ondrop=e=>{e.preventDefault();e.stopPropagation();const dragged=Number(e.dataTransfer.getData('text/plain'));if(dragged===id)return;
+      const keys=profile.home_keys.filter(k=>k!==dragged);if(keys.length>=max)return;keys.splice(keys.indexOf(id),0,dragged);change(keys);};}
+    return c;};
+  const tiles=[...profile.home_keys.map(id=>chip(id,true)),...Array.from({length:max-profile.home_keys.length},()=>element('span','','home-slot'))];
+  tiles.splice(3,0,element('span','AI voice (always here)','home-chip home-pinned'));
+  on.replaceChildren(...tiles);
+  off.replaceChildren(...state.homeShortcuts.filter(s=>s.id!==21&&!profile.home_keys.includes(s.id)).map(s=>chip(s.id,false)));
+  on.ondragover=off.ondragover=e=>e.preventDefault();
+  on.ondrop=e=>{e.preventDefault();const id=Number(e.dataTransfer.getData('text/plain'));const keys=profile.home_keys.filter(k=>k!==id);if(keys.length<max)change([...keys,id]);};
+  off.ondrop=e=>{e.preventDefault();const id=Number(e.dataTransfer.getData('text/plain'));if(profile.home_keys.includes(id))change(profile.home_keys.filter(k=>k!==id));};
+}
 function pageOptions(select,withOff){const names=state.pages.map((n,i)=>i===16?'AI voice':n);select.replaceChildren(...(withOff?[new Option('Off',-1)]:[]),...names.map((n,i)=>new Option(n,i)).filter(o=>withOff||state.selectable.includes(Number(o.value))));}
 
 // ---- Shortcuts ----
@@ -163,7 +183,7 @@ async function init(){
   $('timezone').replaceChildren(...Object.entries(state.timezones).map(([v,n])=>new Option(n,v)));if(!state.timezones[profile.timezone])$('timezone').append(new Option(profile.timezone,profile.timezone));
   for(const k of ['name','timezone','motion_sensitivity','recording_limit_mb'])$(k).value=profile[k];
   $('startup').checked=profile.startup;$('brightness').value=profile.brightness;$('brightness-value').value=profile.brightness+'%';
-  pageOptions($('startup_page'),false);$('startup_page').value=profile.startup_page;for(let i=0;i<3;i++){pageOptions($('quick-'+i),true);$('quick-'+i).value=profile.quick_taps[i];}
+  pageOptions($('startup_page'),false);$('startup_page').value=profile.startup_page;for(let i=0;i<3;i++){pageOptions($('quick-'+i),true);$('quick-'+i).value=profile.quick_taps[i];}homeEditor();
   $('record_timestamp').checked=profile.record_timestamp;$('record_camera_name').checked=profile.record_camera_name;
   $('alarm_enabled').checked=profile.alarm_enabled;$('alarm_sound').value=profile.alarm_sound;$('alarm_loop').checked=profile.alarm_loop;
   $('ai-provider').value=profile.ai_provider;$('cursor-path').value=profile.cursor_path;providerUI();voiceUI();

@@ -79,6 +79,8 @@ export function createHueModes({hue,random=Math.random,every=(fn,ms)=>{const t=s
       if(was||(restore&&had))onChange('');
       return restore&&had?'The lights are back to how they were.':was?'The light mode is off.':'Nothing to put back.';
     },
+    // Forget the remembered lights (ALL OFF / ALL ON: the new state is the one to keep).
+    forget(){const had=saved.size>0;saved.clear();ran=new Set();if(had)onChange(mode);},
     // The visualizer on Orbit: b/m/h loudness 0-1 and whether a beat just landed.
     music({b,m,h,beat}){music={b:+b||0,m:+m||0,h:+h||0,at:now()};if(beat)beats++;},
   };

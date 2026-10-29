@@ -4,12 +4,14 @@
 // what it hears to the PC about ten times a second, so the lights follow any music in the room. The PC talks to the Hue Bridge (hue.mjs, hue-modes.mjs) and sends
 // the rooms again whenever they change, so the page also follows the Hue app, wall switches and the voice.
 String hueIds[6],hueNames[6],hueNote="Waiting for the PC...",hueMode="";bool hueOn[6];int hueBri[6],hueCount=0,hueView=0;
-const int HUE_MODES=8;
-const char *hueModeIds[HUE_MODES]={"music","party","candle","aurora","sunset","night","reading","relax"};
-const char *hueModeNames[HUE_MODES]={"MUSIC LINK","PARTY","CANDLE","AURORA","SUNSET","NIGHT","READING","RELAX"};
+// MUSIC is not a tile here: it is the MM key on the visualizer (sound_waves.h). The voice can still start it.
+const int HUE_MODES=7;
+const char *hueModeIds[HUE_MODES]={"party","candle","aurora","sunset","night","reading","relax"};
+const char *hueModeNames[HUE_MODES]={"PARTY","CANDLE","AURORA","SUNSET","NIGHT","READING","RELAX"};
 const uint8_t hueModeColors[HUE_MODES][3][3]={  // three colours each, for the tile's stripes
- {{255,0,80},{0,200,255},{255,220,0}},{{255,0,200},{0,255,200},{255,255,0}},{{255,120,0},{255,170,30},{200,60,0}},{{0,230,120},{0,170,200},{150,60,255}},
+ {{255,0,200},{0,255,200},{255,255,0}},{{255,120,0},{255,170,30},{200,60,0}},{{0,230,120},{0,170,200},{150,60,255}},
  {{255,110,0},{255,40,110},{140,40,200}},{{120,20,0},{40,0,60},{10,10,50}},{{255,250,230},{255,235,190},{240,240,255}},{{255,160,60},{230,120,40},{255,190,110}}};
+String hueFlash;uint32_t hueFlashAt=0,hueTappedAt=0;  // when a mode was tapped here  // a short word in the corner after a tap: STOPPING, or PC NOT CONNECTED
 bool hueSelOn[6],hueChanged=false;  // hueChanged: the PC remembers lights from before; STOP puts them back
   // rooms chosen for the modes (none = every light)
 int hueDrag=-1,hueDragBri=0;bool hueDragged=false;  // the room slider being dragged, and its level while dragging
@@ -18,7 +20,9 @@ bool hueAvailable(){return hueCount>0;}  // paired, with rooms: the corner bulb 
 bool hueAnyOn(){for(int i=0;i<hueCount;i++)if(hueOn[i])return true;return false;}
 // From the PC: {"type":"hue","n":"2","i0":"1","t0":"Kitchen","o0":"1","b0":"80",...,"mode":"party","note":""}
 void hueFromJson(const char *j,size_t len){
- hueCount=constrain(jsonField(j,len,"n").toInt(),0,6);hueNote=jsonField(j,len,"note").substring(0,60);hueMode=jsonField(j,len,"mode").substring(0,10);
+ hueCount=constrain(jsonField(j,len,"n").toInt(),0,6);hueNote=jsonField(j,len,"note").substring(0,60);{String m=jsonField(j,len,"mode").substring(0,10);
+  // Just after a tap here, an older update from the PC may still name the previous mode: the tap wins.
+  if(m==hueMode||millis()-hueTappedAt>2500)hueMode=m;}
  hueChanged=jsonField(j,len,"chg")=="1";
  String mr=","+jsonField(j,len,"mr")+",";bool fromMode=hueMode.length()>0;
  for(int i=0;i<hueCount;i++){String k=String(i);if(fromMode)hueSelOn[i]=mr.indexOf(","+jsonField(j,len,("i"+k).c_str())+",")>=0;if(i==hueDrag)continue;hueIds[i]=jsonField(j,len,("i"+k).c_str()).substring(0,6);
@@ -67,7 +71,8 @@ void drawHueModes(){
  for(int i=0;i<HUE_MODES;i++){int x,y,w,h;hueModeTile(i,x,y,w,h);bool sel=hueMode==hueModeIds[i];
   for(int k=0;k<w;k++){float t=k/float(w-1)*2;int a=min(1,int(t)),b=a+1;float f=t-a;const uint8_t *p=hueModeColors[i][a],*q=hueModeColors[i][b];
    ui.drawFastVLine(x+k,y,h,ui.color565(p[0]+(q[0]-p[0])*f,p[1]+(q[1]-p[1])*f,p[2]+(q[2]-p[2])*f));}
-  if(sel){ui.drawRect(x,y,w,h,TFT_WHITE);ui.drawRect(x+1,y+1,w-2,h-2,TFT_WHITE);ui.drawRect(x+2,y+2,w-4,h-4,0x0000);}
+  if(sel){ui.drawRect(x,y,w,h,TFT_WHITE);ui.drawRect(x+1,y+1,w-2,h-2,TFT_WHITE);ui.drawRect(x+2,y+2,w-4,h-4,0x0000);
+   ui.fillRect(x+w-24,y+3,21,11,TFT_WHITE);text("ON",x+w-13,y+9,1,0x0000,MC_DATUM);}  // tap it again to turn it off
   else ui.drawRect(x,y,w,h,0x0000);
   // The name on a dark band so it reads on any colour.
   int bandH=tall()?16:14,by=y+h-bandH-3;ui.fillRect(x+3,by,w-6,bandH,0x0000);
@@ -87,16 +92,16 @@ void drawHueModes(){
   text(r==0?String("ALL ROOMS"):hueNames[r-1],bx+24,y+rh/2,2,sel?ink:muted,ML_DATUM);}
 }
 void drawHue(){
- String m=hueMode;m.toUpperCase();header("HUE LIGHTS",m);
+ String m=millis()-hueFlashAt<3000?hueFlash:hueMode;m.toUpperCase();header("HUE LIGHTS",m);
  if(!hueCount){wrapped(hueNote.length()?hueNote:"Waiting for the PC...",18,tall()?110:80,W-36,3,muted);return;}
  drawHueTabs();
  if(hueView==0)drawHueRooms();else drawHueModes();
 }
-void hueSend(const String &json){laptopSend(json);}
+bool hueSend(const String &json){bool ok=laptopSend(json);if(!ok){hueFlash="PC NOT CONNECTED";hueFlashAt=millis();}Serial.printf("HUE SEND %s %s\n",ok?"OK":"FAILED",json.c_str());return ok;}
 void hueToggle(const String &id,bool on){hueSend(String("{\"type\":\"hue-toggle\",\"id\":\"")+id+"\",\"on\":"+(on?"true":"false")+"}");}
 void hueSetMode(const char *id){
  String rooms;for(int i=0;i<hueCount;i++)if(hueSelOn[i])rooms+=(rooms.length()?",":"")+hueIds[i];
- hueMode=id;hueSend(String("{\"type\":\"hue-mode\",\"mode\":\"")+id+"\",\"rooms\":\""+rooms+"\"}");}
+ hueMode=id;hueTappedAt=millis();if(hueSend(String("{\"type\":\"hue-mode\",\"mode\":\"")+id+"\",\"rooms\":\""+rooms+"\"}")&&!strcmp(id,"stop")){hueFlash="STOPPING";hueFlashAt=millis();}}
 // A tap: tabs, a room (on/off), ALL OFF / ALL ON, a mode or STOP. False when it hit none of them.
 bool hueTap(int x,int y){
  if(!hueCount)return false;
@@ -118,7 +123,7 @@ bool hueTap(int x,int y){
  }else{
   int i=hueModeAt(x,y);if(i>=0){if(hueMode==hueModeIds[i])hueSetMode("stop");else hueSetMode(hueModeIds[i]);if(hueMode=="stop")hueMode="";return true;}
   if(y>=hueDropY()&&y<hueDropY()+hueDropH()){hueDropOpen=true;return true;}
-  if(y>=hueStopY()&&y<hueStopY()+34){hueSetMode("stop");hueMode="";hueChanged=false;return true;}
+  if(y>=hueStopY()-6&&y<hueStopY()+42){hueSetMode("stop");hueMode="";hueChanged=false;return true;}  // a generous target
  }
  return false;
 }

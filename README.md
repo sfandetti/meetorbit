@@ -41,7 +41,11 @@ Configure your own credentials on the PC. Provider accounts and API charges are 
 
 Philips Hue room controls, brightness, moods and music-reactive lighting. Music Link follows beat/audio levels from the visualizer; STOP MODE restores remembered light settings. Hue requires a compatible bridge and lights paired through the companion.
 
-Two LED rings, selectable effects, four visualizations, an animated face, clocks, a focus timer and stopwatch. Landscape and portrait UI layouts are included.
+The home screen has seven swappable shortcuts and a pinned AI button; arrange the shortcuts in the PC console. Four themes change the display’s fonts, panels and colours.
+
+A device alarm clock adds a ringing face, speaker beeps, flashing rings, volume control and nine-minute snooze. The sound machine synthesizes rain, storm, ocean, crickets, fan and fire, with optional 15/30/60-minute fade-out timers. Orbit Sweep and Orbit Run are two small touchscreen games.
+
+Two LED rings, selectable effects, four visualizations, clocks, a focus timer and stopwatch remain included. Landscape and portrait layouts adapt to orientation.
 
 ![Hue modes](website/assets/screens/lying/hue-modes.png) ![Visualizer](website/assets/screens/lying/visuals-2.png)
 
@@ -77,3 +81,7 @@ Original development and installed Orbit files were not modified to publish this
 ## License
 
 Original software/firmware/website: **MIT**. Original hardware and build documentation: **CERN-OHL-P-2.0**. Font and dependency licenses are retained separately. See [LICENSING.md](LICENSING.md).
+
+## Release coordination
+
+Source updates, release packages and website changes are reviewed before publication. [Release workflow](docs/RELEASE-WORKFLOW.md) · [Release handoff](docs/RELEASE-HANDOFF.md). Development snapshots are distinct from versioned, hardware-validated releases.

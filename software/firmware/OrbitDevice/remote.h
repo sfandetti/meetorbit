@@ -36,6 +36,10 @@ void drawRemote(){
   if(page==21){drawVoice();return;}
   if(page==22){drawLights();return;}
   if(page==23){drawHue();return;}
+  if(page==24){drawAlarm();return;}
+  if(page==25){drawSleep();return;}
+  if(page==26){drawSweep();return;}
+  if(page==27){drawRun();return;}
   bool up=tall();int cx=W/2;
   if(page==16){
     if(aiId.length()){drawCompanion();return;}

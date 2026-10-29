@@ -22,7 +22,7 @@ bool otaAuthorized(){
 // 5-7 watchdogs, 9 brown-out), memory, and how far an update got if it crashed mid-upload.
 String statusJson(){
  bool crashed=otaProgressMark==OTA_MARK;uint32_t bytes=crashed?otaProgressBytes:0;otaProgressMark=0;
- char b[220];snprintf(b,sizeof(b),"{\"type\":\"status\",\"firmware\":\"CYD-X-HUESTOP\",\"audioReady\":true,\"reset\":%d,\"heap\":%u,\"minHeap\":%u,\"otaCrashBytes\":%u,\"lastStep\":%u,\"httpPort\":%u}",
+ char b[220];snprintf(b,sizeof(b),"{\"type\":\"status\",\"firmware\":\"CYD-X-TALL2\",\"audioReady\":true,\"reset\":%d,\"heap\":%u,\"minHeap\":%u,\"otaCrashBytes\":%u,\"lastStep\":%u,\"httpPort\":%u}",
   (int)esp_reset_reason(),(unsigned)ESP.getFreeHeap(),(unsigned)ESP.getMinFreeHeap(),(unsigned)bytes,(unsigned)lastStep,(unsigned)ORBIT_HTTP_PORT);
  return String(b);
 }

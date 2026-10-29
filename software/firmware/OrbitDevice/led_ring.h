@@ -16,13 +16,18 @@ uint8_t ledShown[LED_COUNT][3];  // last frame sent, for the on-screen preview
 const int LED_EFFECTS=12;
 const char *ledEffectNames[LED_EFFECTS]={"SOLID","BREATHE","RAINBOW","SPIN","COMET","THEATER","SPARKLE","FIRE","POLICE","OCEAN","HEARTBEAT","PARTY"};
 bool soundLedFrame(uint8_t px[][3]);  // sound_waves.h
+bool alarmLedFrame(uint8_t px[][3]);  // alarm_clock.h
+bool swLedFrame(uint8_t px[][3]);  // orbit_sweep.h
+bool runLedFrame(uint8_t px[][3]);  // orbit_run.h
 const char *ledSpeedNames[3]={"SLOW","MEDIUM","FAST"};
 const uint8_t ledSwatches[9][3]={{255,0,0},{255,90,0},{255,200,0},{0,255,40},{0,220,255},{30,110,255},{150,40,255},{255,40,160},{255,255,255}};
 
 // Data pins idle LOW (the WS2812 reset level); an unused candidate pin is held HIGH so the board's
 // own LED1 channel on it stays dark.
+// The data pins use the weakest drive: slower edges leak far less into the speaker amp's I2S wires next to
+// them (at full drive every ring update was heard as a faint crackle while sound played).
 void ledAttach(){
- for(int p=0;p<2;p++){ledActive[p]=ledPinMask&(1<<p);pinMode(ledPins[p],OUTPUT);digitalWrite(ledPins[p],ledActive[p]?LOW:HIGH);}
+ for(int p=0;p<2;p++){ledActive[p]=ledPinMask&(1<<p);pinMode(ledPins[p],OUTPUT);gpio_set_drive_capability((gpio_num_t)ledPins[p],GPIO_DRIVE_CAP_0);digitalWrite(ledPins[p],ledActive[p]?LOW:HIGH);}
 }
 // GRB order, 1.25 us bits: 0 = 0.4 us high, 1 = 0.8 us high. Both active pins are driven together.
 // Interrupts are off for ~0.25 ms per frame; a first pass with no pins selected loads the loop into
@@ -92,9 +97,10 @@ bool ledEffectFrame(uint8_t px[][3],uint32_t t){
 // then the brightness bar with SPEED beside it (lying down) or below it (standing up).
 int fxW(){return tall()?74:100;}int fxH(){return tall()?28:26;}int fxX(int i){return 6+(i%3)*(fxW()+4);}int fxY(int i){return (tall()?62:38)+(i/3)*(fxH()+3);}
 int swX(int i){return tall()?6+i*26:6+i*34;}int swW(){return tall()?22:30;}int swY(){return tall()?190:156;}
-int lightBarY(){return tall()?230:192;}int lightBarW(){return tall()?228:208;}
+int lightBarY(){return tall()?230:192;}int lightBarW(){return tall()?228:150;}
 bool lightBarAt(int x,int y){return y>=lightBarY()-2&&y<lightBarY()+36&&x<6+lightBarW();}
-int speedX(){return tall()?6:220;}int speedY(){return tall()?270:192;}int speedW(){return tall()?228:94;}
+int speedX(){return tall()?6:162;}int speedY(){return tall()?270:192;}int speedW(){return tall()?112:74;}
+int powerX(){return tall()?122:240;}int powerW(){return tall()?112:74;}  // the ON/OFF key beside SPEED
 // Brightness bar on the LIGHT SHOW page: slide along it; saved when you let go.
 void ledSliderLoop(){
  static uint32_t touchAt=0;static bool dragging=false;
@@ -120,6 +126,9 @@ void ledLoop(){
  effectT+=(now-lastAt)*speeds[ledSpeed];lastAt=now;
  uint8_t mood[3];const uint8_t *colour=moodColor(mood)?mood:ledRGB;
  if(animating){for(int i=0;i<LED_COUNT;i++)ledScale(px[i],colour,1);}
+ else if(alarmLedFrame(px))animating=true;
+ else if(swLedFrame(px))animating=true;  // ORBIT SWEEP effects
+ else if(runLedFrame(px))animating=true;  // ORBIT RUN: speed, fuel, crash  // ALARM ringing: the ring flashes
  else if(soundLedFrame(px))animating=true;  // SOUND WAVES page: the ring bounces to the room
  else animating=ledEffectFrame(px,uint32_t(effectT));
  if(!animating&&!ledDirty)return;
@@ -139,11 +148,14 @@ void drawLights(){
  ui.fillRect(6,by,bw,34,panel);ui.drawRect(6,by,bw,34,accent);if(ledBright)ui.fillRect(8,by+2,(bw-4)*ledBright/100,30,accent);
  text(ledOn?"BRIGHT "+String(ledBright)+"%":"LIGHTS OFF",6+bw/2,by+17,2,ledBright>50?themeBg:ink,MC_DATUM);
  ui.fillRect(speedX(),speedY(),speedW(),34,panel);ui.drawRect(speedX(),speedY(),speedW(),34,accent);text(String("SPEED ")+ledSpeedNames[ledSpeed],speedX()+speedW()/2,speedY()+17,tall()?2:1,ink,MC_DATUM);
+ uint16_t offRed=ui.color565(200,40,40);ui.fillRect(powerX(),speedY(),powerW(),34,ledOn?panel:offRed);ui.drawRect(powerX(),speedY(),powerW(),34,ledOn?accent:offRed);
+ text(ledOn?"TURN OFF":"LIGHTS OFF",powerX()+powerW()/2,speedY()+17,tall()?2:1,ledOn?ink:0xffff,MC_DATUM);
 }
 // A tap on the LIGHT SHOW page. Tapping the selected effect again turns the lights off/on.
 void lightTap(int x,int y){
  if(y>=fxY(0)&&y<swY()-2){int col=constrain((x-6)/(fxW()+4),0,2),row=(y-fxY(0))/(fxH()+3),i=row*3+col;if(i<LED_EFFECTS){if(i==ledEffect)ledOn=!ledOn;else{ledEffect=i;ledOn=true;}}}
  else if(y>=swY()-2&&y<swY()+32){int i=constrain((x-6)/(swX(1)-swX(0)),0,8);memcpy(ledRGB,ledSwatches[i],3);ledOn=true;}
+ else if(y>=speedY()-2&&y<speedY()+36&&x>=powerX()-2)ledOn=!ledOn;  // the ON/OFF key
  else if(y>=speedY()-2&&y<speedY()+36&&x>=speedX()-2)ledSpeed=(ledSpeed+1)%3;
  else return;
  ledSave(true);

@@ -57,10 +57,13 @@ void metricTile(int x,int y,int w,int h,const char *label,float value,const Stri
   text(unit,x+w-6,y+28,1,muted,TR_DATUM);
   meter(x+8,y+h-9,w-16,4,value>=0?100*value/scale:-1,c,12);
 }
-// Standing up the description line sits under the title and is cut to the narrower screen.
+// Lying down the description line sits in the header between the title and LIVE (under the title it ran
+// into it), cut at a word to fit. Standing up it sits under the title, cut to the narrower screen.
 void pcHeader(const String &title,const String &model) {
-  header(title,pcLive()?"LIVE":"OFFLINE");
-  if(!tall()){text(model,12,29,1,muted);return;}
+  String status=pcLive()?"LIVE":"OFFLINE";header(title,status);
+  if(!tall()){ui.setFreeFont(themeFont(2));int left=54+ui.textWidth(title)+10,room=(W-10-6*int(status.length())-10-left)/6;
+    String s=model;while(int(s.length())>room){int cut=max(s.lastIndexOf(", "),s.lastIndexOf(" / "));if(cut<=0)cut=s.lastIndexOf(' ');if(cut<=0){s="";break;}s=s.substring(0,cut);s.trim();}  // drop whole phrases
+    if(s.length())text(s,left,14,1,muted);return;}
   String s=model;if(s.length()>37){int cut=s.lastIndexOf(' ',37);s=s.substring(0,cut>0?cut:37);s.trim();}
   text(s,12,58,1,muted);
 }
@@ -76,7 +79,7 @@ void drawPCCluster(int section) {
     uint16_t colors[]={themeColor(0x07ff),themeColor(0xf81f),themeColor(0x87e0),themeColor(0xfd20),themeColor(0xaaff),themeColor(0xfa80),themeColor(0x07b5),themeColor(0xffe0),themeColor(0x3bff)};
     for(int i=0;i<9;i++){if(up)metricTile(6+(i%3)*78,72+(i/3)*76,74,70,labels[i],values[i],units[i],i==5?400:100,colors[i]);else metricTile(8+(i%3)*103,44+(i/3)*58,98,53,labels[i],values[i],units[i],i==5?400:100,colors[i]);}
   }else if(section==1){
-    pcHeader("CPU / PULSE","16 REAL SAMPLES / ALL CORES");
+    pcHeader("CPU / PULSE","16 SAMPLES, ALL CORES");
     if(up){
       bigReading(live?pcNumber(shown.cpu):"--","%",72,themeColor(0x07ff));
       text("GPU "+(live?pcNumber(shown.gpu)+"%":"--"),12,134,2,themeColor(0xf81f));text("RAM "+(live?pcNumber(shown.ram)+"%":"--"),128,134,2,themeColor(0x87e0));

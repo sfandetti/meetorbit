@@ -47,12 +47,14 @@ void soundAnalyse(float *re,float *im){
  bassAvg+=(bass-bassAvg)*0.08f;soundBlocks++;
 }
 void soundFeed(void*){
- static int32_t frames[512];static float re[SOUND_N],im[SOUND_N];int fill=0;
+ // Borrowed while listening and given back after (the voice needs that memory for Wi-Fi).
+ int32_t *frames=(int32_t*)malloc(512*4);float *re=(float*)malloc(SOUND_N*4),*im=(float*)malloc(SOUND_N*4);int fill=0;
+ if(!frames||!re||!im)soundRun=false;
  while(soundRun){
-  size_t bytes=0;if(i2s_channel_read(soundRx,frames,sizeof(frames),&bytes,100)!=ESP_OK||!bytes)continue;
+  size_t bytes=0;if(i2s_channel_read(soundRx,frames,512*4,&bytes,100)!=ESP_OK||!bytes)continue;
   for(size_t i=0;i<bytes/8;i++){re[fill++]=float(frames[i*2]>>8);if(fill==SOUND_N){soundAnalyse(re,im);fill=0;}}  // 24-bit left slot
  }
- soundTask=nullptr;vTaskDelete(nullptr);
+ free(frames);free(re);free(im);soundTask=nullptr;vTaskDelete(nullptr);
 }
 bool soundListening(){return soundRx!=nullptr;}
 void soundStop(){
@@ -163,12 +165,15 @@ void drawSound(){
  ui.fillSprite(TFT_BLACK);
  if(veMode==0)veSpectrum(now);else if(veMode==1)veNeonWave(dt);else if(veMode==2)veOrbit(dt,flash);else veGalaxy(dt,flash);
  ui.fillRect(4,4,54,26,TFT_BLACK);ui.drawRect(4,4,54,26,veRgb(110,110,110));text("EXIT",31,17,2,TFT_WHITE,MC_DATUM);
- if(now-veModeAt<1500)text(veNames[veMode],W-8,9,2,TFT_WHITE,TR_DATUM);
- else if(hueLinked()){uint8_t c[3];ledHue(uint8_t(now/8),c);ui.drawRect(W-50,6,44,22,ui.color565(c[0],c[1],c[2]));text("HUE",W-28,17,2,ui.color565(c[0],c[1],c[2]),MC_DATUM);}  // the lights follow along
+ if(now-veModeAt<1500)text(veNames[veMode],W/2,17,2,TFT_WHITE,MC_DATUM);
+ // MM (music mode, when Hue is paired): grey while off; on, it cycles colour and the Hue lights follow the beat.
+ if(hueAvailable()){uint16_t c=veRgb(80,80,80);if(hueLinked()){uint8_t k[3];ledHue(uint8_t(now/8),k);c=ui.color565(k[0],k[1],k[2]);}
+  ui.fillRect(W-50,4,46,26,TFT_BLACK);ui.drawRect(W-50,4,46,26,c);if(hueLinked())ui.drawRect(W-49,5,44,24,c);text("MM",W-27,17,2,c,MC_DATUM);}
  for(int i=0;i<VE_MODES;i++)ui.fillCircle(W/2-15+i*10,H-6,2,i==veMode?TFT_WHITE:veRgb(70,70,70));
 }
 void soundTap(int x,int y){
  if(x<70&&y<40){setPage(17);return;}
+ if(hueAvailable()&&x>=W-60&&y<44){if(hueLinked()){hueSetMode("stop");hueMode="";}else hueSetMode("music");return;}  // MM: music mode on / off
  veMode=(veMode+1)%VE_MODES;veModeAt=millis();prefs.putInt("vemode",veMode);
 }
 // Serial: SOUND -> the current band levels, for tuning.

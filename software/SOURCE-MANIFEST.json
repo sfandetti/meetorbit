@@ -41,7 +41,7 @@
   },
   {
     "path": "console/app.js",
-    "sha256": "a84b5d41a5eced9fe4ff70fc7e24fbd485c218011942daaceed6d21421668b5d"
+    "sha256": "19c5d15287b730501226b933645e1abb5c7b679b71178c44fcaeae5d77045218"
   },
   {
     "path": "console/codex.js",
@@ -89,7 +89,7 @@
   },
   {
     "path": "console/index.html",
-    "sha256": "b8c0eb52fcf55b538310b602b5567c58f3848ffbedfe191ce4808d247e064b9e"
+    "sha256": "b9f40fbec57645aeba6253ced5d0c064f2602c30c47f5b3093e527bdb2dd7275"
   },
   {
     "path": "console/sentry.js",
@@ -97,7 +97,7 @@
   },
   {
     "path": "console/style.css",
-    "sha256": "f1895936a0612305d1193f64795d021bb6dc88eda14a2319b4827e7c74b95538"
+    "sha256": "4f87f1345267ab6e41113c85f2c944c91faa0d222f2fdd65caf18e4680012540"
   },
   {
     "path": "core.mjs",
@@ -129,7 +129,7 @@
   },
   {
     "path": "device-feed.mjs",
-    "sha256": "cf9912f209ab493c1274b52d3ad741d5cebce47ee457ceb77462767fe6a6fdbf"
+    "sha256": "70222f858608eb30cb1cfde7f3a2b61c1279509f0b782d23f445ae4cb64bcadb"
   },
   {
     "path": "device-feed.test.mjs",
@@ -137,7 +137,7 @@
   },
   {
     "path": "device-link.mjs",
-    "sha256": "dc0fe082e82103f1d265f38891b3d5d34422a79b4df0d38d72c3183895849964"
+    "sha256": "91237d4dff834b910bafa6b9fa17a8fc43728e170d2c17421e033c91964ecde7"
   },
   {
     "path": "device-link.test.mjs",
@@ -160,28 +160,44 @@
     "sha256": "41cae5fcb75aa258a8314904acba307f6d21fd800b2b4508b4ff2331f503be2d"
   },
   {
+    "path": "firmware/OrbitDevice/alarm_clock.h",
+    "sha256": "8315df0313e75e2d21b7bc1692ef087beb4f8d8d877ca29119cdf6ff5df15d89"
+  },
+  {
     "path": "firmware/OrbitDevice/audio_diag.h",
     "sha256": "1b45c67e44de8f2856132394bb4afee4526ff526ae625593fca15a325d808be7"
   },
   {
     "path": "firmware/OrbitDevice/companion.h",
-    "sha256": "76ad03173a5312d3034bdfe3556d149bc385e630c3b9e698a90bcad162819942"
+    "sha256": "bfd7532d7b2371a014fbc67596e7e52f8defd1b42c81a1a7f9c16a27f38b6a34"
   },
   {
     "path": "firmware/OrbitDevice/device_views.h",
     "sha256": "25c18749a39cc06f91d6e29be490c09a65d1c13faa8c910de5cd45ecc1d9a29b"
   },
   {
+    "path": "firmware/OrbitDevice/home_keys.h",
+    "sha256": "c18bfa76b67b4c5d8ede929a840b7aa0bacb6d7a3dbd62ae87832b7fd6825872"
+  },
+  {
     "path": "firmware/OrbitDevice/hue.h",
-    "sha256": "cccc175224c6e3482e5fbc58260995179689e945b3370401abb565cb169dd089"
+    "sha256": "ee9ecd2eee7ff01b883306a1038bdb2ce87ac6daa242e2cca5814c68739619c7"
   },
   {
     "path": "firmware/OrbitDevice/led_ring.h",
-    "sha256": "8c0e11dd9abe3a582db44626bdfa00fa70e264ec94a2c52e7305a77b4d251be0"
+    "sha256": "8a58c084914d207864f63ffb0f469a0cf1877234572314ba14bef8120b22f3b3"
+  },
+  {
+    "path": "firmware/OrbitDevice/orbit_run.h",
+    "sha256": "8bc3dd4cd56053529a5327b02a515afa4bac0a0899851701e8438d7230bbb98c"
+  },
+  {
+    "path": "firmware/OrbitDevice/orbit_sweep.h",
+    "sha256": "c0ebd76a2eb80a60e629136352442bc4cbdff2e67a6cb42e32fa11dc5cb69bc9"
   },
   {
     "path": "firmware/OrbitDevice/OrbitDevice.ino",
-    "sha256": "9e96de1462c46711edd543419887d1fa5310586f84c65e40ead41d5b08707fe4"
+    "sha256": "57628d8805f4d3b1ade427ff2bd9f13be876f8113ffb5c766119ccd2aa08f0b0"
   },
   {
     "path": "firmware/OrbitDevice/orientation_filter.h",
@@ -189,7 +205,7 @@
   },
   {
     "path": "firmware/OrbitDevice/ota_update.h",
-    "sha256": "2e371d6f061ddbd5232c4ade592c201b64f95f1e9eebf39e40e53f1e75436dbd"
+    "sha256": "3e1b5f1764d52af1f7cdff51b187a104a7e80f79b1811589a9a4a6f0c5b54e7e"
   },
   {
     "path": "firmware/OrbitDevice/pair_link.h",
@@ -197,11 +213,11 @@
   },
   {
     "path": "firmware/OrbitDevice/pc_cluster.h",
-    "sha256": "cbf68fe596f5edaa5ee2f9bdd054b607c69f870bd79d69ae0565364fee42c89e"
+    "sha256": "300572627569682ce220fcb1c96f5752daad1c1626bef1e8666a83e564259adb"
   },
   {
     "path": "firmware/OrbitDevice/remote.h",
-    "sha256": "4c52c4667380f143b811ef47361d463bbb4acfca81d7403f0ee796bc47dfd3cd"
+    "sha256": "01274aebb3d607e8f867efd46d90cddfa62536c6ffc6bfb3841fd22917966092"
   },
   {
     "path": "firmware/OrbitDevice/security.h",
@@ -209,11 +225,15 @@
   },
   {
     "path": "firmware/OrbitDevice/showcase.h",
-    "sha256": "f798e9910b701c237ea2c51718760c475a42a11b9e2a4a0ff5a30f54d7236b04"
+    "sha256": "06da9595fd0a3e889c2f150ffcab1d9c879bcbdc6e09fd8e3062ad8d70657da7"
+  },
+  {
+    "path": "firmware/OrbitDevice/sleep_sounds.h",
+    "sha256": "b4c941b4a76f88101f86fff5c85241e580d3ae0f6b078860d9d97a8e82ad11fe"
   },
   {
     "path": "firmware/OrbitDevice/sound_waves.h",
-    "sha256": "5560eef7caad6aa8b5d4b6101dd55dffd8e4921275831e35c11e9c1639236986"
+    "sha256": "5e5834074ef5a531c00cb1869447e2d01b264cb58204b892acf02e602606fb8e"
   },
   {
     "path": "firmware/OrbitDevice/theme_fonts.h",
@@ -225,11 +245,11 @@
   },
   {
     "path": "firmware/OrbitDevice/touch_gesture.h",
-    "sha256": "b9236cfdc85533e51b4953d5d750d6560679697cd7bb2a71d6fe2c213a5c7f1a"
+    "sha256": "a6f299646c8061d5722b175072829edfdc048f5317fe9bfb894d055640b322d7"
   },
   {
     "path": "firmware/OrbitDevice/voice_link.h",
-    "sha256": "43028db7818b71a0e44c90839c4e93afc96237a445b314f3d19aa28d02f9496c"
+    "sha256": "e3e7cee4d0427a6288de5f1c103419c3c499d7cc6bede0b08f29ba75738f7d65"
   },
   {
     "path": "firmware/OrbitSpeaker/OrbitSpeaker.ino",
@@ -249,7 +269,7 @@
   },
   {
     "path": "hue-modes.mjs",
-    "sha256": "421ee627434a3e6823512293488c87a4e3a6da28929f62be9839f0f8e60aaa7b"
+    "sha256": "f8ba8b2ec6e5a93fd23d9e3d4cd28c64a6d26c5d107b4a4b9895c644c86697ac"
   },
   {
     "path": "hue.mjs",
@@ -257,7 +277,7 @@
   },
   {
     "path": "hue.test.mjs",
-    "sha256": "9b076d369f2bb1a50b45cbda9fd627d81a7de89509b819f35ddcada7791b9b5d"
+    "sha256": "0370e6f799f672e17344ccfd3d7443aaa6310aee288d84fd395a63d309b98072"
   },
   {
     "path": "index.html",
@@ -389,7 +409,7 @@
   },
   {
     "path": "main.mjs",
-    "sha256": "bc4c72d6fd9162f2e357d5e3fba2946bc9f7c5e970c17295e4b10105383a64cf"
+    "sha256": "f22f66b9a850e6538eb5a3e0ff2109e466b0bb4d759ba3e6c6b8ef0114a40551"
   },
   {
     "path": "mood.mjs",
@@ -408,12 +428,20 @@
     "sha256": "10d5b175c4df7ca7040120badaccdef3b4e61cd2dae7e98706bfbc1d14c594e8"
   },
   {
+    "path": "orbit-tools.mjs",
+    "sha256": "a00469d165c9c6283aa79673937ab5722ff998b5987d446c7968fa8c7e119123"
+  },
+  {
+    "path": "orbit-tools.test.mjs",
+    "sha256": "5216c76cb40ccd6b1adb7608395441b81c2ef211d919429535b107226685f1bf"
+  },
+  {
     "path": "package-lock.json",
     "sha256": "1020fd09be684121d57da454ebf623ad8189b346babff01f0741e9773f9faa9f"
   },
   {
     "path": "package.json",
-    "sha256": "f73f4b2c1cfdf26bc4e767ad103ba10b271e47df54425138d5530ce7af9cbd10"
+    "sha256": "cc3cff0bc380586536f258369245d417bee9064bc44ba27049b2cfee6ca82cac"
   },
   {
     "path": "pc-stats.mjs",
@@ -437,7 +465,7 @@
   },
   {
     "path": "profile.mjs",
-    "sha256": "3f5c7acb52dcdfa6a91263448a18a1d494a34607fc74a77c29d0ab98375224b7"
+    "sha256": "f18efaa18a551e9ea747b2d1432d631d3d7d4332d18c1c9dcc6b31718fc80819"
   },
   {
     "path": "riley-client.mjs",
@@ -453,7 +481,7 @@
   },
   {
     "path": "screenshot.mjs",
-    "sha256": "5bf57048b4dc33624c7ea1e5b64e5da60fb6b0df22ff9bc68b3d8c5db0e6ea6a"
+    "sha256": "12d9af41b1d7b953c27556848afe1731b45ed3fb2dcc444a2a1e9ad926eb1a0a"
   },
   {
     "path": "screenshot.test.mjs",
@@ -565,7 +593,7 @@
   },
   {
     "path": "tools/orbit-screen.mjs",
-    "sha256": "c7f04dc83a2620a329f28bc17c04448ed719c9741541cdaccdd0e225283af3d3"
+    "sha256": "5df19cb9733af2e446c92689acd001600a046bee19753b0337c6ebe37fd96e96"
   },
   {
     "path": "voice-proxy.mjs",
@@ -573,7 +601,7 @@
   },
   {
     "path": "voice-relay.mjs",
-    "sha256": "6f4705f426dfd578de9e42d517e1c56b2594d79ad84c5a5dfba3a1fd7df893e3"
+    "sha256": "898b3006fb7d2d17905f6fdfbd5d334e49ecf20581465c6f4d8a95acd88ca3cd"
   },
   {
     "path": "voice-screen.test.mjs",

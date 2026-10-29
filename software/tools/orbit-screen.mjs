@@ -8,4 +8,4 @@ const console_='http://127.0.0.1:8910';
 const response=await fetch(console_+'/api/orbit/screen',{method:'POST',headers:{'Content-Type':'application/json',Origin:console_},body:JSON.stringify(body)});
 const result=await response.json();
 if(!response.ok){console.error(result.error||response.status);process.exit(1);}
-console.log(`${result.file} (${result.width} x ${result.height})`);
+console.log(`${result.file} (${result.width} x ${result.height}, rotation ${result.rot})`);

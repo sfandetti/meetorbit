@@ -44,7 +44,7 @@ template<class Has,class Arg> void companionApply(Has has,Arg arg) {
   if(has("privacy_browsers"))privacyBrowserCount=max(0,int(arg("privacy_browsers").toInt()));
   if(has("owner")){String v=arg("owner").substring(0,24);if(v.length()&&v!=ownerName){ownerName=v;prefs.putString("owner",v);}}
   if(has("startup_page")){int v=constrain(arg("startup_page").toInt(),0,20);if(v!=startupPage){startupPage=v;prefs.putInt("startupPage",v);}}
-  if(has("enabled")){uint32_t v=((strtoul(arg("enabled").c_str(),nullptr,10)&((1UL<<21)-1))|(1UL<<21)|(1UL<<22)|(1UL<<23))&~(1UL<<16);if(v!=enabledPages){enabledPages=v;prefs.putUInt("enabled",v);if(page<count&&!(v&(1UL<<page)))nextPage(1);}}
+  if(has("enabled")){uint32_t v=((strtoul(arg("enabled").c_str(),nullptr,10)&((1UL<<21)-1))|(1UL<<21)|(1UL<<22)|(1UL<<23)|(1UL<<24)|(1UL<<25)|(1UL<<26)|(1UL<<27))&~(1UL<<16);if(v!=enabledPages){enabledPages=v;prefs.putUInt("enabled",v);if(page<count&&!(v&(1UL<<page)))nextPage(1);}}
   if(has("theme")){int v=constrain(arg("theme").toInt(),0,3);if(v!=themeIndex){themeIndex=v;prefs.putInt("theme",v);applyTheme();}}
   if(has("palette")){int v=constrain(arg("palette").toInt(),0,4);if(v!=colorIndex){colorIndex=v;applyTheme();prefs.putInt("color",v);}}
   if(has("brightness")){int v=constrain(arg("brightness").toInt(),5,100);if(v!=brightness){brightness=v;prefs.putInt("brightness",v);ledcWrite(21,v*255/100);}}
@@ -53,6 +53,7 @@ template<class Has,class Arg> void companionApply(Has has,Arg arg) {
   if(has("camera_armed"))sentryArmed=arg("camera_armed")=="1";
   if(has("camera_motion"))cameraMotion=constrain(arg("camera_motion").toFloat(),0,100);
   if(has("camera_clips"))cameraClips=arg("camera_clips").toInt();
+  if(has("home_keys"))homeSet(arg("home_keys"),true);
   if(has("screen"))setPage(arg("screen").toInt());
 }
 extern String voiceToken;  // voice_link.h: the device link token, also accepted for Sentry camera frames
@@ -90,7 +91,7 @@ void companionSetup() {
     draw();
     const uint8_t *frame=(const uint8_t*)ui.getPointer();size_t bytes=size_t(W)*H;
     if(!frame){companionServer.send(500,"text/plain","No frame");return;}
-    companionServer.sendHeader("X-Width",String(W));companionServer.sendHeader("X-Height",String(H));
+    extern uint8_t screenRot;companionServer.sendHeader("X-Rot",String(screenRot));companionServer.sendHeader("X-Width",String(W));companionServer.sendHeader("X-Height",String(H));
     companionServer.setContentLength(bytes);companionServer.send(200,"application/octet-stream","");
     for(size_t at=0;at<bytes;at+=4096){companionServer.sendContent((const char*)frame+at,min<size_t>(4096,bytes-at));esp_task_wdt_reset();}
   });

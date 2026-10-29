@@ -9,7 +9,7 @@ import {spawn} from 'node:child_process';
 import {createSentry,listCameras} from './sentry.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createSettings,dataDir} from './settings.mjs';
-import {PAGES,SELECTABLE,THEMES,PALETTES,TIMEZONES,validateProfile,importCompanionProfile} from './profile.mjs';
+import {PAGES,SELECTABLE,THEMES,PALETTES,TIMEZONES,HOME_SHORTCUTS,HOME_MAX,validateProfile,importCompanionProfile} from './profile.mjs';
 import {attachVoiceRelay} from './voice-relay.mjs';
 import {attachVoiceProxy} from './voice-proxy.mjs';
 import {createDeviceLink,pressMediaKey,systemVolume,LED_EFFECTS,MEDIA_KEYS} from './device-link.mjs';
@@ -27,6 +27,7 @@ import {bundledFirmware,updateFirmware} from './firmware-update.mjs';
 import {orbitScreen} from './screenshot.mjs';
 import {createHue,hueTool,hueMessage,matchName} from './hue.mjs';
 import {createHueModes} from './hue-modes.mjs';
+import {orbitTool,pcAudioTool,runOrbitTool,runPcAudioTool} from './orbit-tools.mjs';
 
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const PORT=Number(process.env.ORBIT_PORT||8910);
@@ -94,15 +95,23 @@ setInterval(()=>{if(link?.status().online)hueRefresh();},8000).unref();
 // Changing a room by hand ends a running mode without putting the old lights back.
 async function hueEvent(e){
   if(e.type==='hue-music'){hueModes.music(e);return;}
+  console.log(`${new Date().toLocaleTimeString()} Hue from Orbit: ${e.type} ${e.mode??e.id??''}${e.rooms?' in '+e.rooms:''}`);
   const id=String(e.id||'0').replace(/\D/g,'')||'0';
-  if(e.type==='hue-toggle'){hueModes.stop(false);await hueModes.remember(roomLights(id));await hue.toggle(id,e.on===true).catch(()=>{});}
+  // ALL OFF / ALL ON (id 0) is a fresh start: the remembered lights are dropped, so STOP has nothing to put back
+  // (it used to switch every light on again a few seconds after ALL OFF).
+  if(e.type==='hue-toggle'&&id==='0'){hueModes.stop(false);hueModes.forget();await hue.toggle(id,e.on===true).catch(()=>{});}
+  else if(e.type==='hue-toggle'){hueModes.stop(false);await hueModes.remember(roomLights(id));await hue.toggle(id,e.on===true).catch(()=>{});}
   if(e.type==='hue-bri'){hueModes.stop(false);await hueModes.remember(roomLights(id));await hue.brightness(id,Number(e.bri)).catch(()=>{});}
   if(e.type==='hue-mode')await hueModes.start(String(e.mode||''),String(e.rooms||'').split(',').filter(Boolean)).catch(()=>{});
   await hueRefresh(true);
 }
 const relay=attachVoiceRelay(relayServer,{port:relayPort,initialKey:settings.secret('openai_key'),
-  getTools:async()=>{if(!settings.has('hue_key'))return [];await hue.refresh().catch(()=>{});return [hueTool(hue.describe())];},
-  runTool:async(name,args)=>{if(name!=='control_lights')return 'Unknown tool.';
+  // Orbit and the PC's sound are always there; the Hue lights once the bridge is paired.
+  getTools:async()=>{const tools=[orbitTool(),pcAudioTool()];if(!settings.has('hue_key'))return tools;await hue.refresh().catch(()=>{});return [...tools,hueTool(hue.describe())];},
+  runTool:async(name,args)=>{
+    if(name==='control_orbit'||name==='control_pc_audio'){console.log(`${new Date().toLocaleTimeString()} Voice ${name==='control_orbit'?'controls Orbit':'controls PC sound'}: ${JSON.stringify(args)}`);
+      return name==='control_orbit'?runOrbitTool(args,{send:data=>!!link?.send(data)}):runPcAudioTool(args,{mediaKey:pressMediaKey,volume:systemVolume});}
+    if(name!=='control_lights')return 'Unknown tool.';console.log(`${new Date().toLocaleTimeString()} Hue from the voice: ${JSON.stringify(args)}`);
     if(args.mode){let rooms=[];if(args.room){const r=matchName(hue.rooms(),args.room);if(!r)return `There is no Hue room called ${args.room}.`;rooms=[r.id];}return hueModes.start(args.mode,rooms);}
     hueModes.stop(false);const r=args.room?matchName(hue.rooms(),args.room):null;await hueModes.remember(roomLights(r?.id||'0'));
     const said=await hue.control(args);pushHue();return said;}});
@@ -208,7 +217,7 @@ const routes=new Map();  // "METHOD /path" -> handler(body, request) -> result o
 const route=(method,p,fn)=>routes.set(method+' '+p,fn);
 function publicState(){
   const p=settings.profile();
-  return {product:'Orbit',version:VERSION,profile:p,pages:PAGES,selectable:SELECTABLE,themes:THEMES,palettes:PALETTES,timezones:TIMEZONES,ledEffects:LED_EFFECTS,
+  return {product:'Orbit',version:VERSION,profile:p,pages:PAGES,selectable:SELECTABLE,homeShortcuts:HOME_SHORTCUTS,homeMax:HOME_MAX,themes:THEMES,palettes:PALETTES,timezones:TIMEZONES,ledEffects:LED_EFFECTS,
     browsers:BROWSERS,browserParts:Object.keys(BROWSER_PARTS),systemActions:SYSTEM_ACTIONS,
     keys:Object.fromEntries(Object.entries(PROVIDER_KEYS).map(([provider,name])=>[provider,settings.has(name)])),keyError:settings.secretError(),
     pinEnabled:settings.has('pin_hash'),sentry:sentry.status(),device:link?.status()||{online:false,error:'Device link unavailable'},deviceState:feed.deviceState(),
@@ -246,6 +255,7 @@ route('GET','/api/voice/status',()=>relay.status());
 const needLink=()=>{if(!link)throw Error('The device link could not start. Check this PC is on your home network, then restart Orbit.');return link;};
 route('POST','/api/device/leds',body=>needLink().setLeds(body));
 route('POST','/api/device/pair-start',()=>needLink().startPairing());
+route('POST','/api/device/ask',body=>needLink().ask(body.text||''));
 route('POST','/api/device/test-tone',body=>needLink().testTone(body.on!==false));
 route('POST','/api/device/relink',body=>needLink().relink(body.code));
 route('POST','/api/device/screen',body=>{const page=Number(body.page);if(!SELECTABLE.includes(page)&&![21,22].includes(page))throw Error('Unknown screen.');if(!needLink().send({type:'feed',screen:String(page)}))throw Error('Orbit is not connected.');return {sent:true};});
@@ -309,7 +319,7 @@ route('POST','/api/orbit/screen',async body=>{
   const device=needLink(),s=device.status();if(!s.online||!s.deviceIp)throw Error('Orbit is not connected.');
   const {token}=await device.usbConfig(),shot=await orbitScreen({deviceIp:s.deviceIp,httpPort:s.httpPort,token,rot:body?.rot,page:body?.page,view:body?.view,tap:body?.tap});
   const name=String(body?.name||'orbit').replace(/[^\w-]/g,'').slice(0,40)||'orbit',dir=path.join(DATA,'screens');await mkdir(dir,{recursive:true});
-  const file=path.join(dir,name+'.png');await writeFile(file,shot.png);return {file,width:shot.width,height:shot.height};
+  const file=path.join(dir,name+'.png');await writeFile(file,shot.png);return {file,width:shot.width,height:shot.height,rot:shot.rot};
 });
 route('POST','/api/folder/browse',async()=>({folder:await powershell("Add-Type -AssemblyName System.Windows.Forms;$p=[System.Windows.Forms.FolderBrowserDialog]::new();$p.Description='Choose a folder whose contents Privacy cleanup may permanently delete';$p.ShowNewFolderButton=$false;if($p.ShowDialog() -eq 'OK'){$p.SelectedPath};$p.Dispose()",{timeout:300000})}));
 

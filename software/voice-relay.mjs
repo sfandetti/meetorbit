@@ -16,7 +16,7 @@ export function decodeAudio(value){
 // The key comes only from the dashboard. A stale Windows OPENAI_API_KEY used to override every saved key.
 // Tools the voice can use (getTools: the current list, e.g. control_lights once Hue is paired; runTool:
 // does one call and returns what happened, in words the model can repeat).
-export const TOOL_NOTE="You can control the user's Philips Hue lights with the control_lights tool: use it whenever they ask to change the lights, then confirm in a few words. If it reports a problem, say so.";
+export const TOOL_NOTE="You have tools: control_orbit opens Orbit's screens, rotates its picture and switches its own ring lights; control_pc_audio plays, pauses or skips music in the PC's default player and sets the PC volume; control_lights (when listed) controls the Philips Hue lights. Use them whenever the user asks, then confirm in a few words. If a tool reports a problem, say so.";
 export function attachVoiceRelay(server,{port,initialKey='',connectUpstream,getTools=async()=>[],runTool=async()=>'Not available.'}={}){
   let apiKey=initialKey;const clients=new Set();
   const wss=new WebSocketServer({noServer:true,maxPayload:24576});

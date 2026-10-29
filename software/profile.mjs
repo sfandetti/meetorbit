@@ -3,6 +3,12 @@
 // the firmware always hides it and always shows 21 (voice + console) and 22 (light show).
 export const PAGES=['Welcome','Prism clock','Split clock','PC matrix','CPU pulse','GPU engine','Thermals','Network','Memory','Storage','Power','Six channels','Type clock','Binary clock','Focus timer','Stopwatch','AI desk (retired)','Music remote','App launcher','Sentry','Privacy guard'];
 export const SELECTABLE=PAGES.map((_,i)=>i).filter(i=>i!==16);
+// Tiles for Orbit's home screen (firmware home_keys.h): a screen's page number, 109 the visualizer, 200 rotate, 201 ring lights on/off.
+export const HOME_SHORTCUTS=[[23,'Hue lights'],[21,'AI voice'],[17,'Music'],[200,'Rotate'],[22,'Light show'],[24,'Alarm clock'],[25,'Sound machine'],[26,'Orbit Sweep'],
+  [27,'Orbit Run'],[109,'Visualizer'],[201,'Ring lights on/off'],[1,'Prism clock'],[2,'Split clock'],[12,'Type clock'],[13,'Binary clock'],[14,'Focus timer'],[15,'Stopwatch'],
+  [3,'PC matrix'],[4,'CPU pulse'],[5,'GPU engine'],[6,'Thermals'],[7,'Network'],[8,'Memory'],[9,'Storage'],[10,'Power'],[11,'Six channels'],[18,'App launcher'],[19,'Sentry'],[20,'Privacy guard']]
+  .map(([id,name])=>({id,name}));
+export const HOME_MAX=8;
 export const THEMES=['Office','Retro','Cyberpunk','Bubblegum'];
 export const PALETTES=['Glacier','Electric orchid','Acid lime','Solar amber','Lavender'];
 // Who Orbit talks to (engines.mjs).
@@ -10,7 +16,7 @@ export const ORBIT_ENGINES=['chatgpt','claude','deepseek','cursor','codex'];
 export const AI_PROVIDERS=['openai','claude','deepseek','cursor'];
 export const ALARM_SOUNDS=['siren','retro','intruder'];
 export const TIMEZONES={'EST5EDT,M3.2.0,M11.1.0':'Eastern US','CST6CDT,M3.2.0,M11.1.0':'Central US','MST7MDT,M3.2.0,M11.1.0':'Mountain US','PST8PDT,M3.2.0,M11.1.0':'Pacific US','UTC0':'UTC','GMT0BST,M3.5.0/1,M10.5.0/2':'United Kingdom','CET-1CEST,M3.5.0,M10.5.0/3':'Central Europe'};
-export const DEFAULT_PROFILE={name:'Friend',timezone:'EST5EDT,M3.2.0,M11.1.0',theme:0,palette:0,brightness:70,screens:SELECTABLE,startup_page:0,quick_taps:[17,16,18],startup:false,
+export const DEFAULT_PROFILE={name:'Friend',timezone:'EST5EDT,M3.2.0,M11.1.0',theme:0,palette:0,brightness:70,screens:SELECTABLE,startup_page:0,quick_taps:[17,16,18],home_keys:[23,17,200,22,24,25,26],startup:false,
   ai_provider:'openai',provider_models:{},cursor_path:'',alarm_enabled:false,alarm_sound:'siren',alarm_loop:false,camera:'',record_timestamp:true,record_camera_name:true,motion_sensitivity:2,recording_limit_mb:1024,
   apps:[],privacy_folders:[],privacy_browsers:[],orbit_engine:'chatgpt'};
 
@@ -29,6 +35,8 @@ export function validateProfile(data={},previous=DEFAULT_PROFILE){
   out.screens=[...new Set([...out.screens.filter(p=>p!==16),0,out.startup_page])].sort((a,b)=>a-b);
   // Quick Taps: -1 = off. The firmware opens AI voice (page 21) for 16, so 16 means "AI voice" here.
   if(has('quick_taps')){const q=data.quick_taps;if(!Array.isArray(q)||q.length!==3||q.some(v=>!Number.isInteger(v)||v<-1||v>=PAGES.length))throw Error('Choose a screen or Off for each Quick Tap.');out.quick_taps=q;}
+  if(has('home_keys')){const k=data.home_keys,ids=HOME_SHORTCUTS.map(s=>s.id);
+    if(!Array.isArray(k)||k.length>HOME_MAX||k.some(v=>!ids.includes(v))||new Set(k).size!==k.length)throw Error(`Choose up to ${HOME_MAX} different home shortcuts.`);out.home_keys=k;}
   if(has('startup'))out.startup=data.startup===true;
   if(has('ai_provider')){if(!AI_PROVIDERS.includes(data.ai_provider))throw Error('Choose OpenAI, Claude, DeepSeek or Cursor.');out.ai_provider=data.ai_provider;}
   if(has('provider_models')){const m=data.provider_models;if(!m||typeof m!=='object'||Array.isArray(m))throw Error('Invalid saved model choices.');out.provider_models=Object.fromEntries(AI_PROVIDERS.map(p=>[p,String(m[p]||'').slice(0,100)]));}

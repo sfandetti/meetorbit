@@ -18,6 +18,7 @@ export function feedFields(profile,{pin={},desk=null,ack=null,media='Unknown',ca
     privacy_folders:profile.privacy_folders.length,privacy_browsers:profile.privacy_browsers.length,
     camera_state:camera.state||'Off',camera_armed:camera.armed?1:0,camera_motion:camera.motion||0,camera_clips:camera.clips||0};
   profile.quick_taps.forEach((v,i)=>{f['quick'+i]=v;});
+  if(Array.isArray(profile.home_keys))f.home_keys=profile.home_keys.join(',');
   for(let i=0;i<6;i++)f['app'+i]=profile.apps[i]?.name||'Not set';
   if(desk){Object.assign(f,{ai_id:desk.id,ai_title:desk.title,ai_body:desk.body,ai_attention:desk.attention&&desk.expires>now?1:0,ai_expired:desk.expires<=now?1:0});}
   else f.ai_clear=1;

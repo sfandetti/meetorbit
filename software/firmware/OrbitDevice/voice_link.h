@@ -96,7 +96,7 @@ String jsonField(const char *json,size_t len,const char *name){
 bool voiceOpen(bool tx){
  soundStop();
  i2s_chan_config_t ch=I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_0,I2S_ROLE_MASTER);
- ch.dma_desc_num=6;ch.dma_frame_num=240;ch.auto_clear=true;
+ ch.dma_desc_num=4;ch.dma_frame_num=240;ch.auto_clear=true;  // 4 not 6: the 0.5 s stream buffer is the cushion; Wi-Fi needs the memory
  i2s_chan_handle_t *h=tx?&voiceTx:&voiceRx;
  if(i2s_new_channel(&ch,tx?h:nullptr,tx?nullptr:h)!=ESP_OK){*h=nullptr;return false;}
  i2s_std_config_t cfg={};cfg.clk_cfg=I2S_STD_CLK_DEFAULT_CONFIG(tx?VOICE_SPEAKER_RATE:VOICE_RATE);
@@ -124,12 +124,16 @@ void voiceMicFeed(void*){
  }
  voiceMicTask=nullptr;vTaskDelete(nullptr);
 }
+volatile uint32_t vsWriteMax=0,vsPlayed=0;uint32_t vsHeldSince=0;  // health while speaking: slowest speaker write, bytes played
 void voicePlayFeed(void*){
  static int16_t in[240];static int32_t out[960];
- int32_t previous=0;bool havePrevious=false;
+ int32_t previous=0;bool havePrevious=false;bool filling=true;uint32_t fillAt=millis();
  while(voicePlayRun){
+  // A cushion: wait for 0.2 s of reply (or the end of it) before playing, and again after running dry,
+  // so a late Wi-Fi packet makes one short pause instead of a stutter.
+  if(filling){if(xStreamBufferBytesAvailable(voicePlayBuf)<9600&&!voiceDone&&millis()-fillAt<600){vTaskDelay(pdMS_TO_TICKS(10));continue;}filling=false;}
   size_t got=xStreamBufferReceive(voicePlayBuf,in,sizeof(in),pdMS_TO_TICKS(40));size_t n=got/2;
-  if(!n){if(voiceDone)break;continue;}
+  if(!n){if(voiceDone)break;if(havePrevious)vsUnder++;filling=true;fillAt=millis();continue;}
   // Stateful 2x linear interpolation: retain the previous sample across network chunks.
   // Two 48 kHz stereo frames per 24 kHz mono sample preserve pitch and duration.
   int32_t loudest=0;
@@ -140,7 +144,7 @@ void voicePlayFeed(void*){
    out[i*4]=out[i*4+1]=a;out[i*4+2]=out[i*4+3]=b;previous=current;
   }
   voiceOutPeak=loudest;
-  size_t written=0;i2s_channel_write(voiceTx,out,n*16,&written,200);
+  size_t written=0;uint32_t wt=millis();i2s_channel_write(voiceTx,out,n*16,&written,200);wt=millis()-wt;if(wt>vsWriteMax)vsWriteMax=wt;vsPlayed+=n*2;
  }
  voiceOutPeak=0;
  if(voicePlayRun)vTaskDelay(pdMS_TO_TICKS(120));  // let the last DMA buffers play out
@@ -189,20 +193,24 @@ bool voiceMicOpen(){
 }
 void voiceMicClose(){voiceMicStop();if(voiceMicBuf){vStreamBufferDelete(voiceMicBuf);voiceMicBuf=nullptr;}}
 void voiceBegin(){
- if(voiceState==V_SPEAKING||voiceState==V_THINKING){voicePlayStop();wsText("{\"type\":\"cancel\"}");}
+ uint32_t t0=millis(),t1=t0,t2=t0;  // how long each part of starting a turn takes (reported when slow)
+ if(voiceState==V_SPEAKING||voiceState==V_THINKING){voicePlayStop();t1=millis();wsText("{\"type\":\"cancel\"}");}
+ t1=t1==t0?millis():t1;t2=millis();
  if(!voiceMicOpen()){voiceState=V_IDLE;return;}
+ uint32_t t3=millis();
  // In the console view the turn is a command for the coding chat: transcribed only, then reviewed.
  // With Codex chosen, a turn is a command for the coding chat: transcribed only, then reviewed (SEND/CANCEL).
  bool command=engSel=="codex";
  wsText(command?"{\"type\":\"begin\",\"console\":true}":"{\"type\":\"begin\"}");if(command){conDraft="";conNote="";}
  voiceHeard="";voiceReply="";voiceNote="";voiceTurnAt=millis();voiceState=V_LISTENING;
+ uint32_t t4=millis();if(t4-t0>150){char j[120];snprintf(j,sizeof(j),"{\"type\":\"slow-begin\",\"stop\":%lu,\"cancel\":%lu,\"mic\":%lu,\"send\":%lu}",(unsigned long)(t1-t0),(unsigned long)(t2-t1),(unsigned long)(t3-t2),(unsigned long)(t4-t3));wsText(j);}
  Serial.println("VOICE LISTENING");
 }
 void voiceEnd(){
  voiceMicStop();voiceSendMic(true);voiceMicClose();
  // The relay needs at least 100 ms of audio; a quick tap just cancels.
  if(millis()-voiceTurnAt<750){wsText("{\"type\":\"cancel\"}");voiceState=V_IDLE;voiceNote="Hold longer while you speak.";Serial.println("VOICE TOO SHORT");return;}
- wsText("{\"type\":\"end\"}");voiceDone=false;voiceState=V_THINKING;voiceTurnAt=millis();
+ wsText("{\"type\":\"end\"}");voiceDone=false;voiceState=V_THINKING;voiceTurnAt=millis();vsMaxGap=vsLoopMax=vsUnder=0;
  Serial.printf("VOICE SENT PEAK=%lu\n",(unsigned long)voicePeak);
 }
 
@@ -215,6 +223,8 @@ void voiceMessage(){
  if(type=="hello"){String name=jsonField(j,wsNeed,"name").substring(0,24);if(name.length()&&name!=pairedName){pairedName=name;prefs.putString("vname",name);}return;}
  if(type=="leds"){ledFromJson(j,wsNeed);return;}
  if(type=="hue"){hueFromJson(j,wsNeed);return;}
+ // The voice controlling Orbit itself (orbit-tools.mjs): rotate the picture, the ring lights on or off.
+ if(type=="orbit-do"){String a=jsonField(j,wsNeed,"action");if(a=="rotate")rotateScreen();else if(a=="ring-on"||a=="ring-off"){ledOn=a=="ring-on";ledSave(true);}return;}
  // Speaker test tone over Wi-Fi (the 60 s, 440 Hz repeating beep from audio_diag.h); "beep-stop" ends it.
  if(type=="beep"){if(voiceState==V_IDLE){speakerTest(true);wsText("{\"type\":\"beep-started\"}");}return;}
  if(type=="beep-stop"){speakerStop();return;}
@@ -264,15 +274,21 @@ void voiceMessage(){
  else if(type=="transcript")voiceHeard=jsonField(j,wsNeed,"text");
  else if(type=="reply")voiceReply=jsonField(j,wsNeed,"text");
  else if(type=="speaking"&&voiceState==V_THINKING)voiceState=V_SPEAKING;
+ else if(type=="think"&&voiceState==V_IDLE){voiceDone=false;voiceState=V_THINKING;voiceTurnAt=millis();vsMaxGap=vsLoopMax=vsUnder=0;}  // a typed question from the PC
  else if(type=="done"){voiceDone=true;if(!voiceTx&&voiceState!=V_LISTENING)voiceState=V_IDLE;}
  else if(type=="error"){voiceNote=jsonField(j,wsNeed,"text");if(voiceState==V_THINKING){voiceState=V_IDLE;voicePlayStop();}}
  if(type.length()&&type!="task"&&type!="requests")Serial.printf("VOICE %s\n",type.c_str());
 }
 // Reply audio: queue into the playback buffer; if it's full, hold the frame and stop reading the socket.
+String slowWhat;  // what the voice link was doing in its last slow moment (sent with the freeze report)
+uint32_t voiceAudioAt=0;  // when reply audio last arrived
+// While Orbit talks the screen ignores touches (wait for the end). If the audio stops coming for 2 s the
+// screen works again, so a reply that never finishes can't lock it.
+bool voiceBusy(){return voiceState==V_SPEAKING&&millis()-voiceAudioAt<2000;}
 bool voiceAudio(){
  if(voiceState==V_LISTENING||voiceState==V_IDLE)return true;  // stale audio from a cancelled reply
  if(!voiceTx&&!voicePlayStart())return true;
- voiceState=V_SPEAKING;
+ voiceState=V_SPEAKING;voiceAudioAt=millis();
  if(xStreamBufferSpacesAvailable(voicePlayBuf)<wsNeed)return false;
  xStreamBufferSend(voicePlayBuf,wsRx,wsNeed&~size_t(1),0);return true;
 }
@@ -300,7 +316,7 @@ void voiceLoop(){
  if(voiceState==V_SPEAKING)faceSpokeAt=now;  // the reply's mood colour lingers a few seconds after this
  // FACE view: hold anywhere but EXIT to talk, like the voice page: listening starts after a short press
  // and the turn is sent 0.5 s after you let go (code below).
- bool pen=digitalRead(36)==LOW;
+ bool pen=digitalRead(36)==LOW&&!voiceBusy();
  if(page==21&&voiceView==2&&!securityLocked){
   bool exitCorner=faceDownX<60&&faceDownY>=H-40;  // the EXIT button
   if(pen){if(!faceDown){faceDown=true;faceDownAt=now;faceHold=false;}faceSeenAt=now;faceDownX=touchX;faceDownY=touchY;
@@ -324,15 +340,30 @@ void voiceLoop(){
   }
   lastPass=now;
  }
+ uint32_t secAt=millis();if(secAt-now>200&&!slowWhat.length())slowWhat=String(secAt-now)+" ms before messages";
  loopStep=55;for(int i=0;i<8;i++){
   if(wsHeld){if(!voiceAudio())break;wsHeld=false;continue;}
-  if(!wsPoll())break;
-  if(wsOp==0x2){if(!voiceAudio()){wsHeld=true;break;}}else voiceMessage();
+  uint32_t t=millis();if(!wsPoll())break;
+  if(t-secAt>200&&!slowWhat.length())slowWhat=String(t-secAt)+" ms reading";
+  t=millis();String what;
+  if(wsOp==0x2){if(!voiceAudio()){wsHeld=true;break;}what="audio";}else{what=wsOp==1?jsonField((const char*)wsRx,wsNeed,"type").substring(0,16):String("op ")+wsOp;voiceMessage();}
+  if(millis()-t>150&&!slowWhat.length())slowWhat=String(millis()-t)+" ms on "+what;
   if(voiceState==V_OFF)return;
+  secAt=millis();
  }
+ if(stallMs&&voiceState>=V_IDLE){char j[170];snprintf(j,sizeof(j),"{\"type\":\"stall\",\"ms\":%lu,\"step\":%lu,\"vs\":%d,\"ago\":%lu,\"what\":\"%s\"}",(unsigned long)stallMs,(unsigned long)stallStep,voiceState,(unsigned long)(millis()-stallAt),slowWhat.c_str());stallMs=0;slowWhat="";wsText(j);}
+ uint32_t endAt=millis();
+ // While speaking, every 2 s: how full the playback buffer is, whether the link is held, the slowest speaker write.
+ static uint32_t healthAt=0;if(wsHeld&&!vsHeldSince)vsHeldSince=endAt;if(!wsHeld)vsHeldSince=0;
+ if(voiceState==V_SPEAKING&&endAt-healthAt>=2000){healthAt=endAt;char j[200];snprintf(j,sizeof(j),"{\"type\":\"voice-health\",\"buf\":%u,\"held\":%lu,\"task\":%d,\"done\":%d,\"wmax\":%lu,\"played\":%lu,\"heap\":%u}",
+  voicePlayBuf?(unsigned)xStreamBufferBytesAvailable(voicePlayBuf):0u,(unsigned long)(vsHeldSince?endAt-vsHeldSince:0),voicePlayTask!=nullptr,voiceDone,(unsigned long)vsWriteMax,(unsigned long)vsPlayed,ESP.getFreeHeap());vsWriteMax=0;vsPlayed=0;wsText(j);}
  loopStep=56;// Playback finished: release the speaker so the mic or diagnostics can use I2S again.
- if(voiceTx&&!voicePlayTask){voicePlayStop();if(voiceState==V_SPEAKING)voiceState=V_IDLE;}
+ if(voiceTx&&!voicePlayTask){uint32_t t=millis();voicePlayStop();if(voiceState==V_SPEAKING)voiceState=V_IDLE;
+  char j[150];snprintf(j,sizeof(j),"{\"type\":\"voice-stats\",\"gap\":%lu,\"step\":%lu,\"loop\":%lu,\"under\":%lu,\"stopMs\":%lu,\"heap\":%u}",
+   (unsigned long)vsMaxGap,(unsigned long)vsGapStep,(unsigned long)vsLoopMax,(unsigned long)vsUnder,(unsigned long)(millis()-t),ESP.getFreeHeap());wsText(j);
+  vsMaxGap=vsLoopMax=vsUnder=0;}
  if(voiceState==V_THINKING&&int32_t(millis()-voiceTurnAt)>30000){voiceState=V_IDLE;voiceNote="No reply. Try again.";}
+ if(millis()-endAt>200&&!slowWhat.length())slowWhat=String(millis()-endAt)+" ms closing the speaker";
 }
 void voiceSetup(){pairedName=prefs.getString("vname","");
  voiceHost=prefs.getString("vhost","");voicePort=prefs.getUShort("vport",0);voiceToken=prefs.getString("vtok","");

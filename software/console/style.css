@@ -50,3 +50,13 @@ body[data-theme="Cyberpunk"] article{border-radius:0;border-top:3px solid var(--
 body[data-theme="Bubblegum"] article{border-radius:24px;border:2px solid var(--line)}body[data-theme="Bubblegum"] button{border-radius:18px}body[data-theme="Bubblegum"] h2{font-weight:600}body[data-theme="Bubblegum"] .device-preview{border-radius:28px;box-shadow:6px 6px 0 var(--line)}
 
 .two+.two{margin-top:22px}#hue-rooms{flex-wrap:wrap}
+
+/* Home shortcuts editor: Orbit's home grid (4 across, like Orbit lying down) and the pool of other tiles. */
+.home-editor{display:grid;gap:14px}
+.home-editor h4{margin:4px 0 8px;font-size:.85rem;opacity:.75}
+.home-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-height:120px;padding:8px;border:1px dashed currentColor;border-radius:10px}
+.home-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:8px;border:1px dashed currentColor;border-radius:10px;opacity:.9}
+.home-chip{cursor:grab;padding:10px 8px;min-height:48px;font-size:.85rem;text-align:center}
+.home-pool .home-chip{min-height:0;padding:6px 10px}
+.home-slot{min-height:48px;border-radius:8px;border:1px dashed currentColor;opacity:.3}
+.home-pinned{cursor:default;opacity:.6;display:flex;align-items:center;justify-content:center;border:1px solid currentColor;border-radius:8px}

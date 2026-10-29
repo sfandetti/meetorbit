@@ -24,7 +24,7 @@ struct TouchGesture {
     }
     // The dedicated icon must resolve the release between two quick taps.
     // Keep the stronger noise filter everywhere else on the screen.
-    uint32_t releaseMs=(startX>=W-144||startX<38)&&startY<32?60:120;
+    uint32_t releaseMs=startX<38&&startY<32?60:120;
     if(!down||uint32_t(now-lastContact)<releaseMs)return {NONE,0,0,0};
     down=false;
     // A remotely displayed attention message cancels the gesture begun on

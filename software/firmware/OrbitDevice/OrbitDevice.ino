@@ -1,5 +1,5 @@
 // Orbit Rectangular Showcase / CYD-L. Live readings, square instruments,
-// 24 main screens and a separate Setup menu. No simulated voice features.
+// 28 main screens and a separate Setup menu. No simulated voice features.
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
@@ -14,10 +14,10 @@ TFT_eSprite ui(&tft);
 SPIClass touchBus(VSPI);
 XPT2046_Touchscreen touch(33,36);
 Preferences prefs;
-const int count=24;
+const int count=28;
 String ownerName="Friend",ownerTZ="EST5EDT,M3.2.0,M11.1.0";
-uint32_t enabledPages=(1UL<<24)-1;
-const char *names[count]={"ORBIT COMPANION","PRISM CLOCK","SPLIT CLOCK","PC MATRIX","CPU PULSE","GPU ENGINE","THERMAL STRIP","NETWORK STREAM","MEMORY BLOCKS","STORAGE TRAFFIC","POWER DRIVE","SIX CHANNELS","TYPE CLOCK","BINARY CLOCK","FOCUS","STOPWATCH","AI DESK","MUSIC REMOTE","APP LAUNCHER","SENTRY","PRIVACY GUARD","ORBIT COMPANION","LIGHT SHOW","HUE LIGHTS"};
+uint32_t enabledPages=(1UL<<28)-1;
+const char *names[count]={"ORBIT COMPANION","PRISM CLOCK","SPLIT CLOCK","PC MATRIX","CPU PULSE","GPU ENGINE","THERMAL STRIP","NETWORK STREAM","MEMORY BLOCKS","STORAGE TRAFFIC","POWER DRIVE","SIX CHANNELS","TYPE CLOCK","BINARY CLOCK","FOCUS","STOPWATCH","AI DESK","MUSIC REMOTE","APP LAUNCHER","SENTRY","PRIVACY GUARD","ORBIT COMPANION","LIGHT SHOW","HUE LIGHTS","ALARM CLOCK","SOUND MACHINE","ORBIT SWEEP","ORBIT RUN"};
 const char *setupNames[]={"SETUP","BRIGHTNESS","COLORS","WI-FI STATUS","NEARBY WI-FI","DEVICE MEMORY","TOUCH TEST","AI INBOX","PC CONNECTION","VISUALS"};
 uint16_t accents[]={0x07ff,0xf81f,0x87e0,0xfd20,0xaaff};
 int page=0,returnPage=0,startupPage=0,colorIndex=0,brightness=70;
@@ -26,15 +26,22 @@ int quickTargets[3]={17,16,18};uint32_t quickIconAt=0,mediaAt=0;bool mediaPlayin
 // Freeze diagnosis: the main loop records which step it is in (kept through a watchdog restart), and the
 // step from before the restart is reported to the PC as lastStep.
 RTC_NOINIT_ATTR uint32_t loopStep,loopStepMark;uint32_t lastStep=0;
+// Voice timing report: the longest stretch any one part of the loop took during a reply (and which part).
+uint32_t vsMaxGap=0,vsGapStep=0,vsLoopMax=0;volatile uint32_t vsUnder=0;
+uint32_t stallMs=0,stallStep=0,stallAt=0;  // the last freeze over 300 ms, reported to the PC by voiceLoop
+void loopMark(uint32_t s){static uint32_t at=0;uint32_t t=millis();if(t-at>vsMaxGap){vsMaxGap=t-at;vsGapStep=loopStep;}
+ if(at&&t-at>300&&!stallMs){stallMs=t-at;stallStep=loopStep;stallAt=t;}at=t;loopStep=s;}
 bool cameraFullscreen=false,buttonPressed=false;int pressedX=0,pressedY=0,pendingX=0,pendingY=0;uint32_t feedbackUntil=0;
 bool remoteBusy();
 void drawQuickIcon();
 void drawVoice();
 void drawLights();
 void lightTap(int x,int y);
-void hueFromJson(const char *j,size_t len);void drawHue();bool hueTap(int x,int y);bool hueLinked();bool hueOwnsTouch(int x,int y);bool hueAvailable();bool hueAnyOn();
+bool voiceBusy();void hueSetMode(const char *id);extern String hueMode;void hueFromJson(const char *j,size_t len);void drawHue();bool hueTap(int x,int y);bool hueLinked();bool hueOwnsTouch(int x,int y);bool hueAvailable();bool hueAnyOn();
+extern bool alarmRinging;void drawAlarm();void drawAlarmRing();bool alarmTap(int x,int y);void alarmRingTap(int x,int y);bool alarmOwnsTouch(int x,int y);void drawSleep();bool sleepTap(int x,int y);void drawSweep();bool swTap(int x,int y);bool swHold(int x,int y);bool swOwnsTouch(int x,int y);void drawRun();bool runTap(int x,int y);bool runOwnsTouch(int x,int y);
 void soundStop();void drawSound();void soundTap(int x,int y);void ledHue(uint8_t h,uint8_t out[3]);
-void speakerEnter();
+void speakerEnter();void rotateScreen();extern bool ledOn;void ledSave(bool fromOrbit);
+bool homeMusicOn();extern const uint16_t HOME_MUSIC,HOME_LIGHTS;void drawHome();bool homeTap(int x,int y);int homeTileAt(int x,int y);void homeSet(const String &list,bool save);void homeLoad();int homeSettingsKeyY();
 bool laptopMedia(const char *action);
 String pairStatusText();uint16_t pairStatusColor();bool pairPromptActive();void pairTouch(int x,int y);void drawPairOverlay();  // pair_link.h
 int remotePage=-1;  // page whose button started the pending action; only that page shows the spinner
@@ -61,11 +68,14 @@ void button(const String &s,int x,int y,int w=140,bool active=true,uint16_t cust
 // Main pages keep the top corners for the HOME (left) and AI + MUSIC + ROTATE (right) shortcut buttons.
 // Standing up there is no room beside them, so the title goes on its own line underneath (y 36-56).
 void header(const String &s,const String &right=""){
-  if(tall()&&page<count){ui.fillRect(10,40,4,12,accent);text(s,22,37,2,ink);text(right,W-8,41,1,muted,TR_DATUM);return;}
+  // Standing up the title row is drawn 24 px lower and shifted up into the house's row (yShift).
+  if(tall()&&page<count){ui.fillRect(42,37,4,12,accent);ui.setFreeFont(themeFont(2));int end=54+ui.textWidth(s);
+    if(end+8>W-8-6*int(right.length())&&54+ui.textWidth(s)>0){text(s,54,39,1,ink);end=54+6*int(s.length());}else text(s,54,34,2,ink);
+    if(end+8<=W-8-6*int(right.length()))text(right,W-8,38,1,muted,TR_DATUM);return;}
   // Lying down a long title and its status can meet; the title wins.
   // With the Hue bulb in the corner there is less room; a title that would run under it gets the small font.
-  int x=page<count?42:10,rx=page<count?(hueAvailable()?W-150:W-114):W-10;ui.fillRect(x,13,4,12,accent);
-  ui.setFreeFont(themeFont(2));if(page<count&&hueAvailable()&&x+12+ui.textWidth(s)>W-148)text(s,x+12,14,1,ink);else text(s,x+12,10,2,ink);
+  int x=page<count?42:10,rx=W-10;ui.fillRect(x,13,4,12,accent);
+  ui.setFreeFont(themeFont(2));text(s,x+12,10,2,ink);
   ui.setFreeFont(themeFont(2));int end=x+12+ui.textWidth(s);if(end+8<=rx-6*int(right.length()))text(right,rx,13,1,muted,TR_DATUM);}
 // Where a main page's content starts below the header.
 int topY(){return tall()?60:36;}
@@ -75,7 +85,7 @@ void nextPage(int direction);
 void setPage(int n){if(n>=100&&n<=109){if(page<count)returnPage=page;page=n;}else page=(n%count+count)%count;ledcWrite(21,page==29?12:brightness*255/100);Serial.printf("SCREEN %d %s\n",page,pageName(page));}
 // Screen order for taps and swipes. Going back (left) from home: AI, Sentry, Privacy guard (file deletion),
 // Hue lights, Light show (colours), then the rest in their usual order. Hidden screens are skipped.
-const uint8_t pageOrder[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,20,19,21};
+const uint8_t pageOrder[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,24,25,26,27,16,17,18,22,23,20,19,21};
 void nextPage(int direction){
   int at=0;for(int i=0;i<count;i++)if(pageOrder[i]==page)at=i;
   for(int i=0;i<count;i++){at=(at+direction+count)%count;int n=pageOrder[at];if(enabledPages&(1UL<<n)){setPage(n);return;}}
@@ -104,6 +114,11 @@ void drawWifiIcon(int cx,int cy){
 #include "led_ring.h"
 #include "sound_waves.h"
 #include "hue.h"
+#include "alarm_clock.h"
+#include "sleep_sounds.h"
+#include "orbit_sweep.h"
+#include "orbit_run.h"
+#include "home_keys.h"
 #include "ota_update.h"
 #include "pair_link.h"
 // Bluetooth music is a separate program (firmware/OrbitSpeaker) in the spare OTA slot: linking the
@@ -153,12 +168,25 @@ void drawSetup(){
     ui.drawFastHLine(0,touchY,W,accent);ui.drawFastVLine(touchX,35,H-58,accent);ui.drawRect(touchX-9,touchY-9,19,19,themeColor(0xf81f));text(String(touchX)+" / "+String(touchY),cx,H-38,2,ink,MC_DATUM);
   }else if(page==107){drawCompanion();ui.fillRect(0,0,W-45,32,themeBg);text("< BACK",7,11,2,accent);text("AI INBOX",83,10,2,ink);}
 }
-void draw(){ui.fillSprite(themeBg);if(securityLocked){drawSecurity();showFrame();frames++;return;}if(page==109)drawSound();else if(page>=100)drawSetup();else if(page>=16)drawRemote();else drawShowcase(page);bool face=(page==21&&voiceView==2)||page==109;  // the face and the visuals fill the screen: no footer or corner shortcuts
-  if(aiAttention&&(millis()/500)%2==0)ui.fillRect(hueAvailable()?W-152:W-116,8,6,6,themeColor(0xfd20));if(!face&&(!cameraFullscreen||page!=19))footer();if(!face)drawQuickIcon();drawPairOverlay();showFrame();frames++;}
+// Standing up, a screen's title sits beside the house in the top row, and everything drawn below it
+// moves up 24 px to use that space: the page draws as before (its own y values) through a viewport whose
+// origin is 24 px above the screen, and touches get the same 24 px added (touchInput). Not for the full-
+// screen views (the face, the camera) or setup pages.
+int yShift(){return tall()&&page<count&&!(page==21&&voiceView==2)&&!(page==19&&cameraFullscreen)?24:0;}
+void draw(){if(alarmRinging){drawAlarmRing();showFrame();frames++;return;}ui.fillSprite(themeBg);if(securityLocked){drawSecurity();showFrame();frames++;return;}int sh=yShift();if(sh)ui.setViewport(0,-sh,W,H+sh,true);
+  if(page==109)drawSound();else if(page>=100)drawSetup();else if(page>=16)drawRemote();else drawShowcase(page);if(sh)ui.resetViewport();bool face=(page==21&&voiceView==2)||page==109;  // the face and the visuals fill the screen: no footer or corner shortcuts
+  if(aiAttention&&(millis()/500)%2==0)ui.fillRect(W-14,8,6,6,themeColor(0xfd20));if(!face&&(!cameraFullscreen||page!=19))footer();if(!face){drawQuickIcon();drawNavHint();}drawPairOverlay();showFrame();frames++;}
+// Changing screens takes a double tap on the same half (a single tap only shows an arrow there), so a
+// tap that misses a button no longer flips the screen.
+int navSide=0;uint32_t navAt=0;
+void navTap(int side){uint32_t now=millis();if(navSide==side&&now-navAt<500){navSide=0;nextPage(side);return;}navSide=side;navAt=now;}
+void drawNavHint(){if(!navSide||millis()-navAt>=500||page>=count)return;int cy=H/2,x=navSide<0?14:W-14,d=navSide<0?-1:1;
+ ui.fillCircle(x,cy,13,panel);ui.drawCircle(x,cy,13,accent);ui.fillTriangle(x+d*6,cy,x-d*4,cy-8,x-d*4,cy+8,accent);}
 void tap(int x,int y){
+  if(alarmRinging){alarmRingTap(x,y);return;}
   if(securityLocked){securityTap(x,y);return;}
   if(page==109){soundTap(x,y);return;}  // VISUALS: EXIT, or the next animation
-  if(page==0&&homeSettingsAt(x,y)){setPage(100);return;}
+  if(page==0&&homeTap(x,y))return;  // HOME: a shortcut tile or SETTINGS
   if(page==21&&voiceTap(x,y))return;  // CONSOLE / TALK switch, console scrolling and SEND / CANCEL
   if(page==21&&y>=talkTop())return;  // talk bar: handled by voiceLoop while held
   if(page==20&&remoteHold(x,y))return;
@@ -166,7 +194,11 @@ void tap(int x,int y){
   if(page==16&&aiId.length()&&y>=replyTop())return;
   if(page>=16&&page<=18&&remoteHold(x,y))return;
   if(page==23&&hueTap(x,y))return;  // HUE LIGHTS tiles and ALL OFF / ALL ON
-  if(page<count){nextPage(x<W/2?-1:1);return;}  // tap the left half to go back, the right half to go forward
+  if(page==24&&alarmTap(x,y))return;  // ALARM CLOCK arrows, ON/OFF and TEST
+  if(page==25&&sleepTap(x,y))return;  // SOUND MACHINE tiles, timer, volume, stop
+  if(page==26&&swTap(x,y))return;  // ORBIT SWEEP: scan a square
+  if(page==27&&runTap(x,y))return;  // ORBIT RUN: start, continue, fly again
+  if(page<count){navTap(x<W/2?-1:1);return;}  // double-tap the left half to go back, the right half to go forward
   if(y>=H-18){setPage(returnPage);return;}
   if(x<70&&y<32){if(page==100)setPage(returnPage);else setPage(100);return;}
   if(page==100){int i=setupTileAt(x,y);if(i>=0)setPage(101+i);return;}
@@ -174,6 +206,7 @@ void tap(int x,int y){
   if(page==102&&y>=swatchY()-4&&y<=swatchY()+swatchW()+4){int i=0;for(int k=0;k<5;k++)if(x>=swatchX(k)-4)i=k;colorIndex=i;applyTheme();prefs.putInt("color",colorIndex);return;}
 }
 bool holdControl(int x,int y){
+  if(page==26&&swHold(x,y))return true;  // ORBIT SWEEP: drop or lift a probe
   if(page==0&&homeSettingsAt(x,y)){setPage(100);return true;}
   if((page==16||page==107)&&y>=replyTop()&&aiId.length()&&!aiExpired){aiReply=x<W/2?"YES":"NO";aiAttention=false;return true;}
   if(page==20&&y>=privacyDeleteY()&&y<privacyDeleteY()+34){requestRemote("privacy:cleanup");return true;}
@@ -192,22 +225,11 @@ const int VOICE_PAGE=21;uint32_t homeIconAt=0,aiIconAt=0,lightIconAt=0;
 uint32_t rotateIconAt=0;
 void drawQuickIcon(){
   if(page>=count||securityLocked)return;
-  uint16_t h=millis()-homeIconAt<550?0xfd20:accent;  // HOME: a small house
+  uint16_t h=millis()-homeIconAt<550?0xfd20:accent;  // HOME: a small house. Lights, AI, music and rotate are shortcuts on the home screen now.
   ui.fillRect(0,0,36,32,panel);ui.drawRect(0,0,36,32,h);ui.fillTriangle(18,6,7,16,29,16,h);ui.fillRect(11,16,14,10,h);ui.fillRect(16,20,4,6,panel);
-  // The right-hand buttons sit against the right edge either way up: (LIGHTS when Hue is paired), AI, MUSIC, ROTATE.
-  if(hueAvailable()){int lx=W-144;uint16_t l=millis()-lightIconAt<550?0xfd20:accent;bool lit=hueAnyOn();  // LIGHTS: a bulb
-    ui.fillRect(lx,0,36,32,panel);ui.drawRect(lx,0,36,32,l);if(lit)ui.fillCircle(lx+18,13,7,l);else ui.drawCircle(lx+18,13,7,l);
-    ui.fillRect(lx+14,21,9,3,l);ui.fillRect(lx+15,25,7,2,l);
-    if(lit)for(int k=0;k<5;k++){float t=(k-2)*0.6f;ui.drawLine(lx+18+int(sinf(t)*10),13-int(cosf(t)*10),lx+18+int(sinf(t)*13),13-int(cosf(t)*13),l);}}
-  int ax=W-108,mx=W-72,rx=W-36;
-  uint16_t a=millis()-aiIconAt<550?0xfd20:accent;    // AI: opens the voice companion
-  ui.fillRect(ax,0,36,32,panel);ui.drawRect(ax,0,36,32,a);text("AI",ax+18,16,2,a,MC_DATUM);
-  uint16_t r=millis()-rotateIconAt<550?0xfd20:accent;  // ROTATE: a circular arrow; turns the picture a quarter turn
-  ui.fillRect(rx,0,36,32,panel);ui.drawRect(rx,0,36,32,r);
-  for(int deg=40;deg<=320;deg+=8){float t=deg*PI/180;ui.fillRect(rx+18+int(sinf(t)*9)-1,16-int(cosf(t)*9)-1,3,3,r);}
-  ui.fillTriangle(rx+12,4,rx+20,8,rx+13,12,r);
-  if(quickTargets[0]<0)return;
-  uint16_t c=millis()-quickIconAt<550?0xfd20:mediaPlaying&&millis()-mediaAt<10000?((millis()/500)%2?0x87e0:0x07e0):accent;ui.fillRect(mx,0,36,32,panel);ui.drawRect(mx,0,36,32,c);ui.fillCircle(mx+12,22,3,c);ui.fillRect(mx+14,9,2,13,c);ui.fillRect(mx+14,9,10,3,c);ui.fillRect(mx+22,10,2,9,c);ui.fillCircle(mx+20,20,3,c);
+  // Dots on the house, from every screen: green while music plays on the PC, amber while a Hue light mode runs.
+  bool music=homeMusicOn(),lights=hueMode.length()>0;
+  if(music)ui.fillCircle(31,5,3,themeColor(HOME_MUSIC));if(lights)ui.fillCircle(music?24:31,5,3,themeColor(HOME_LIGHTS));
 }
 // Screen rotation. The ROTATE button turns Orbit's picture a quarter turn per tap (Orbit has no tilt
 // sensor). Every screen has its own layout for lying down (320 x 240) and standing up (240 x 320): the
@@ -218,9 +240,12 @@ void setScreenRotation(int rot){
   if(ui.created()){ui.deleteSprite();ui.setColorDepth(8);if(!ui.createSprite(W,H))Serial.println("FRAMEBUFFER FAILED");}
   conDirty=true;touchX=W/2;touchY=H/2;  // the console re-wraps its lines for the new width
 }
-void rotationSetup(){setScreenRotation(prefs.getUChar("rot",1));}
-// One tap: lying down -> standing up -> lying down the other way -> standing up the other way.
-void rotateScreen(){setScreenRotation(screenRot+3);prefs.putUChar("rot",screenRot);gesture=TouchGesture();Serial.printf("ROTATION %d\n",screenRot);}
+// Orbit turns only two ways: standing up is rotation 0 (home button at the top, the ORBIT lettering on the
+// case below the screen) and lying down is rotation 1 (the lettering on the right). An older saved 2 or 3
+// becomes its matching one.
+void rotationSetup(){uint8_t r=prefs.getUChar("rot",1);setScreenRotation(r==0||r==2?0:1);}
+// One tap switches between the two: lying down <-> standing up.
+void rotateScreen(){setScreenRotation(screenRot==1?0:1);prefs.putUChar("rot",screenRot);gesture=TouchGesture();Serial.printf("ROTATION %d\n",screenRot);}
 // The touch panel reads as if lying down (rotation 1, 320 x 240); turn that into the picture's own x, y.
 void touchToScreen(int &x,int &y){
   int tx=x,ty=y;
@@ -231,20 +256,18 @@ void touchToScreen(int &x,int &y){
 void touchInput(){
   bool pressed=touch.touched();int x=touchX,y=touchY;
   if(pressed){TS_Point p=touch.getPoint();pressed=p.z>=200;if(pressed){x=constrain(map(p.x,200,3700,0,319),0,319);y=constrain(map(p.y,240,3800,0,239),0,239);
-    touchToScreen(x,y);touchX=x;touchY=y;}}
+    touchToScreen(x,y);y+=yShift();touchX=x;touchY=y;}}
   buttonPressed=pressed;pressedX=x;pressedY=y;if(pressed)securityLastTouch=millis();
   TouchGesture::Event event=gesture.update(pressed,x,y,millis(),page);if(event.kind==TouchGesture::NONE)return;
+  if(voiceBusy())return;  // Orbit is talking: taps wait until it finishes
+  if(alarmRinging){if(event.kind==TouchGesture::TAP||event.kind==TouchGesture::HOLD)alarmRingTap(gesture.startX,event.startY);return;}  // the ringing face owns the screen
   if(securityLocked){quickIcon.cancel();securityTap(gesture.startX,event.startY);return;}
   if(pairPromptActive()){if(event.kind==TouchGesture::TAP||event.kind==TouchGesture::HOLD)pairTouch(gesture.startX,event.startY);return;}  // pairing prompt owns the screen
   // The face view owns every touch (voiceLoop: tap to talk, hold 3 s to leave), including the lift after leaving.
   if(page==21&&(voiceView==2||int32_t(millis()-faceQuietUntil)<0))return;
   // Corner shortcuts: a single tap jumps straight there (the music icon used to need a double tap).
-  if(page<count&&event.startY<32){
+  if(page<count&&event.startY-yShift()<32){
     if(gesture.startX<38){if(event.kind==TouchGesture::TAP){homeIconAt=millis();cameraFullscreen=false;setPage(startupPage);}return;}
-    if(hueAvailable()&&gesture.startX>=W-144&&gesture.startX<W-108){if(event.kind==TouchGesture::TAP){lightIconAt=millis();cameraFullscreen=false;setPage(23);}return;}
-    if(gesture.startX>=W-108&&gesture.startX<W-72){if(event.kind==TouchGesture::TAP){aiIconAt=millis();cameraFullscreen=false;setPage(VOICE_PAGE);}return;}
-    if(gesture.startX>=W-72&&gesture.startX<W-36&&quickTargets[0]>=0){if(event.kind==TouchGesture::TAP){quickIconAt=millis();quickJump(0);}return;}
-    if(gesture.startX>=W-36){if(event.kind==TouchGesture::TAP){rotateIconAt=millis();rotateScreen();}return;}
   }
   quickIcon.cancel();
   // A press on the talk bar never navigates; in the console it may be the draft's CANCEL / SEND.
@@ -254,6 +277,9 @@ void touchInput(){
   if(page==22&&event.startY>=topY()){if(lightBarAt(gesture.startX,event.startY))return;if(event.kind==TouchGesture::TAP||event.kind==TouchGesture::HOLD){lightTap(gesture.startX,event.startY);return;}}
   if(page==17&&volumeBarAt(gesture.startX,event.startY))return;  // volume slider (musicLoop)
   if(event.kind!=TouchGesture::TAP&&hueOwnsTouch(gesture.startX,event.startY))return;  // HUE room slider (hueLoop)
+  if(event.kind!=TouchGesture::TAP&&alarmOwnsTouch(gesture.startX,event.startY))return;
+  if(event.kind!=TouchGesture::TAP&&event.kind!=TouchGesture::HOLD&&swOwnsTouch(gesture.startX,event.startY))return;  // a wobbly tap on the board is not a swipe
+  if(event.kind!=TouchGesture::TAP&&runOwnsTouch(gesture.startX,event.startY))return;  // ORBIT RUN: holding steers (runStep)  // ALARM arrows held (alarmTouchLoop)
   if(page==20&&event.kind==TouchGesture::HOLD&&holdControl(event.x,event.y))return;
   touchEvents++;Serial.printf("TOUCH %d %d KIND=%d\n",event.x,event.y,event.kind);
   if(page>=100){if(event.kind==TouchGesture::HOLD&&holdControl(event.x,event.y))return;tap(event.x,event.y);return;}
@@ -262,7 +288,7 @@ void touchInput(){
   if(event.kind==TouchGesture::SWIPE_UP||event.kind==TouchGesture::SWIPE_DOWN){
     // Swipes that begin on a screen's controls stay with those controls.
     int sy=event.startY;
-    bool control=(page==0&&homeSettingsAt(gesture.startX,sy))||(page==16&&sy>=replyTop()-24)||(page==17&&sy>=musicTop())||(page==18&&sy>=appTop()&&sy<appTop()+6*appStep())||((page==14||page==15)&&sy>=timerButtonY()-3)||(page==19&&(cameraFullscreen||sy>=cameraTop()))||(page==20&&sy>=privacyDeleteY());
+    bool control=(page==0&&(homeSettingsAt(gesture.startX,sy)||homeTileAt(gesture.startX,sy)>=0))||(page==16&&sy>=replyTop()-24)||(page==17&&sy>=musicTop())||(page==18&&sy>=appTop()&&sy<appTop()+6*appStep())||((page==14||page==15)&&sy>=timerButtonY()-3)||(page==19&&(cameraFullscreen||sy>=cameraTop()))||(page==20&&sy>=privacyDeleteY());
     if(!control)quickJump(event.kind==TouchGesture::SWIPE_UP?1:2);return;
   }
   if(page==19&&(cameraFullscreen||event.startY>=cameraTop())&&remoteHold(gesture.startX,event.startY))return;
@@ -276,7 +302,7 @@ void commands(){
   while(Serial.available()){
     char c=Serial.read();if(c=='\n'){
       line.trim();if(line.startsWith("SCREEN "))setPage(line.substring(7).toInt());
-      if(line=="NEXT")tap(W/2,H/2);
+      if(line=="NEXT")nextPage(1);
       if(line=="ROTATE")rotateScreen();
       if(line.startsWith("ROTATION "))setScreenRotation(line.substring(9).toInt());
       if(line.startsWith("TAP ")){int x,y;if(sscanf(line.c_str()+4,"%d %d",&x,&y)==2)tap(x,y);}
@@ -314,7 +340,7 @@ void setup(){
   pinMode(0,INPUT_PULLUP);for(int pin:{4,16,17}){pinMode(pin,OUTPUT);digitalWrite(pin,HIGH);}audioPinsIdle();
   prefs.begin("orbit-cyd",false);securityLoad();for(int i=0;i<3;i++)quickTargets[i]=constrain(prefs.getInt(("quick"+String(i)).c_str(),quickTargets[i]),-1,20);brightness=constrain(prefs.getInt("brightness",70),5,100);colorIndex=constrain(prefs.getInt("color",0),0,4);accent=accents[colorIndex];
   ownerName=prefs.getString("owner","Friend");ownerTZ=prefs.getString("tz",ownerTZ);// Voice page always available; the AI DESK page (16) is retired: it depended on the unpaired companion.
-enabledPages=(prefs.getUInt("enabled",(1UL<<21)-1)|(1UL<<21)|(1UL<<22)|(1UL<<23))&~(1UL<<16);  // + LIGHT SHOW, HUE LIGHTS
+enabledPages=(prefs.getUInt("enabled",(1UL<<21)-1)|(1UL<<21)|(1UL<<22)|(1UL<<23)|(1UL<<24)|(1UL<<25)|(1UL<<26)|(1UL<<27))&~(1UL<<16);  // + LIGHT SHOW, HUE LIGHTS, ALARM CLOCK, SOUND MACHINE, the games
 for(int i=0;i<3;i++)if(quickTargets[i]==16)quickTargets[i]=21;
   themeIndex=constrain(prefs.getInt("theme",0),0,3);applyTheme();startupPage=constrain(prefs.getInt("startupPage",0),0,20);
   tft.init();rotationSetup();ledcAttach(21,5000,8);ledcWrite(21,brightness*255/100);
@@ -329,15 +355,15 @@ for(int i=0;i<3;i++)if(quickTargets[i]==16)quickTargets[i]=21;
   }
   Serial.printf("FRAMEBUFFER %d BIT HEAP=%u\n",ui.getColorDepth(),ESP.getFreeHeap());
   touchBus.begin(25,39,32,33);touch.begin(touchBus);touch.setRotation(1);
-  setenv("TZ",ownerTZ.c_str(),1);tzset();WiFi.mode(WIFI_STA);WiFi.setHostname("seth-orbit");WiFi.setAutoReconnect(true);WiFi.begin();companionSetup();voiceSetup();ledSetup();otaSetup();setPage(startupPage);draw();focusAt=watchAt=millis();
+  setenv("TZ",ownerTZ.c_str(),1);tzset();WiFi.mode(WIFI_STA);WiFi.setSleep(false);WiFi.setHostname("seth-orbit");WiFi.setAutoReconnect(true);WiFi.begin();companionSetup();voiceSetup();ledSetup();alarmLoad();sleepLoad();homeLoad();otaSetup();setPage(startupPage);draw();focusAt=watchAt=millis();
 }
 void loop(){
   uint32_t now=millis();if(focusRunning){uint32_t dt=now-focusAt;focusMs=dt>=focusMs?0:focusMs-dt;if(!focusMs)focusRunning=false;}focusAt=now;
   if(watchRunning)watchMs+=now-watchAt;watchAt=now;
-  loopStep=1;touchInput();loopStep=2;commands();loopStep=3;micLoop();speakerLoop();loopStep=4;companionLoop();loopStep=5;voiceLoop();
-  loopStep=6;musicLoop();loopStep=7;soundLoop();hueLoop();ledLoop();loopStep=8;pairLoop();securityLoop();loopStep=9;
-  static bool lastBoot=HIGH;static uint32_t bootAt;bool boot=digitalRead(0);if(!boot&&lastBoot)bootAt=now;if(boot&&!lastBoot&&!securityLocked){if(now-bootAt>700)setPage(page>=100?returnPage:100);else tap(W/2,H/2);}lastBoot=boot;
+  loopMark(1);touchInput();loopMark(2);commands();loopMark(3);micLoop();speakerLoop();loopMark(4);companionLoop();loopMark(5);voiceLoop();
+  loopMark(6);musicLoop();loopMark(7);soundLoop();hueLoop();alarmLoop();alarmTouchLoop();volPopupLoop();runLoop();ledLoop();loopMark(8);pairLoop();securityLoop();loopMark(9);
+  static bool lastBoot=HIGH;static uint32_t bootAt;bool boot=digitalRead(0);if(!boot&&lastBoot)bootAt=now;if(boot&&!lastBoot&&!securityLocked){if(now-bootAt>700)setPage(page>=100?returnPage:100);else nextPage(1);}lastBoot=boot;
   if(scanning){int n=WiFi.scanComplete();if(n>=0){networkText="";for(int i=0;i<min(n,4);i++){networkText+=WiFi.SSID(i).substring(0,26);if(i<min(n,4)-1)networkText+='\n';}if(!n)networkText="No networks found";WiFi.scanDelete();scanning=false;}else if(n==WIFI_SCAN_FAILED){networkText="Scan failed. Hold to retry.";scanning=false;}}
   static bool ntp=false;if(WiFi.isConnected()&&!ntp){configTime(0,0,"pool.ntp.org","time.nist.gov");setenv("TZ",ownerTZ.c_str(),1);tzset();ntp=true;}
-  if(now-lastFrame>=50){lastFrame=now;loopStep=10;draw();loopStep=11;touchInput();}if(now-framesAt>=2000){fps=frames*1000.f/(now-framesAt);frames=0;framesAt=now;}delay(2);
+  if(now-lastFrame>=50){lastFrame=now;loopMark(10);draw();loopMark(11);touchInput();}if(now-framesAt>=2000){fps=frames*1000.f/(now-framesAt);frames=0;framesAt=now;}loopMark(12);{static uint32_t prev=0;uint32_t t=millis();if(prev&&t-prev>vsLoopMax)vsLoopMax=t-prev;prev=t;}delay(2);
 }
