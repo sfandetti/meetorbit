@@ -1,6 +1,100 @@
 <!DOCTYPE html>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="index,follow" name="robots"/><title>Multiple AI Connections &amp; PC Controls | Meet Orbit</title><meta content="Meet Orbit: an open-source desk companion for AI conversations, PC insights and everyday controls." name="description"/><meta content="#ffffff" name="theme-color"/><link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/><link href="style.css" rel="stylesheet"/><script defer="" src="site.js"></script></head><body data-page="index.html"><a class="skip" href="#main">Skip to content</a><div class="preview-strip">PROTOTYPE 01 <span>Orbit is in development. Explore the product, software and open hardware.</span></div><header class="wrap"><a aria-label="Meet Orbit home" class="wordmark" href="index.html"><span aria-hidden="true" class="brand-icon"></span><span>meet<span class="brand-heavy">orbit</span><span class="brand-dot">.</span></span></a><nav aria-label="Main navigation"><a href="index.html#specs">Specs</a><a href="index.html#features">Features</a><a href="software.html">Software</a><a href="downloads.html">Downloads &amp; guides <span aria-hidden="true">↗</span></a><a href="screens.html">Screens</a></nav></header><main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> ESP32 hardware + Windows companion</p><h1>Orbit.<br/>Control multiple AIs<span class="orange">.</span></h1><p class="hero-description">Connect to OpenAI, Claude, DeepSeek and Cursor from one device. Select an AI provider, ask questions or use the separate voice and coding integrations. PC telemetry, app shortcuts and local privacy controls are built in.</p><div class="actions"><a class="button primary" href="#features">View capabilities <span>↓</span></a><a class="text-link" href="#specs">Technical specs ↗</a></div><p class="fine hero-note">Tabletop prototype shown. A smaller, portable version is in development.</p></div><figure class="hero-product"><img alt="White Orbit prototypes: horizontal on the left with speaker visible and memory-card slot underneath, upright on the right with an AI face" fetchpriority="high" src="assets/orbit-two-views-clean.png"/><figcaption><span>ORBIT / PROTOTYPE 01</span><span>CAD render · illustrative displays</span></figcaption></figure></section>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="index,follow" name="robots"/><title>Multiple AI Connections &amp; PC Controls | Meet Orbit</title><meta content="Meet Orbit: an open-source desk companion for AI conversations, PC insights and everyday controls." name="description"/><meta content="#ffffff" name="theme-color"/><link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/><link href="style.css" rel="stylesheet"/><script defer="" src="site.js"></script>
+<link rel="canonical" href="https://meetorbit.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Meet Orbit">
+<meta property="og:title" content="Meet Orbit — Open-Source AI Desk Companion">
+<meta property="og:description" content="ESP32 + Windows companion for multiple AIs, PC stats, privacy controls, and Hue. MIT software · CERN-OHL-P hardware. Build your own Capsule.">
+<meta property="og:url" content="https://meetorbit.io/">
+<meta property="og:image" content="https://meetorbit.io/assets/og-orbit.jpg">
+<meta property="og:image:alt" content="Orbit Capsule prototype — two views">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meet Orbit — Open-Source AI Desk Companion">
+<meta name="twitter:description" content="ESP32 + Windows companion for multiple AIs, PC stats, privacy controls, and Hue. Open hardware and software.">
+<meta name="twitter:image" content="https://meetorbit.io/assets/og-orbit.jpg">
+<!-- Google tag (gtag.js) — Meet Orbit GA4. Loads and records only on meetorbit.io and www.meetorbit.io. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if (location.hostname === 'meetorbit.io' || location.hostname === 'www.meetorbit.io') {
+    var ga = document.createElement('script');
+    ga.async = true;
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-MK04BHSHLD';
+    document.head.appendChild(ga);
+    gtag('config', 'G-MK04BHSHLD');
+  }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Meet Orbit",
+  "alternateName": "Orbit",
+  "url": "https://meetorbit.io/",
+  "logo": "https://meetorbit.io/assets/favicon.svg",
+  "description": "Open-source ESP32 desk companion and Windows companion by Seth Fandetti.",
+  "founder": {
+    "@type": "Person",
+    "name": "Seth Fandetti",
+    "url": "https://sethfandetti.com/"
+  },
+  "sameAs": [
+    "https://github.com/sfandetti/meetorbit",
+    "https://sethfandetti.com/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Orbit",
+  "alternateName": "Meet Orbit",
+  "applicationCategory": "Desk companion",
+  "operatingSystem": "Windows, ESP32 firmware",
+  "url": "https://meetorbit.io/",
+  "downloadUrl": "https://github.com/sfandetti/meetorbit",
+  "screenshot": "https://meetorbit.io/assets/console-current-ai.png",
+  "description": "Open-source desk companion: multiple AI connections, PC telemetry, privacy controls, Hue lighting, and Capsule hardware you can build.",
+  "author": {
+    "@type": "Person",
+    "name": "Seth Fandetti",
+    "url": "https://sethfandetti.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Open-source software and firmware are free to download. An assembled device is not for sale yet."
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "meetorbit (Orbit)",
+  "description": "ESP32 device firmware, Windows Node companion, Capsule hardware, and Meet Orbit website. Software and firmware are MIT; original hardware and build documentation are CERN-OHL-P-2.0.",
+  "url": "https://meetorbit.io/",
+  "codeRepository": "https://github.com/sfandetti/meetorbit",
+  "programmingLanguage": ["JavaScript", "C++", "HTML"],
+  "runtimePlatform": "Node.js, ESP32",
+  "license": [
+    "https://opensource.org/licenses/MIT",
+    "https://spdx.org/licenses/CERN-OHL-P-2.0.html"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Seth Fandetti",
+    "url": "https://sethfandetti.com/"
+  }
+}
+</script>
+</head><body data-page="index.html"><a class="skip" href="#main">Skip to content</a><div class="preview-strip">PROTOTYPE 01 <span>Orbit is in development. Explore the product, software and open hardware.</span></div><header class="wrap"><a aria-label="Meet Orbit home" class="wordmark" href="index.html"><span aria-hidden="true" class="brand-icon"></span><span>meet<span class="brand-heavy">orbit</span><span class="brand-dot">.</span></span></a><nav aria-label="Main navigation"><a href="index.html#specs">Specs</a><a href="index.html#features">Features</a><a href="software.html">Software</a><a href="downloads.html">Downloads &amp; guides <span aria-hidden="true">↗</span></a><a href="screens.html">Screens</a></nav></header><main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> ESP32 hardware + Windows companion</p><h1>Orbit.<br/>Control multiple AIs<span class="orange">.</span></h1><p class="hero-description">Connect to OpenAI, Claude, DeepSeek and Cursor from one device. Select an AI provider, ask questions or use the separate voice and coding integrations. PC telemetry, app shortcuts and local privacy controls are built in.</p><div class="actions"><a class="button primary" href="#features">View capabilities <span>↓</span></a><a class="text-link" href="#specs">Technical specs ↗</a></div><p class="fine hero-note">Tabletop prototype shown. A smaller, portable version is in development.</p></div><figure class="hero-product"><img alt="White Orbit prototypes: horizontal on the left with speaker visible and memory-card slot underneath, upright on the right with an AI face" fetchpriority="high" src="assets/orbit-two-views-clean.png"/><figcaption><span>ORBIT / PROTOTYPE 01</span><span>CAD render · illustrative displays</span></figcaption></figure></section>
 <div class="capabilities wrap"><span>320 × 240 touch display</span><i>+</i><span>4 AI desk connectors</span><i>+</i><span>Wi-Fi device link</span><i>+</i><span>12 LED effects</span></div>
 <section class="section wrap" id="home-screen"><div class="section-top"><span class="eyebrow">Home screen / Your shortcuts</span><a class="text-link" href="screens.html#home-views">Browse the new screens ↗</a></div><div class="section-heading"><h2>Put your tools<br/>on the home screen.</h2><p>Seven swappable shortcut tiles and an AI button that stays in place. Add, remove and reorder shortcuts in the PC console: Hue lights, music, alarm, sounds, games, PC readings, privacy tools and more. Landscape and portrait layouts adapt to the orientation.</p></div><div class="device-pair"><figure class="device-shot"><button aria-label="Enlarge Home shortcuts" class="image-button" data-zoom=""><img alt="Orbit device UI: Home shortcuts" loading="lazy" src="assets/screens/lying/home.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>Home shortcuts · Saved device UI capture</figcaption></figure><figure class="device-shot"><button aria-label="Enlarge Portrait home shortcuts" class="image-button" data-zoom=""><img alt="Orbit device UI: Portrait home shortcuts" loading="lazy" src="assets/screens/standing/home.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>Portrait home shortcuts · Saved device UI capture</figcaption></figure></div></section><section class="ai-section section" id="ai"><div class="wrap"><div class="section-top"><span class="eyebrow">01 / AI connections</span><span class="small-caps">Bring your own provider account</span></div><div class="ai-heading"><h2>Multiple AI connections.<br/>Your choice of engine.</h2><p>Switch the AI desk between supported providers. Talk through the speaker or follow a coding task through the separate voice and Codex connections.</p></div><div class="table-scroll"><table class="spec-table provider-table"><thead><tr><th>Connection</th><th>What it does</th><th>Interface / account</th></tr></thead><tbody><tr><th>OpenAI</th><td>Text questions and model selection in AI desk</td><td>Responses API · your API key</td></tr><tr><th>Claude / Anthropic</th><td>Text questions and model selection in AI desk</td><td>Messages API · your API key</td></tr><tr><th>DeepSeek</th><td>Text questions and model selection in AI desk</td><td>Chat API · your API key</td></tr><tr><th>Cursor</th><td>Questions through the installed agent</td><td>Cursor CLI · read-only Ask mode</td></tr><tr><th>OpenAI Realtime</th><td>Hold-to-talk voice; audio replies through Orbit’s speaker</td><td>PC-hosted relay · your OpenAI API account</td></tr><tr><th>Codex</th><td>Paired conversation, task state, approval requests and reviewed voice commands</td><td>Local integration with the paired PC conversation</td></tr></tbody></table></div><div class="ai-columns"><article><span class="feature-number">VOICE</span><h3>Hold. Speak. Hear the reply.</h3><p>Microphone audio travels over Wi-Fi to the paired PC, then to OpenAI Realtime. Reply audio plays through Orbit. The language model runs through the provider, not on the ESP32.</p></article><article><span class="feature-number">CODEX</span><h3>Read tasks. Review commands.</h3><p>View the paired conversation, task state and pending approval requests. Dictated commands are transcribed for review; choose Send or Cancel before they reach the coding conversation.</p></article><article><span class="feature-number">AI DESK</span><h3>Short answers on the display.</h3><p>Select a model exposed by your API key. Cursor uses its installed CLI in Ask mode. AI desk messages and Yes/No replies do not grant permissions in other applications.</p></article></div><div class="feature-shots"><figure class="feature-shot"><button aria-label="Enlarge AI provider settings" class="image-button" data-zoom=""><img alt="Orbit console: AI provider settings" loading="lazy" src="assets/console-current-ai.png"/><span class="enlarge">Enlarge screenshot ↗</span></button><figcaption><strong>AI provider settings</strong> · API provider, model selection and display messaging</figcaption></figure><figure class="feature-shot"><button aria-label="Enlarge AI voice" class="image-button" data-zoom=""><img alt="Orbit console: AI voice" loading="lazy" src="assets/console-current-voice.png"/><span class="enlarge">Enlarge screenshot ↗</span></button><figcaption><strong>AI voice</strong> · OpenAI voice setup and device console instructions</figcaption></figure></div><p class="fine ai-footnote">The AI desk uses one selected provider per request. Connectors are implemented in the current development source, and additional integrations can be developed. Model access depends on your account. API usage is billed by the provider; a chat subscription is not an API key. Your PC must be awake.</p></div><div class="wrap device-pair ai-device-pair"><figure class="device-shot"><button aria-label="Enlarge AI engine picker" class="image-button" data-zoom=""><img alt="Orbit device UI: AI engine picker" loading="lazy" src="assets/screens/lying/ai-engine.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>AI engine picker · Device UI capture</figcaption></figure><figure class="device-shot"><button aria-label="Enlarge Face and voice view" class="image-button" data-zoom=""><img alt="Orbit device UI: Face and voice view" loading="lazy" src="assets/screens/standing/ai-face.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>Face and voice view · Device UI capture</figcaption></figure></div><div class="wrap"><p class="fine">The ENGINE view lists configured connections. ChatGPT uses OpenAI Realtime voice. Claude, DeepSeek and Cursor return text, with OpenAI speech services handling speech input/output. Codex is a paired coding conversation with reviewed SEND / CANCEL commands. Provider credentials and API billing are separate requirements.</p></div></section>
 <section class="section privacy-section" id="privacy"><div class="wrap"><div class="section-top"><span class="eyebrow">02 / File deletion &amp; session controls</span><span class="small-caps">Explicit targets. Review before deletion.</span></div><div class="section-heading"><h2>Delete selected files.<br/>Clear local browser data.</h2><p>Configure cleanup targets on your PC, then trigger the workflow from Orbit or the console.</p></div><div class="technical-grid"><article><h3>Folder cleanup</h3><ul><li>Select up to 12 specific local folders.</li><li>Delete their contents; keep the folders themselves.</li><li>Review file count, total size and target paths before confirming.</li><li>System paths, whole top-level personal folders, network shares and linked targets are blocked.</li></ul></article><article><h3>Browser cleanup</h3><ul><li>Chrome, Edge and Brave.</li><li>Choose history, cookies and cache independently.</li><li>Applies to standard local browser profiles; bookmarks stay.</li><li>Browsers must be closed. Clearing cookies signs you out.</li></ul></article><article><h3>Session controls</h3><ul><li>Lock Windows or request sign-out.</li><li>Optional 4–6 digit device passcode.</li><li>PC commands and cleanup require the configured passcode.</li><li>Cleanup uses a review and confirmation flow, with a final check that targets have not changed.</li></ul></article></div><figure class="feature-shot"><button aria-label="Enlarge File deletion and session controls" class="image-button" data-zoom=""><img alt="Orbit console: File deletion and session controls" loading="lazy" src="assets/console-current-privacy-full.png"/><span class="enlarge">Enlarge screenshot ↗</span></button><figcaption><strong>File deletion and session controls</strong> · Complete privacy page; no cleanup targets selected</figcaption></figure><p class="scope-note"><strong>Deletion scope:</strong> local files and selected browser data. Sync, backups and cloud copies are outside this cleanup. It deletes files; it does not promise forensic erasure on SSDs.</p></div><div class="wrap device-pair"><figure class="device-shot"><button aria-label="Enlarge Review cleanup from Orbit" class="image-button" data-zoom=""><img alt="Orbit device UI: Review cleanup from Orbit" loading="lazy" src="assets/screens/lying/privacy-guard.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>Review cleanup from Orbit · Device UI capture</figcaption></figure><figure class="device-shot"><button aria-label="Enlarge AI inbox" class="image-button" data-zoom=""><img alt="Orbit device UI: AI inbox" loading="lazy" src="assets/screens/lying/setup-ai-inbox.png"/><span class="enlarge">Enlarge ↗</span></button><figcaption>AI inbox · Device UI capture</figcaption></figure></div></section>
